@@ -46,3 +46,5 @@ Network Trash Folder
 Temporary Items
 .apdisk
 *.class
+*.class
+bin/org/usfirst/frc/team66/robot/Drivetrain.class
