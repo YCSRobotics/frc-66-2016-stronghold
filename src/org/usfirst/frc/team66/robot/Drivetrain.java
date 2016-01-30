@@ -13,18 +13,7 @@ public class Drivetrain {
 	static double rightSideSpeed = 0;
 	
 	public static void updateDrivetrain() {
-		leftSide.set(smoothValue(controller.getRawAxis(2), leftSideSpeed, true));
-		rightSide.set(smoothValue(controller.getRawAxis(5), rightSideSpeed, false));
-	}
-	
-	private static double smoothValue(double newJoy, double oldJoy, boolean isLeftSide) {
-		double smoothedSpeed = 0.0;
-		smoothedSpeed = (newJoy + (2*oldJoy))/3;
-		if (isLeftSide) {
-			leftSideSpeed = smoothedSpeed;
-		} else {
-			rightSideSpeed = smoothedSpeed;
-		}
-		return smoothedSpeed;
+		leftSide.set(controller.getRawAxis(1));
+		rightSide.set(controller.getRawAxis(5));
 	}
 }
