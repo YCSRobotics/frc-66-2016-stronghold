@@ -23,7 +23,13 @@ public class DrivetrainSide {
 		if (Math.abs(speed) < 0.25) {
 			speed = 0;
 		}
-		speed = speed * speed;
+		if (speed > 0) {
+			speed = speed * speed;
+		} else if (speed < 0) {
+			speed = -(speed * speed)
+		} else {
+			speed = 0;
+		}
 		if (isLeftSide) {
 			LEFT_MOTOR1.set(speed * LEFT_MOTOR1_SCALER);
 		} else {
