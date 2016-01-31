@@ -26,7 +26,7 @@ public class DrivetrainSide {
 		if (speed > 0) {
 			speed = speed * speed;
 		} else if (speed < 0) {
-			speed = -(speed * speed)
+			speed = -(speed * speed);
 		} else {
 			speed = 0;
 		}
