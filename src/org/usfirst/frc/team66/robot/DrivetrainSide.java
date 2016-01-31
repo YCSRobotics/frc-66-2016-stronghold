@@ -5,11 +5,11 @@ import edu.wpi.first.wpilibj.Victor;
 public class DrivetrainSide {
 	private static final Victor LEFT_MOTOR1 = new Victor(0);
 	//private static final Victor LEFT_MOTOR2 = new Victor(1);
-	private static final double LEFT_MOTOR1_SCALER = -1.0;
+	private static final double LEFT_MOTOR1_SCALER = -0.5;
 	//private static final double LEFT_MOTOR2_SCALER = 1.0;
 	private static final Victor RIGHT_MOTOR1 = new Victor(1);
 	//private static final Victor RIGHT_MOTOR2 = new Victor(9);
-	private static final double RIGHT_MOTOR1_SCALER = 1.0;
+	private static final double RIGHT_MOTOR1_SCALER = 0.5;
 	//private static final double RIGHT_MOTOR2_SCALER = 1.0;
 	
 	private boolean isLeftSide = false;
