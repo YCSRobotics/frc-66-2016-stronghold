@@ -64,6 +64,7 @@ public class Robot extends IterativeRobot {
      */
     public void teleopPeriodic() {
         Drivetrain.updateDrivetrain();
+        Shooter.updateShooter();
     }
     
     /**
