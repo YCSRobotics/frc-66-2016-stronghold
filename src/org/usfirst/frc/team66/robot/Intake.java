@@ -1,5 +1,7 @@
 package org.usfirst.frc.team66.robot;
 
+import edu.wpi.first.wpilibj.Victor;
+
 public class Intake {
 	private static final Victor LEFT_FEED_MOTOR1 = new Victor(4);
 	private static final double LEFT_FEED_MOTOR1_SCALER = -1.00;
