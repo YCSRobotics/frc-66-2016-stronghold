@@ -13,6 +13,10 @@ public class Drivetrain {
 	static double leftSideSpeed = 0;
 	static double rightSideSpeed = 0;
 	
+	public Drivetrain() {
+		
+	}
+	
 	public static void updateDrivetrain() {
 		leftSide.set(smoothValue(leftJoystick.getY(), leftSideSpeed, true));
 		rightSide.set(smoothValue(rightJoystick.getY(), rightSideSpeed, false));
