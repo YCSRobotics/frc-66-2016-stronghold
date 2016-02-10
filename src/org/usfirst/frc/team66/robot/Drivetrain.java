@@ -4,8 +4,9 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer.StaticInterface;
 
 public class Drivetrain {
-	static Joystick leftJoystick = new Joystick(0);
-	static Joystick rightJoystick = new Joystick(1);
+	private static double TURBO_SCALER = 2.0;
+	
+	static Joystick controller = new Joystick(0);
 	
 	static DrivetrainSide leftSide = new DrivetrainSide(true);
 	static DrivetrainSide rightSide = new DrivetrainSide(false);
@@ -18,18 +19,12 @@ public class Drivetrain {
 	}
 	
 	public static void updateDrivetrain() {
-		leftSide.set(smoothValue(leftJoystick.getY(), leftSideSpeed, true));
-		rightSide.set(smoothValue(rightJoystick.getY(), rightSideSpeed, false));
-	}
-	
-	private static double smoothValue(double newJoy, double oldJoy, boolean isLeftSide) {
-		double smoothedSpeed = 0.0;
-		smoothedSpeed = (newJoy + oldJoy)/2;
-		if (isLeftSide) {
-			leftSideSpeed = smoothedSpeed;
+		if(controller.getRawButton(5)) {
+			leftSide.set(controller.getRawAxis(1) * TURBO_SCALER);
+			rightSide.set(controller.getRawAxis(5) * TURBO_SCALER);
 		} else {
-			rightSideSpeed = smoothedSpeed;
+			leftSide.set(controller.getRawAxis(1));
+			rightSide.set(controller.getRawAxis(5));
 		}
-		return smoothedSpeed;
 	}
 }

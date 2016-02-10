@@ -48,3 +48,4 @@ Temporary Items
 *.class
 *.class
 bin/org/usfirst/frc/team66/robot/Drivetrain.class
+dist/FRCUserProgram.jar
