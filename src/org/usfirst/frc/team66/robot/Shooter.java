@@ -8,6 +8,10 @@ public class Shooter {
 	static Victor shootMotor = new Victor(2);
 //	static Victor indexerMotor = new Victor(3);
 
+	public Shooter() {
+		
+	}
+	
 	public static void updateShooter() {
 		if (controller.getRawAxis(3) >= 0.9) {
 			shootMotor.set(1.0);
