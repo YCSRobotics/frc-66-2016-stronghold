@@ -12,6 +12,10 @@ public class DrivetrainSide {
 	private static final double RIGHT_MOTOR1_SCALER = 0.5;
 	//private static final double RIGHT_MOTOR2_SCALER = 1.0;
 	
+	public DrivetrainSide() {
+		
+	}
+	
 	private boolean isLeftSide = false;
 	private double currentSpeed = 0.0;
 	
