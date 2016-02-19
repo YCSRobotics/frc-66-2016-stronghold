@@ -1,11 +1,11 @@
 package org.usfirst.frc.team66.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Victor;
+import edu.wpi.first.wpilibj.TalonSRX;
 
 public class Shooter {
 	static Joystick controller = new Joystick(0);
-	static Victor shootMotor = new Victor(2);
+	static TalonSRX shootMotor = new TalonSRX(2);
 //	static Victor indexerMotor = new Victor(3);
 
 	public Shooter() {
