@@ -5,14 +5,15 @@ import edu.wpi.first.wpilibj.TalonSRX;
 
 public class Shooter {
 	static Joystick controller;
-	static TalonSRX shootMotor = new TalonSRX(2);
+	static TalonSRX shootMotor;
 //	static Victor indexerMotor = new Victor(3);
 
 	public Shooter() {
 		
 	}
 	
-	public Shooter(Joystick controller){
+	public Shooter(Joystick controller, TalonSRX motor) {
+		Shooter.shootMotor = motor;
 		Shooter.controller = controller;
 	}
 	
