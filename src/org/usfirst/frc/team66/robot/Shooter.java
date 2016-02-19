@@ -18,7 +18,7 @@ public class Shooter {
 	}
 	
 	public void updateShooter() {
-		if (controller.getRawAxis(3) >= 0.9) {
+		if (controller.getRawAxis(2) >= 0.9) {
 			shootMotor.set(1.0);
 //			if (controller.getRawAxis(4) >= 0.9) {
 //				indexerMotor.set(1.0);
