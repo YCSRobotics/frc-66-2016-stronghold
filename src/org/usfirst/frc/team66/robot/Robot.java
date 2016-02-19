@@ -22,6 +22,7 @@ public class Robot extends IterativeRobot {
 	
 	private static Drivetrain DRIVETRAIN;
     private static Shooter SHOOTER;
+    private static Intake INTAKE;
 	
     /**
      * This function is run when the robot is first started up and should be
@@ -34,6 +35,7 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putData("Auto choices", chooser);
         DRIVETRAIN = new Drivetrain(Constants.DRIVE_CONTROLLER, Constants.LEFT_MOTOR, Constants.LEFT_MOTOR_SCALER, Constants.RIGHT_MOTOR, Constants.RIGHT_MOTOR_SCALER);
         SHOOTER = new Shooter(Constants.SHOOT_CONTROLLER, Constants.SHOOT_MOTOR);
+        INTAKE = new Intake(Constants.SHOOT_CONTROLLER, Constants.FEED_MOTOR, Constants.FEED_MOTOR_SCALER);
     }
     
 	/**
