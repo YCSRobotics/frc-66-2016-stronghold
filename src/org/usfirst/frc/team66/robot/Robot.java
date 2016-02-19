@@ -20,14 +20,9 @@ public class Robot extends IterativeRobot {
     String autoSelected;
     SendableChooser chooser;
 	
-    private static Joystick DRIVE_CONTROLLER = Constants.DRIVE_CONTROLLER;
-	
-	private static final Victor LEFT_MOTOR = Constants.LEFT_MOTOR;
-	private static final double LEFT_MOTOR_SCALER = Constants.LEFT_MOTOR_SCALER;
-	private static final Victor RIGHT_MOTOR = Constants.RIGHT_MOTOR;
-	private static final double RIGHT_MOTOR_SCALER = Constants.RIGHT_MOTOR_SCALER;
 	private static Drivetrain DRIVETRAIN;
-
+    private static Shooter SHOOTER;
+	
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -37,7 +32,8 @@ public class Robot extends IterativeRobot {
         chooser.addDefault("Default Auto", defaultAuto);
         chooser.addObject("My Auto", customAuto);
         SmartDashboard.putData("Auto choices", chooser);
-        DRIVETRAIN = new Drivetrain(DRIVE_CONTROLLER, LEFT_MOTOR, LEFT_MOTOR_SCALER, RIGHT_MOTOR, RIGHT_MOTOR_SCALER);
+        DRIVETRAIN = new Drivetrain(Constants.DRIVE_CONTROLLER, Constants.LEFT_MOTOR, Constants.LEFT_MOTOR_SCALER, Constants.RIGHT_MOTOR, Constants.RIGHT_MOTOR_SCALER);
+        SHOOTER = new Shooter(Constants.SHOOT_CONTROLLER, Constants.SHOOT_MOTOR);
     }
     
 	/**
@@ -74,8 +70,8 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-        Drivetrain.updateDrivetrain();
-        Shooter.updateShooter();
+        DRIVETRAIN.updateDrivetrain();
+        SHOOTER.updateShooter();
     }
     
     /**
