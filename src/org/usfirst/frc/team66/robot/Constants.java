@@ -23,7 +23,7 @@ public class Constants {
 	
 	// Intake Motor
 	
-	public static final Victor FEED_MOTOR = new Victor(4);
+	public static final Victor FEED_MOTOR = new Victor(3);
 	public static final double FEED_MOTOR_SCALER = -1.00;
 	
 	// Arm Motor
