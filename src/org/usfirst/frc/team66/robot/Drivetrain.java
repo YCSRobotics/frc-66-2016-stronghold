@@ -9,29 +9,55 @@ public class Drivetrain {
 	
 	private static Joystick controller = new Joystick(0);
 	
-	private static final Victor LEFT_MOTOR = new Victor(0);
-	private static final double LEFT_MOTOR_SCALER = -0.5;
-	private static final Victor RIGHT_MOTOR = new Victor(1);
-	private static final double RIGHT_MOTOR_SCALER = 0.5;
+	private static Victor LEFT_MOTOR;
+	private static double LEFT_MOTOR_SCALER;
+	private static Victor RIGHT_MOTOR;
+	private static double RIGHT_MOTOR_SCALER;
 	
-	static DrivetrainSide leftSide = new DrivetrainSide(LEFT_MOTOR, LEFT_MOTOR_SCALER);
-	static DrivetrainSide rightSide = new DrivetrainSide(RIGHT_MOTOR, RIGHT_MOTOR_SCALER);
+	private static DrivetrainSide LEFT_SIDE;
+	private static DrivetrainSide RIGHT_SIDE;
+	
 	
 	public Drivetrain() {
 		
 	}
 	
 	public Drivetrain(Joystick joy, Victor left, double leftScaler, Victor right, double rightScaler){
+		Drivetrain.controller = joy;
+		Drivetrain.LEFT_MOTOR = left;
+		Drivetrain.LEFT_MOTOR_SCALER = leftScaler;
+		Drivetrain.RIGHT_MOTOR = right;
+		Drivetrain.RIGHT_MOTOR_SCALER = rightScaler;
 		
+		LEFT_SIDE = new DrivetrainSide(LEFT_MOTOR, LEFT_MOTOR_SCALER);
+		RIGHT_SIDE = new DrivetrainSide(RIGHT_MOTOR, RIGHT_MOTOR_SCALER);
 	}
 	
 	public void updateDrivetrain() {
 		if(controller.getRawButton(5)) {
-			leftSide.set(controller.getRawAxis(1) * TURBO_SCALER);
-			rightSide.set(controller.getRawAxis(5) * TURBO_SCALER);
+			if (controller.getRawButton(6)) {
+				goStraight(TURBO_SCALER);
+			} else {
+				LEFT_SIDE.set(controller.getRawAxis(1) * TURBO_SCALER);
+				RIGHT_SIDE.set(controller.getRawAxis(5) * TURBO_SCALER);
+			}
 		} else {
-			leftSide.set(controller.getRawAxis(1));
-			rightSide.set(controller.getRawAxis(5));
+			if (controller.getRawButton(6)) {
+				goStraight(1.0);
+			} else {
+				LEFT_SIDE.set(controller.getRawAxis(1));
+				RIGHT_SIDE.set(controller.getRawAxis(5));
+			}
+		}
+	}
+	
+	private void goStraight(double SCALER) {
+		if (Math.abs(controller.getRawAxis(1)) >= Math.abs(controller.getRawAxis(5))) {
+			LEFT_SIDE.set(controller.getRawAxis(1) * SCALER);
+			RIGHT_SIDE.set(controller.getRawAxis(1) * SCALER);
+		} else {
+			LEFT_SIDE.set(controller.getRawAxis(5) * SCALER);
+			RIGHT_SIDE.set(controller.getRawAxis(5) * SCALER);
 		}
 	}
 }
