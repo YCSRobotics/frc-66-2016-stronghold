@@ -77,7 +77,7 @@ public class Robot extends IterativeRobot {
         DRIVETRAIN.updateDrivetrain();
         SHOOTER.updateShooter();
         INTAKE.updateIntake();
-	ARM.updateArm();
+        ARM.updateArm();
     }
     
     /**
