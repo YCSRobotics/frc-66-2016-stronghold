@@ -23,7 +23,8 @@ public class Robot extends IterativeRobot {
 	private static Drivetrain DRIVETRAIN;
     private static Shooter SHOOTER;
     private static Intake INTAKE;
-	
+	private static Arm ARM;
+    
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -36,6 +37,7 @@ public class Robot extends IterativeRobot {
         DRIVETRAIN = new Drivetrain(Constants.DRIVE_CONTROLLER, Constants.LEFT_MOTOR, Constants.LEFT_MOTOR_SCALER, Constants.RIGHT_MOTOR, Constants.RIGHT_MOTOR_SCALER);
         SHOOTER = new Shooter(Constants.SHOOT_CONTROLLER, Constants.SHOOT_MOTOR);
         INTAKE = new Intake(Constants.SHOOT_CONTROLLER, Constants.FEED_MOTOR, Constants.FEED_MOTOR_SCALER);
+        ARM = new Arm(Constants.SHOOT_CONTROLLER, Constants.ARM_MOTOR, Constants.ARM_MOTOR_SCALER);
     }
     
 	/**
@@ -74,6 +76,7 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
         DRIVETRAIN.updateDrivetrain();
         SHOOTER.updateShooter();
+        ARM.updateArm();
     }
     
     /**

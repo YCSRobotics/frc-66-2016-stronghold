@@ -21,9 +21,12 @@ public class Constants {
 	
 	public static final TalonSRX SHOOT_MOTOR = new TalonSRX(2);
 	
-	//  Intake Motor
+	// Intake Motor
 	
 	public static final Victor FEED_MOTOR = new Victor(4);
 	public static final double FEED_MOTOR_SCALER = -1.00;
 	
+	// Arm Motor
+	public static final TalonSRX ARM_MOTOR = new TalonSRX(4);
+	public static final double ARM_MOTOR_SCALER = 1.0;
 }
