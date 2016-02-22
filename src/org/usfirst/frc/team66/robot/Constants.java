@@ -1,6 +1,7 @@
 package org.usfirst.frc.team66.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.TalonSRX;
 import edu.wpi.first.wpilibj.Victor;
 
@@ -27,6 +28,6 @@ public class Constants {
 	public static final double FEED_MOTOR_SCALER = -1.00;
 	
 	// Arm Motor
-	public static final TalonSRX ARM_MOTOR = new TalonSRX(4);
+	public static final Talon ARM_MOTOR = new Talon(2);
 	public static final double ARM_MOTOR_SCALER = 1.0;
 }

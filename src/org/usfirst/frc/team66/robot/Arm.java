@@ -1,14 +1,14 @@
 package org.usfirst.frc.team66.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.TalonSRX;
+import edu.wpi.first.wpilibj.Talon;
 
 public class Arm {
-	public static TalonSRX ARM_MOTOR;
+	public static Talon ARM_MOTOR;
 	public static double ARM_MOTOR_SCALER;
 	private static Joystick CONTROLLER;
 	
-	public Arm(Joystick controller, TalonSRX ARM_MOTOR, double ARM_MOTOR_SCALER){
+	public Arm(Joystick controller, Talon ARM_MOTOR, double ARM_MOTOR_SCALER){
 		Arm.ARM_MOTOR = ARM_MOTOR;
 		Arm.ARM_MOTOR_SCALER = ARM_MOTOR_SCALER;
 		Arm.CONTROLLER = controller;
