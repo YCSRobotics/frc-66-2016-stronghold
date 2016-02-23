@@ -1,28 +1,40 @@
 package org.usfirst.frc.team66.robot;
 
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer.StaticInterface;
 import edu.wpi.first.wpilibj.Victor;
 
 public class Drivetrain {
-	private static double TURBO_SCALER = 2.0;
+	private static double TURBO_SCALER = (1 / Constants.RIGHT_MOTOR_SCALER);
 	
-	private static Joystick controller = new Joystick(0);
+	private static Joystick controller;
 	
-	private static final Victor LEFT_MOTOR = new Victor(0);
-	private static final double LEFT_MOTOR_SCALER = -0.5;
-	private static final Victor RIGHT_MOTOR = new Victor(1);
-	private static final double RIGHT_MOTOR_SCALER = 0.5;
+	private static Victor LEFT_MOTOR;
+	private static double LEFT_MOTOR_SCALER;
+	private static Victor RIGHT_MOTOR;
+	private static double RIGHT_MOTOR_SCALER;
 	
-	static DrivetrainSide leftSide = new DrivetrainSide(LEFT_MOTOR, LEFT_MOTOR_SCALER);
-	static DrivetrainSide rightSide = new DrivetrainSide(RIGHT_MOTOR, RIGHT_MOTOR_SCALER);
+	private static Encoder LEFT_ENCODER;
+	private static Encoder RIGHT_ENCODER;
 	
-	public Drivetrain() {
+	static DrivetrainSide leftSide;
+	static DrivetrainSide rightSide;
+	
+	public Drivetrain(Joystick joy, Victor left, double leftScaler, Victor right, double rightScaler, Encoder leftEncoder, Encoder rightEncoder){
+		Drivetrain.controller = joy;
 		
-	}
-	
-	public Drivetrain(Joystick joy, Victor left, double leftScaler, Victor right, double rightScaler){
+		Drivetrain.LEFT_MOTOR = left;
+		Drivetrain.LEFT_MOTOR_SCALER = leftScaler;
+		Drivetrain.RIGHT_MOTOR = right;
+		Drivetrain.RIGHT_MOTOR_SCALER = rightScaler;
 		
+		Drivetrain.LEFT_ENCODER = leftEncoder;
+		Drivetrain.RIGHT_ENCODER = rightEncoder;
+		
+		Drivetrain.leftSide = new DrivetrainSide(LEFT_MOTOR, LEFT_MOTOR_SCALER);
+		Drivetrain.rightSide = new DrivetrainSide(RIGHT_MOTOR, RIGHT_MOTOR_SCALER);
 	}
 	
 	public void updateDrivetrain() {
@@ -33,5 +45,8 @@ public class Drivetrain {
 			leftSide.set(controller.getRawAxis(1));
 			rightSide.set(controller.getRawAxis(5));
 		}
+		
+		SmartDashboard.putNumber("Left Encoder", LEFT_ENCODER.getDistance());
+		SmartDashboard.putNumber("Right Encoder", RIGHT_ENCODER.getDistance());
 	}
 }
