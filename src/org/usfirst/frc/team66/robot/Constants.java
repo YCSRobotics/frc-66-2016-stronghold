@@ -14,9 +14,9 @@ public class Constants {
 	// Drivetrain Motors
 	
 	public static final Victor LEFT_MOTOR = new Victor(0);
-	public static final double LEFT_MOTOR_SCALER = -0.5;
+	public static final double LEFT_MOTOR_SCALER = -0.65;
 	public static final Victor RIGHT_MOTOR = new Victor(1);
-	public static final double RIGHT_MOTOR_SCALER = 0.5;
+	public static final double RIGHT_MOTOR_SCALER = 0.65;
 	
 	// Shooter Motor
 	
