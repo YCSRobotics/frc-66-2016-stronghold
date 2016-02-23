@@ -1,10 +1,7 @@
 package org.usfirst.frc.team66.robot;
 
-<<<<<<< HEAD
 import edu.wpi.first.wpilibj.CANTalon;
-=======
 import edu.wpi.first.wpilibj.Encoder;
->>>>>>> Drivetrain
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TalonSRX;
 import edu.wpi.first.wpilibj.Victor;
