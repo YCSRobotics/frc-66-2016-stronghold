@@ -20,7 +20,7 @@ public class Robot extends IterativeRobot {
     String autoSelected;
     SendableChooser chooser;
 	
-	private static Drivetrain DRIVETRAIN;
+    private static Drivetrain DRIVETRAIN;
     private static Shooter SHOOTER;
     private static Intake INTAKE;
 	private static Arm ARM;
@@ -34,10 +34,10 @@ public class Robot extends IterativeRobot {
         chooser.addDefault("Default Auto", defaultAuto);
         chooser.addObject("My Auto", customAuto);
         SmartDashboard.putData("Auto choices", chooser);
-        DRIVETRAIN = new Drivetrain(Constants.DRIVE_CONTROLLER, Constants.LEFT_MOTOR, Constants.LEFT_MOTOR_SCALER, Constants.RIGHT_MOTOR, Constants.RIGHT_MOTOR_SCALER);
         SHOOTER = new Shooter(Constants.SHOOT_CONTROLLER, Constants.SHOOT_MOTOR);
         INTAKE = new Intake(Constants.SHOOT_CONTROLLER, Constants.FEED_MOTOR, Constants.FEED_MOTOR_SCALER);
         ARM = new Arm(Constants.SHOOT_CONTROLLER, Constants.ARM_MOTOR, Constants.ARM_MOTOR_SCALER);
+        DRIVETRAIN = new Drivetrain(Constants.DRIVE_CONTROLLER, Constants.LEFT_MOTOR, Constants.LEFT_MOTOR_SCALER, Constants.RIGHT_MOTOR, Constants.RIGHT_MOTOR_SCALER, Constants.LEFT_ENCODER, Constants.RIGHT_ENCODER);
     }
     
 	/**
