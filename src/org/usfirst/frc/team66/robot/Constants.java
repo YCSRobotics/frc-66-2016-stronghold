@@ -29,5 +29,5 @@ public class Constants {
 	
 	// Arm Motor
 	public static final Talon ARM_MOTOR = new Talon(2);
-	public static final double ARM_MOTOR_SCALER = 1.0;
+	public static final double ARM_MOTOR_SCALER = 0.4;
 }
