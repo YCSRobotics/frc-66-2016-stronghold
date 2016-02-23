@@ -12,12 +12,12 @@ public class Shooter {
 		Shooter.shootMotor = motor;
 		Shooter.controller = controller;
 		
-		shootMotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative);
-    	shootMotor.configEncoderCodesPerRev(Constants.SHOOT_ENCODER_COUNTS_PER_REV);
+		//shootMotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative);
+    	//shootMotor.configEncoderCodesPerRev(Constants.SHOOT_ENCODER_COUNTS_PER_REV);
     	shootMotor.changeControlMode(CANTalon.TalonControlMode.Speed);
     	shootMotor.configNominalOutputVoltage(-Constants.SHOOT_NOMINAL_VOLTAGE, Constants.SHOOT_NOMINAL_VOLTAGE);
     	shootMotor.configPeakOutputVoltage(-Constants.SHOOT_PEAK_VOLTAGE, Constants.SHOOT_PEAK_VOLTAGE);
-    	shootMotor.setPID(Constants.SHOOT_PID_P, Constants.SHOOT_PID_I, Constants.SHOOT_PID_D);
+    	//shootMotor.setPID(Constants.SHOOT_PID_P, Constants.SHOOT_PID_I, Constants.SHOOT_PID_D);
 	}
 	
 	public void updateShooter() {
