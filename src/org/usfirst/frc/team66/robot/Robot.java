@@ -36,7 +36,7 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putData("Auto choices", chooser);
         SHOOTER = new Shooter(Constants.SHOOT_CONTROLLER, Constants.SHOOT_MOTOR);
         INTAKE = new Intake(Constants.SHOOT_CONTROLLER, Constants.FEED_MOTOR, Constants.FEED_MOTOR_SCALER);
-        ARM = new Arm(Constants.SHOOT_CONTROLLER, Constants.ARM_MOTOR, Constants.ARM_MOTOR_SCALER);
+        ARM = new Arm(Constants.SHOOT_CONTROLLER, Constants.ARM_MOTOR, Constants.ARM_MOTOR_SCALER_UP);
         DRIVETRAIN = new Drivetrain(Constants.DRIVE_CONTROLLER, Constants.LEFT_MOTOR, Constants.LEFT_MOTOR_SCALER, Constants.RIGHT_MOTOR, Constants.RIGHT_MOTOR_SCALER, Constants.LEFT_ENCODER, Constants.RIGHT_ENCODER);
     }
     

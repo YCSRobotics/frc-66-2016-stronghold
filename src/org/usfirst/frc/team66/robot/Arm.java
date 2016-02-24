@@ -18,13 +18,15 @@ public class Arm {
 		double speed = CONTROLLER.getRawAxis(5);
 		
 		if (speed >= 0) {
-			speed = speed * speed;
+			speed = - (speed * speed) * Constants.ARM_MOTOR_SCALER_UP;
 		} else {
-			speed = - (speed * speed);
+			speed = (speed * speed) * Constants.ARM_MOTOR_SCALER_DOWN;
 		}
 		
 		if (Math.abs(speed) >= 0.1) {
-			ARM_MOTOR.set(speed * ARM_MOTOR_SCALER);
+			ARM_MOTOR.set(speed);
+		} else {
+			ARM_MOTOR.set(0);
 		}
 	}
 	

@@ -39,14 +39,32 @@ public class Drivetrain {
 	
 	public void updateDrivetrain() {
 		if(controller.getRawButton(5)) {
-			leftSide.set(controller.getRawAxis(1) * TURBO_SCALER);
-			rightSide.set(controller.getRawAxis(5) * TURBO_SCALER);
+			if (controller.getRawButton(6)) {
+				goStraight(TURBO_SCALER);
+			} else {
+				leftSide.set(controller.getRawAxis(1) * TURBO_SCALER);
+				rightSide.set(controller.getRawAxis(5) * TURBO_SCALER);
+			}
 		} else {
-			leftSide.set(controller.getRawAxis(1));
-			rightSide.set(controller.getRawAxis(5));
+			if (controller.getRawButton(6)) {
+				goStraight(1.0);
+			} else {
+				leftSide.set(controller.getRawAxis(1));
+				rightSide.set(controller.getRawAxis(5));
+			}
 		}
 		
 		SmartDashboard.putNumber("Left Encoder", LEFT_ENCODER.getDistance());
 		SmartDashboard.putNumber("Right Encoder", RIGHT_ENCODER.getDistance());
+	}
+	
+	private void goStraight(double SCALER) {
+		if (Math.abs(controller.getRawAxis(1)) >= Math.abs(controller.getRawAxis(5))) {
+			leftSide.set(controller.getRawAxis(1) * SCALER);
+			rightSide.set(controller.getRawAxis(1) * SCALER);
+		} else {
+			leftSide.set(controller.getRawAxis(1));
+			rightSide.set(controller.getRawAxis(5));
+		}
 	}
 }

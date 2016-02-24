@@ -20,8 +20,8 @@ public class Constants {
 	public static final Victor RIGHT_MOTOR = new Victor(1);
 	public static final double RIGHT_MOTOR_SCALER = 0.65;
 
-	public static final Encoder LEFT_ENCODER = new Encoder(0, 0, false);
-	public static final Encoder RIGHT_ENCODER = new Encoder(1, 1, true);
+	public static final Encoder LEFT_ENCODER = new Encoder(0, 1, false);
+	public static final Encoder RIGHT_ENCODER = new Encoder(2, 3, true);
 	
 	// Shooter Motor
 	
@@ -35,11 +35,12 @@ public class Constants {
 	
 	// Intake Motor
 	
-	public static final Victor FEED_MOTOR = new Victor(3);
+	public static final Talon FEED_MOTOR = new Talon(3);
 	public static final double FEED_MOTOR_SCALER = -1.00;
 	
 	// Arm Motor
 
 	public static final Talon ARM_MOTOR = new Talon(2);
-	public static final double ARM_MOTOR_SCALER = 0.4;
+	public static final double ARM_MOTOR_SCALER_UP = 0.2;
+	public static final double ARM_MOTOR_SCALER_DOWN = 0.1;
 }
