@@ -3,7 +3,6 @@ package org.usfirst.frc.team66.robot;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Timer.StaticInterface;
 import edu.wpi.first.wpilibj.Victor;
 
 public class Drivetrain {
@@ -22,16 +21,16 @@ public class Drivetrain {
 	static DrivetrainSide leftSide;
 	static DrivetrainSide rightSide;
 	
-	public Drivetrain(Joystick joy, Victor left, double leftScaler, Victor right, double rightScaler, Encoder leftEncoder, Encoder rightEncoder){
-		Drivetrain.controller = joy;
+	public Drivetrain() {
+		Drivetrain.controller = Constants.DRIVE_CONTROLLER;
 		
-		Drivetrain.LEFT_MOTOR = left;
-		Drivetrain.LEFT_MOTOR_SCALER = leftScaler;
-		Drivetrain.RIGHT_MOTOR = right;
-		Drivetrain.RIGHT_MOTOR_SCALER = rightScaler;
+		Drivetrain.LEFT_MOTOR = Constants.LEFT_MOTOR;
+		Drivetrain.LEFT_MOTOR_SCALER = Constants.LEFT_MOTOR_SCALER;
+		Drivetrain.RIGHT_MOTOR = Constants.RIGHT_MOTOR;
+		Drivetrain.RIGHT_MOTOR_SCALER = Constants.RIGHT_MOTOR_SCALER;
 		
-		Drivetrain.LEFT_ENCODER = leftEncoder;
-		Drivetrain.RIGHT_ENCODER = rightEncoder;
+		Drivetrain.LEFT_ENCODER = Constants.LEFT_ENCODER;
+		Drivetrain.RIGHT_ENCODER = Constants.RIGHT_ENCODER;
 		
 		Drivetrain.leftSide = new DrivetrainSide(LEFT_MOTOR, LEFT_MOTOR_SCALER);
 		Drivetrain.rightSide = new DrivetrainSide(RIGHT_MOTOR, RIGHT_MOTOR_SCALER);
