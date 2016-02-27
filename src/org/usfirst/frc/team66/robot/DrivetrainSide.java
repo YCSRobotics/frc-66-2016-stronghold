@@ -7,10 +7,6 @@ public class DrivetrainSide {
 	private Victor motor;
 	private double motorScaler;
 	
-	public DrivetrainSide() {
-		
-	}
-	
 	public DrivetrainSide(Victor motor, double motorScaler) {
 		this.motor = motor;
 		this.motorScaler = motorScaler;

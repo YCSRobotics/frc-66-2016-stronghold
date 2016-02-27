@@ -8,10 +8,10 @@ public class Arm {
 	public static double ARM_MOTOR_SCALER;
 	private static Joystick CONTROLLER;
 	
-	public Arm(Joystick controller, Talon ARM_MOTOR, double ARM_MOTOR_SCALER){
-		Arm.ARM_MOTOR = ARM_MOTOR;
-		Arm.ARM_MOTOR_SCALER = ARM_MOTOR_SCALER;
-		Arm.CONTROLLER = controller;
+	public Arm() {
+		Arm.ARM_MOTOR = Constants.ARM_MOTOR;
+		Arm.ARM_MOTOR_SCALER = Constants.ARM_MOTOR_SCALER_DOWN;
+		Arm.CONTROLLER = Constants.SHOOT_CONTROLLER;
 	}
 	
 	public void updateArm() {
