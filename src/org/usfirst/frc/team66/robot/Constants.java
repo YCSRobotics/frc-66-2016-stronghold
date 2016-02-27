@@ -30,13 +30,11 @@ public class Constants {
 	
 	public static final CANTalon SHOOT_MOTOR = new CANTalon(0);
 	public static final int SHOOT_ENCODER_COUNTS_PER_REV = 1024; // Need to change
-	public static final double SHOOT_PID_P = 0.125; // Need to change
+	public static final double SHOOT_PID_P = 0; // Need to change
 	public static final double SHOOT_PID_I = 0; // Need to change
 	public static final double SHOOT_PID_D = 0; // Need to change
-	public static final double SHOOT_PID_F = 0; // Need to change
-	public static final int SHOOT_PID_IZONE = 0; // Disabled at 0
-	public static final double SHOOT_PID_CLOSE_LOOP_RAMP_RATE = 0; // Disabled at 0
-	public static final int SHOOT_PID_PROFILE = 0;
+	public static final double SHOOT_PID_F = 0.1; // Need to change
+	public static final int SHOOT_PID_PROFILE = 0; // Uses in-code PID, not WebUI
 	public static final double SHOOT_PEAK_VOLTAGE = 12; // Need to change
 	public static final double SHOOT_NOMINAL_VOLTAGE = 0; // Need to change	
 	
