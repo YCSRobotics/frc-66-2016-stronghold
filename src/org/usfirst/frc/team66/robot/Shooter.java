@@ -27,6 +27,7 @@ public class Shooter {
 	
 	public void updateShooter() {
 		speed = Constants.DASHBOARD_VALUES.getDouble("Shoot Motor RPM", 5340);
+		
 		if (controller.getRawAxis(2) >= 0.9) {
 			shootMotor.changeControlMode(CANTalon.TalonControlMode.Speed);
 			shootMotor.set(speed);
@@ -35,6 +36,9 @@ public class Shooter {
 			shootMotor.set(0.0);
 		}
 		
-		SmartDashboard.putNumber("Shooter Encoder Velocity: ", shootMotor.getEncVelocity());
+		//SmartDashboard.putNumber("Shooter Encoder Velocity: ", shootMotor.getEncVelocity());
+		SmartDashboard.putNumber("Shooter Encoder Velocity: ", shootMotor.getSpeed());
+		SmartDashboard.putNumber("Shooter Motor Output", shootMotor.getOutputVoltage()/shootMotor.getBusVoltage());
+		SmartDashboard.putNumber("Shooter Error", shootMotor.getError());
 	}
 }

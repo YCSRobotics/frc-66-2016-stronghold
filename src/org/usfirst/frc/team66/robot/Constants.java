@@ -30,10 +30,20 @@ public class Constants {
 	
 	public static final CANTalon SHOOT_MOTOR = new CANTalon(0);
 	public static final int SHOOT_ENCODER_COUNTS_PER_REV = 1024; // Need to change
-	public static final double SHOOT_PID_P = 0; // Need to change
+	
+	/******************************************************************************
+	 * Calculate F term (from CTRE user manual)
+	 * 5080 RPM at 100% output (determined empirically)
+	 * 4096 native units per rev (4 pulses/cycle * 1024 cycles/rev = 4096)
+	 * 5080 rev/min x 1 min/60 sec x 1 sec/10 Tvelmeas x 4096 native units/rev = 34979
+	 * F=(100%*1023)/34679 = 0.0295
+	 *******************************************************************************/
+	public static final double SHOOT_PID_F = 0.03;
+	
+	public static final double SHOOT_PID_P = 0.125; // Need to change
 	public static final double SHOOT_PID_I = 0; // Need to change
 	public static final double SHOOT_PID_D = 0; // Need to change
-	public static final double SHOOT_PID_F = 0.1; // Need to change
+	
 	public static final int SHOOT_PID_PROFILE = 0; // Uses in-code PID, not WebUI
 	public static final double SHOOT_PEAK_VOLTAGE = 12; // Need to change
 	public static final double SHOOT_NOMINAL_VOLTAGE = 0; // Need to change	
