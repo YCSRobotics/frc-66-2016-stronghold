@@ -2,7 +2,6 @@ package org.usfirst.frc.team66.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -19,7 +18,7 @@ public class Robot extends IterativeRobot {
     final String defaultAuto = "Default";
     final String customAuto = "My Auto";
     String autoSelected;
-    //SendableChooser chooser;
+    SendableChooser chooser;
 	
     private static Drivetrain DRIVETRAIN;
     private static Shooter SHOOTER;
@@ -31,14 +30,14 @@ public class Robot extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
-        //chooser = new SendableChooser();
-        //chooser.addDefault("Default Auto", defaultAuto);
-        //chooser.addObject("My Auto", customAuto);
-        //SmartDashboard.putData("Auto choices", chooser);
-        SHOOTER = new Shooter();
-        INTAKE = new Intake();
-        ARM = new Arm();
-        DRIVETRAIN = new Drivetrain();
+        chooser = new SendableChooser();
+        chooser.addDefault("Default Auto", defaultAuto);
+        chooser.addObject("My Auto", customAuto);
+        SmartDashboard.putData("Auto choices", chooser);
+        SHOOTER = new Shooter(Constants.SHOOT_CONTROLLER, Constants.SHOOT_MOTOR);
+        INTAKE = new Intake(Constants.SHOOT_CONTROLLER, Constants.FEED_MOTOR, Constants.FEED_MOTOR_SCALER);
+        ARM = new Arm(Constants.SHOOT_CONTROLLER, Constants.ARM_MOTOR, Constants.ARM_MOTOR_SCALER_UP);
+        DRIVETRAIN = new Drivetrain(Constants.DRIVE_CONTROLLER, Constants.LEFT_MOTOR, Constants.LEFT_MOTOR_SCALER, Constants.RIGHT_MOTOR, Constants.RIGHT_MOTOR_SCALER, Constants.LEFT_ENCODER, Constants.RIGHT_ENCODER);
     }
     
 	/**
@@ -51,9 +50,9 @@ public class Robot extends IterativeRobot {
 	 * If using the SendableChooser make sure to add them to the chooser code above as well.
 	 */
     public void autonomousInit() {
-    	//autoSelected = (String) chooser.getSelected();
+    	autoSelected = (String) chooser.getSelected();
 //		autoSelected = SmartDashboard.getString("Auto Selector", defaultAuto);
-		//System.out.println("Auto selected: " + autoSelected);
+		System.out.println("Auto selected: " + autoSelected);
     }
 
     /**
