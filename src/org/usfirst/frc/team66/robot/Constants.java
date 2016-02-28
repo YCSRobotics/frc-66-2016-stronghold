@@ -38,9 +38,11 @@ public class Constants {
 	 * 5080 rev/min x 1 min/60 sec x 1 sec/10 Tvelmeas x 4096 native units/rev = 34979
 	 * F=(100%*1023)/34679 = 0.0295
 	 *******************************************************************************/
-	public static final double SHOOT_PID_F = 0.03;
+	public static final double SHOOT_PID_F = 0.025;
 	
-	public static final double SHOOT_PID_P = 0.125; // Need to change
+	//public static final double SHOOT_PID_P = 0.125; // Need to change
+	public static final double SHOOT_PID_P = 0.114;
+	
 	public static final double SHOOT_PID_I = 0; // Need to change
 	public static final double SHOOT_PID_D = 0; // Need to change
 	
