@@ -1,21 +1,32 @@
 package org.usfirst.frc.team66.robot;
 
+import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Talon;
 
 public class Arm {
-	public static Talon ARM_MOTOR;
+	public static CANTalon masterMotor;
+	public static CANTalon slaveMotor;
+	private static Joystick controller;
+	
 	public static double ARM_MOTOR_SCALER;
-	private static Joystick CONTROLLER;
 	
 	public Arm() {
-		Arm.ARM_MOTOR = Constants.ARM_MOTOR;
+		Arm.masterMotor = Constants.ARM_MOTOR_MASTER;
+		Arm.slaveMotor = Constants.ARM_MOTOR_SLAVE;
+		Arm.controller = Constants.SHOOT_CONTROLLER;
+		
 		Arm.ARM_MOTOR_SCALER = Constants.ARM_MOTOR_SCALER_DOWN;
-		Arm.CONTROLLER = Constants.SHOOT_CONTROLLER;
+		
+		masterMotor.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
+		slaveMotor.changeControlMode(CANTalon.TalonControlMode.Follower);
+		slaveMotor.set(masterMotor.getDeviceID());
+		slaveMotor.reverseOutput(true);
+		
 	}
 	
 	public void updateArm() {
-		double speed = CONTROLLER.getRawAxis(5);
+		double speed = controller.getRawAxis(5);
 		
 		if (speed >= 0) {
 			speed = - (speed * speed) * Constants.ARM_MOTOR_SCALER_UP;
@@ -24,9 +35,9 @@ public class Arm {
 		}
 		
 		if (Math.abs(speed) >= 0.1) {
-			ARM_MOTOR.set(speed);
+			masterMotor.set(speed);
 		} else {
-			ARM_MOTOR.set(0);
+			masterMotor.set(0);
 		}
 	}
 	

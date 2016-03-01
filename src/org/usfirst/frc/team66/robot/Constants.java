@@ -57,7 +57,10 @@ public class Constants {
 	
 	// Arm Motor
 
-	public static final Talon ARM_MOTOR = new Talon(2);
+	//public static final Talon ARM_MOTOR = new Talon(2);
+	public static final CANTalon ARM_MOTOR_MASTER = new CANTalon(1);
+	public static final CANTalon ARM_MOTOR_SLAVE = new CANTalon(2);
+	
 	public static final double ARM_MOTOR_SCALER_UP = 0.2;
 	public static final double ARM_MOTOR_SCALER_DOWN = 0.1;
 }
