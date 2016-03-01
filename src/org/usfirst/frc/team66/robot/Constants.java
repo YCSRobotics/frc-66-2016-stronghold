@@ -61,6 +61,8 @@ public class Constants {
 	public static final CANTalon ARM_MOTOR_MASTER = new CANTalon(1);
 	public static final CANTalon ARM_MOTOR_SLAVE = new CANTalon(2);
 	
+	public static final double ARM_CONTROLLER_UPPER_DEADZONE = 0.1;
+	public static final double ARM_CONTROLLER_LOWER_DEADZONE =-0.1;
 	public static final double ARM_MOTOR_SCALER_UP = 0.2;
 	public static final double ARM_MOTOR_SCALER_DOWN = 0.1;
 }
