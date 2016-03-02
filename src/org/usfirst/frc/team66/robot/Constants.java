@@ -63,6 +63,11 @@ public class Constants {
 	
 	public static final double ARM_CONTROLLER_UPPER_DEADZONE = 0.1;
 	public static final double ARM_CONTROLLER_LOWER_DEADZONE =-0.1;
-	public static final double ARM_MOTOR_SCALER_UP = 0.2;
-	public static final double ARM_MOTOR_SCALER_DOWN = 0.1;
+	public static final double ARM_MOTOR_SCALER_UP = 0.3;
+	public static final double ARM_MOTOR_SCALER_DOWN = 0.3;
+	
+	public static final double ARM_PID_P = 0.1;
+	public static final double ARM_PID_I = 0;
+	public static final double ARM_PID_D = 0;
+	
 }

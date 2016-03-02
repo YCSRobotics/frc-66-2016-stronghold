@@ -3,6 +3,7 @@ package org.usfirst.frc.team66.robot;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Arm {
 	public static CANTalon masterMotor;
@@ -28,12 +29,18 @@ public class Arm {
 		//Configure Slave Motor to mirror Master Motor output
 		slaveMotor.changeControlMode(CANTalon.TalonControlMode.Follower);
 		slaveMotor.set(masterMotor.getDeviceID());
-		slaveMotor.reverseOutput(true);		
+		slaveMotor.reverseOutput(true);	
+		
+		//Configure Master Motor PID parameters.
+		masterMotor.setP(Constants.ARM_PID_P);
+		masterMotor.setI(Constants.ARM_PID_I);
+		masterMotor.setD(Constants.ARM_PID_D);
 	}
 	
 	public void zeroSensor(){
 		//Closed loop control based on relative position sensor, start at zero
 		masterMotor.setPosition(0);
+		isSensorZeroed = true;
 		targetPosition = 0;
 	}
 	
@@ -46,19 +53,23 @@ public class Arm {
 	public void updateArm() {
 		double speed = controller.getRawAxis(5);
 		
+		SmartDashboard.putNumber("Arm Relative Position", masterMotor.getPosition());
+		SmartDashboard.putNumber("Target Arm Position", targetPosition);
+		SmartDashboard.putBoolean("Holding Position", isHoldingPosition);
+		
 		//Handle manual operation of the arm
 		if (speed >= Constants.ARM_CONTROLLER_UPPER_DEADZONE){
 			//Operator requesting manual movement of the arm, disable closed-loop control
 			masterMotor.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
 			isHoldingPosition = false;
 			//speed = - (speed * speed) * Constants.ARM_MOTOR_SCALER_UP;
-			masterMotor.set(-speed * Constants.ARM_MOTOR_SCALER_UP);
+			masterMotor.set(-(speed*speed) * Constants.ARM_MOTOR_SCALER_UP);
 		}
 		else if (speed <= Constants.ARM_CONTROLLER_LOWER_DEADZONE){
 			masterMotor.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
 			isHoldingPosition = false;
 			//speed = (speed * speed) * Constants.ARM_MOTOR_SCALER_DOWN;
-			masterMotor.set(speed * Constants.ARM_MOTOR_SCALER_DOWN);
+			masterMotor.set((speed*speed) * Constants.ARM_MOTOR_SCALER_DOWN);
 		}
 		else {
 			//No throttle input

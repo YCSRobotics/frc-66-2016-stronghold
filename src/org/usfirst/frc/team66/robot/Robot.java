@@ -39,6 +39,9 @@ public class Robot extends IterativeRobot {
         INTAKE = new Intake();
         ARM = new Arm();
         DRIVETRAIN = new Drivetrain();
+        
+        //TODO: Need to tie this to the limit switches, for now zero sensor on init
+        ARM.zeroSensor();
     }
     
 	/**
@@ -71,11 +74,16 @@ public class Robot extends IterativeRobot {
     	}
     }
 
+    public void teleopInit(){
+    	//TODO: Need to tie this to the limit switches, for now zero sensor on init
+        ARM.zeroSensor();
+    }
     /**
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-        DRIVETRAIN.updateDrivetrain();
+        
+    	DRIVETRAIN.updateDrivetrain();
         SHOOTER.updateShooter();
         INTAKE.updateIntake();
         ARM.updateArm();
