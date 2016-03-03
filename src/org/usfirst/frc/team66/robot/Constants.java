@@ -1,5 +1,6 @@
 package org.usfirst.frc.team66.robot;
 
+import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
@@ -25,6 +26,10 @@ public class Constants {
 
 	public static final Encoder LEFT_ENCODER = new Encoder(0, 1, false);
 	public static final Encoder RIGHT_ENCODER = new Encoder(2, 3, true);
+	public static final AnalogGyro GYRO = new AnalogGyro(0);
+	
+	public static final double SKIM_GAIN  = 1.0;
+    public static final double TURN_GAIN  = 1.5;
 	
 	// Shooter Motor
 	
@@ -64,7 +69,7 @@ public class Constants {
 	public static final double ARM_CONTROLLER_UPPER_DEADZONE = 0.1;
 	public static final double ARM_CONTROLLER_LOWER_DEADZONE =-0.1;
 	public static final double ARM_MOTOR_SCALER_UP = 0.3;
-	public static final double ARM_MOTOR_SCALER_DOWN = 0.3;
+	public static final double ARM_MOTOR_SCALER_DOWN = 0.1;
 	
 	public static final double ARM_PID_P = 0.1;
 	public static final double ARM_PID_I = 0;
