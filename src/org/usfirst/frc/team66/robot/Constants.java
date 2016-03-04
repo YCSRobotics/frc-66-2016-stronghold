@@ -71,8 +71,12 @@ public class Constants {
 	public static final double ARM_MOTOR_SCALER_UP = 0.3;
 	public static final double ARM_MOTOR_SCALER_DOWN = 0.1;
 	
-	public static final double ARM_PID_P = 0.1;
+	public static final double ARM_PID_P = 0.25;
 	public static final double ARM_PID_I = 0;
-	public static final double ARM_PID_D = 0;
+	public static final double ARM_PID_D = 0.002;
+	
+	public static final double ARM_LOAD_POSITION = 0.62;
+	public static final double ARM_SHOOT_POSITION =0.5;
+	public static final double ARM_UNLOAD_POSITION = 0.2;
 	
 }

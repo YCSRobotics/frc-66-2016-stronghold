@@ -90,6 +90,7 @@ public class Drivetrain {
 		SmartDashboard.putNumber("Right Motor Output", RIGHT_MOTOR.getSpeed());
 		SmartDashboard.putNumber("Left Motor Output", LEFT_MOTOR.getSpeed());
 		SmartDashboard.putNumber("Gyro Angle", GYRO.getAngle());
+		SmartDashboard.putNumber("Gyro Rate", GYRO.getRate());
 	}
 	
     public void setTargetSpeeds(double fwdThrottle, double turnRate)

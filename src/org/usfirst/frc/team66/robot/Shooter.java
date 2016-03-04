@@ -31,7 +31,12 @@ public class Shooter {
 		if (controller.getRawAxis(2) >= 0.9) {
 			shootMotor.changeControlMode(CANTalon.TalonControlMode.Speed);
 			shootMotor.set(speed);
-		} else {
+		} 
+		else if (controller.getRawButton(1)){
+			shootMotor.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
+			shootMotor.set(-1.0);
+		}
+		else {
 			shootMotor.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
 			shootMotor.set(0.0);
 		}
