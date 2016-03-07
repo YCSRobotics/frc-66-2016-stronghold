@@ -20,16 +20,25 @@ public class Constants {
 	// Drivetrain Motors
 	
 	public static final Victor LEFT_MOTOR = new Victor(0);
-	public static final double LEFT_MOTOR_SCALER = -0.65;
+	public static final double LEFT_MOTOR_SCALER = -1.0;
 	public static final Victor RIGHT_MOTOR = new Victor(1);
-	public static final double RIGHT_MOTOR_SCALER = 0.65;
+	public static final double RIGHT_MOTOR_SCALER = 1.0;
 
 	public static final Encoder LEFT_ENCODER = new Encoder(0, 1, false);
 	public static final Encoder RIGHT_ENCODER = new Encoder(2, 3, true);
+	public static final double  ENCODER_DISTANCE_PER_COUNT = 0.0698;//2*4in*pi = 25.133 in/360 =.0698in
 	public static final AnalogGyro GYRO = new AnalogGyro(0);
 	
 	public static final double SKIM_GAIN  = 1.0;
-    public static final double TURN_GAIN  = 1.5;
+    public static final double TURN_GAIN  = 0.5;
+    public static final double AUTON_TURN_GAIN = .01;
+    public static final double AUTON_MIN_TURN_RATE = 0.7;
+    
+    public static final double TURBO_SCALER = 1.0;
+    public static final double FINESSE_SCALER = 0.65;
+    
+    public static final double TARGET_DISTANCE_THRESHOLD = 4.0;
+    public static final double TARGET_ANGLE_THRESHOLD = 5.0;
 	
 	// Shooter Motor
 	
@@ -66,17 +75,21 @@ public class Constants {
 	public static final CANTalon ARM_MOTOR_MASTER = new CANTalon(1);
 	public static final CANTalon ARM_MOTOR_SLAVE = new CANTalon(2);
 	
-	public static final double ARM_CONTROLLER_UPPER_DEADZONE = 0.1;
-	public static final double ARM_CONTROLLER_LOWER_DEADZONE =-0.1;
+	public static final double ARM_CONTROLLER_UPPER_DEADZONE = 0.15;
+	public static final double ARM_CONTROLLER_LOWER_DEADZONE =-0.15;
 	public static final double ARM_MOTOR_SCALER_UP = 0.3;
-	public static final double ARM_MOTOR_SCALER_DOWN = 0.1;
+	public static final double ARM_MOTOR_SCALER_DOWN = 0.2;
 	
-	public static final double ARM_PID_P = 0.25;
+	public static final int    ARM_PID_PROFILE = 1;
+	public static final double ARM_PID_P = 0.125;
 	public static final double ARM_PID_I = 0;
-	public static final double ARM_PID_D = 0.002;
+	public static final double ARM_PID_D = 0;
+	public static final double ARM_PID_F = 0;
 	
-	public static final double ARM_LOAD_POSITION = 0.62;
+	public static final double ARM_LOAD_POSITION = 0.65;
 	public static final double ARM_SHOOT_POSITION =0.5;
 	public static final double ARM_UNLOAD_POSITION = 0.2;
+	
+	public static final double ARM_ERROR_THRESHOLD = 250;
 	
 }

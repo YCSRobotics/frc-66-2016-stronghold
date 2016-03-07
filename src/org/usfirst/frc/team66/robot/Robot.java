@@ -21,10 +21,11 @@ public class Robot extends IterativeRobot {
     String autoSelected;
     //SendableChooser chooser;
 	
-    private static Drivetrain DRIVETRAIN;
-    private static Shooter SHOOTER;
-    private static Intake INTAKE;
-	private static Arm ARM;
+    public static Autonomous AUTONOMOUS;
+    public static Drivetrain DRIVETRAIN;
+    public static Shooter SHOOTER;
+    public static Intake INTAKE;
+	public static Arm ARM;
     
     /**
      * This function is run when the robot is first started up and should be
@@ -39,6 +40,7 @@ public class Robot extends IterativeRobot {
         INTAKE = new Intake();
         ARM = new Arm();
         DRIVETRAIN = new Drivetrain();
+        AUTONOMOUS = new Autonomous();
         
         //TODO: Need to tie this to the limit switches, for now zero sensor on init
         ARM.zeroSensor();
@@ -57,13 +59,16 @@ public class Robot extends IterativeRobot {
     	//autoSelected = (String) chooser.getSelected();
 //		autoSelected = SmartDashboard.getString("Auto Selector", defaultAuto);
 		//System.out.println("Auto selected: " + autoSelected);
+    	
+    	//AUTONOMOUS.setAutonomousMode(AUTONOMOUS.AUTON_MODE_LOW_BAR);
+    	AUTONOMOUS.setAutonomousMode(AUTONOMOUS.AUTON_MODE_DO_NOTHING);
     }
 
     /**
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
-    	switch(autoSelected) {
+    	/*switch(autoSelected) {
     	case customAuto:
         //Put custom auto code here   
             break;
@@ -71,22 +76,25 @@ public class Robot extends IterativeRobot {
     	default:
     	//Put default auto code here
             break;
-    	}
+    	}*/
+    	AUTONOMOUS.updateAutonomous();
+    	DRIVETRAIN.updateDrivetrainAuton();
+    	ARM.updateArmAuton();
     }
 
     public void teleopInit(){
     	//TODO: Need to tie this to the limit switches, for now zero sensor on init
-        ARM.zeroSensor();
+        //ARM.zeroSensor();
     }
     /**
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
         
-    	DRIVETRAIN.updateDrivetrain();
+    	DRIVETRAIN.updateDrivetrainTeleop();
         SHOOTER.updateShooter();
         INTAKE.updateIntake();
-        ARM.updateArm();
+        ARM.updateArmTeleop();
     }
     
     /**

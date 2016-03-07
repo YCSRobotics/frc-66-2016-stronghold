@@ -20,7 +20,7 @@ public class Intake {
 	public void updateIntake() {
 		double speed = 0.0;
 		
-		if ((!driveController.getRawButton(6)) &&
+		if ((!(driveController.getRawAxis(3)>= 0.9)) &&
 			(shootController.getRawAxis(2) >= 0.9)) {
 			speed = Constants.DASHBOARD_VALUES.getDouble("Intake while shooting speed", 1.0);
 		} 
@@ -28,12 +28,10 @@ public class Intake {
 			speed = Constants.DASHBOARD_VALUES.getDouble("Intake while not shooting speed", 1.0);
 		}
 		
-		if (driveController.getRawButton(6)){
+		if ((driveController.getRawAxis(3)>= 0.9) || 
+			(shootController.getRawAxis(3) >= 0.9)){
 			FEED_MOTOR.set(speed);
 		}
-		else if (shootController.getRawAxis(3) >= 0.9) {
-			FEED_MOTOR.set(speed);
-		} 
 		else if (shootController.getRawButton(1)) {
 			FEED_MOTOR.set(-speed);
 		} 
