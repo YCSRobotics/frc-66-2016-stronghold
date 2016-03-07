@@ -8,6 +8,7 @@ public class Shooter {
 	static Joystick controller;
 	static CANTalon shootMotor;
 	static double speed;
+	static boolean isShooting = false, isReleased = true;
 	
 	public Shooter() {
 		Shooter.shootMotor = Constants.SHOOT_MOTOR;
@@ -29,21 +30,41 @@ public class Shooter {
 		speed = Constants.DASHBOARD_VALUES.getDouble("Shoot Motor RPM", 5340);
 		
 		if (controller.getRawAxis(2) >= 0.9) {
-			shootMotor.changeControlMode(CANTalon.TalonControlMode.Speed);
-			shootMotor.set(speed);
-		} 
-		else if (controller.getRawButton(1)){
+			toggleShooter();
+			isReleased = false;
+		} else {
+			isReleased = true;
+		}
+		
+		if (controller.getRawButton(1)) {
 			shootMotor.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
 			shootMotor.set(-1.0);
-		}
-		else {
-			shootMotor.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
-			shootMotor.set(0.0);
+		} else {
+			if (!isShooting) {
+				shootMotor.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
+				shootMotor.set(0.0);
+			} else {
+				shootMotor.changeControlMode(CANTalon.TalonControlMode.Speed);
+				shootMotor.set(speed);
+			}
 		}
 		
 		//SmartDashboard.putNumber("Shooter Encoder Velocity: ", shootMotor.getEncVelocity());
 		SmartDashboard.putNumber("Shooter Encoder Velocity: ", shootMotor.getSpeed());
 		SmartDashboard.putNumber("Shooter Motor Output", shootMotor.getOutputVoltage()/shootMotor.getBusVoltage());
 		SmartDashboard.putNumber("Shooter Error", shootMotor.getError());
+	}
+	
+	public void toggleShooter() {
+		if (isReleased) {
+			if (isShooting) {
+				shootMotor.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
+				shootMotor.set(0.0);
+			} else {
+				shootMotor.changeControlMode(CANTalon.TalonControlMode.Speed);
+				shootMotor.set(speed);
+			}
+			isShooting = !isShooting;
+		}
 	}
 }
