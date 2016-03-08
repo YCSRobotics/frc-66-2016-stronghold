@@ -26,8 +26,7 @@ public class Autonomous {
 	}
 	
 	public void updateAutonomous(){
-		switch(currentAutoState)
-		{
+		switch(currentAutoState) {
 		case AUTON_STATE_START:
 			stateActionStart();
 			break;
@@ -54,7 +53,8 @@ public class Autonomous {
 	}
 	
 	private void stateActionStop(){
-		
+		Arm.disableClosedLoop();
+		Drivetrain.moveDistance(0, 0);
 	}
 	
 	private void stateActionStart(){
@@ -63,8 +63,7 @@ public class Autonomous {
 				Arm.enableClosedLoop(Constants.ARM_LOAD_POSITION);
 				currentAutoState = AUTON_STATE_LOWER_ARM;
 			}
-		}else
-		{
+		} else {
 			currentAutoState = AUTON_STATE_STOP;
 		}
 			
@@ -76,9 +75,7 @@ public class Autonomous {
 			Arm.disableClosedLoop();
 			Drivetrain.moveDistance(150.0, 0.6);
 			currentAutoState = AUTON_STATE_MOVE_DISTANCE;
-		}
-		else
-		{
+		} else {
 			//Wait for arm to be lowered
 		}
 	}
@@ -86,8 +83,7 @@ public class Autonomous {
 	private void stateActionMoveDistance(){
 		if(Drivetrain.isMoveComplete()){
 			currentAutoState = AUTON_STATE_STOP;
-		}
-		else{
+		} else {
 			//Wait for move to complete
 		}
 	}
