@@ -25,6 +25,7 @@ public class Robot extends IterativeRobot {
     private static Shooter SHOOTER;
     private static Intake INTAKE;
 	private static Arm ARM;
+	private static Camera CAMERA;
     
     /**
      * This function is run when the robot is first started up and should be
@@ -39,6 +40,7 @@ public class Robot extends IterativeRobot {
         INTAKE = new Intake();
         ARM = new Arm();
         DRIVETRAIN = new Drivetrain();
+        CAMERA = new Camera();
         
         //TODO: Need to tie this to the limit switches, for now zero sensor on init
         ARM.zeroSensor();
@@ -82,7 +84,7 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-        
+    	CAMERA.updateCamera();
     	DRIVETRAIN.updateDrivetrain();
         SHOOTER.updateShooter();
         INTAKE.updateIntake();
