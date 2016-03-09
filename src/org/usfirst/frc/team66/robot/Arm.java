@@ -106,29 +106,28 @@ public class Arm {
 				isHoldingPosition = false;
 				//speed = - (speed * speed) * Constants.ARM_MOTOR_SCALER_UP;
 				masterMotor.set(-(speed*speed) * Constants.ARM_MOTOR_SCALER_UP);
-			}
-			else if (speed <= Constants.ARM_CONTROLLER_LOWER_DEADZONE){
+			} else if (speed <= Constants.ARM_CONTROLLER_LOWER_DEADZONE){
 				masterMotor.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
 				isHoldingPosition = false;
 				//speed = (speed * speed) * Constants.ARM_MOTOR_SCALER_DOWN;
 				masterMotor.set((speed*speed) * Constants.ARM_MOTOR_SCALER_DOWN);
-			}
-			else if(shootController.getRawButton(2)){
+			} else if(shootController.getRawButton(2)){
 				//Set load position of the arm
 				targetPosition = Constants.ARM_LOAD_POSITION;
 				enableClosedLoop(targetPosition);
-			}
-			else if (shootController.getRawButton(3)){
+			} else if (shootController.getRawButton(3)){
 				//Set unload position of the arm
 				targetPosition = Constants.ARM_UNLOAD_POSITION;
 				enableClosedLoop(targetPosition);
-			}
-			else if (shootController.getRawButton(4)){
+			} else if (shootController.getRawButton(4)){
 				//Set shoot position of the arm
 				targetPosition = Constants.ARM_SHOOT_POSITION;
 				enableClosedLoop(targetPosition);
-			}
-			else{
+			} else if (shootController.getRawButton(9)) {
+				// Combo Button, also runs Intake Motor. Intended to FIRE
+				targetPosition = Constants.ARM_LOAD_POSITION;
+				enableClosedLoop(targetPosition);
+			} else {
 				//No throttle input, and no button pressed
 				if(isSensorZeroed){
 					/**************************************************************************

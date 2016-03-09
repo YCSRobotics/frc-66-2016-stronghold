@@ -23,19 +23,17 @@ public class Intake {
 		if ((!(driveController.getRawAxis(3)>= 0.9)) &&
 			(shootController.getRawAxis(2) >= 0.9)) {
 			speed = Constants.DASHBOARD_VALUES.getDouble("Intake while shooting speed", 1.0);
-		} 
-		else {
+		} else {
 			speed = Constants.DASHBOARD_VALUES.getDouble("Intake while not shooting speed", 1.0);
 		}
 		
 		if ((driveController.getRawAxis(3)>= 0.9) || 
-			(shootController.getRawAxis(3) >= 0.9)){
+			(shootController.getRawAxis(3) >= 0.9) ||
+			shootController.getRawButton(9) ){
 			FEED_MOTOR.set(speed);
-		}
-		else if (shootController.getRawButton(1)) {
+		} else if (shootController.getRawButton(1)) {
 			FEED_MOTOR.set(-speed);
-		} 
-		else {
+		} else {
 			FEED_MOTOR.set(0);
 		}
 	}
