@@ -19,7 +19,8 @@ public class Robot extends IterativeRobot {
     final String defaultAuto = "Default";
     final String customAuto = "My Auto";
     String autoSelected;
-    //SendableChooser chooser;
+    SendableChooser chooser;
+    String currentAutoAction = "";
 	
     private static Drivetrain DRIVETRAIN;
     private static Shooter SHOOTER;
@@ -32,10 +33,10 @@ public class Robot extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
-        //chooser = new SendableChooser();
-        //chooser.addDefault("Default Auto", defaultAuto);
-        //chooser.addObject("My Auto", customAuto);
-        //SmartDashboard.putData("Auto choices", chooser);
+        chooser = new SendableChooser();
+        chooser.addDefault("Default Auto", defaultAuto);
+        chooser.addObject("My Auto", customAuto);
+        SmartDashboard.putData("Auto choices", chooser);
         SHOOTER = new Shooter();
         INTAKE = new Intake();
         ARM = new Arm();
@@ -44,6 +45,14 @@ public class Robot extends IterativeRobot {
         
         //TODO: Need to tie this to the limit switches, for now zero sensor on init
         ARM.zeroSensor();
+    }
+    public void disabledInit() {
+    	SmartDashboard.putData("Auto choices", chooser);
+    }
+    
+    public void disabledPeriodic() {
+    	autoSelected = (String) chooser.getSelected();
+		//autoSelected = SmartDashboard.getString("Auto Selector", defaultAuto);
     }
     
 	/**
@@ -56,9 +65,8 @@ public class Robot extends IterativeRobot {
 	 * If using the SendableChooser make sure to add them to the chooser code above as well.
 	 */
     public void autonomousInit() {
-    	//autoSelected = (String) chooser.getSelected();
-//		autoSelected = SmartDashboard.getString("Auto Selector", defaultAuto);
-		//System.out.println("Auto selected: " + autoSelected);
+    	autoSelected = (String) chooser.getSelected();
+		//autoSelected = SmartDashboard.getString("Auto Selector", defaultAuto);
     }
 
     /**
@@ -66,14 +74,18 @@ public class Robot extends IterativeRobot {
      */
     public void autonomousPeriodic() {
     	switch(autoSelected) {
-    	case customAuto:
-        //Put custom auto code here   
-            break;
-    	case defaultAuto:
-    	default:
-    	//Put default auto code here
-            break;
+	    	case customAuto:
+	        //Put custom auto code here  
+	    		currentAutoAction = "CUSTOM";
+	            break;
+	    	case defaultAuto:
+	    	default:
+	    	//Put default auto code here
+	    		currentAutoAction = "DEFAULT";
+	            break;
     	}
+    	
+    	SmartDashboard.putString("Current Auto Action", currentAutoAction);
     }
 
     public void teleopInit(){
