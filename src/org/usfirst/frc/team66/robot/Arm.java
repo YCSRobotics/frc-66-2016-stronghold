@@ -53,9 +53,9 @@ public class Arm {
 	public void updateArm() {
 		double speed = controller.getRawAxis(5);
 		
-//		SmartDashboard.putNumber("Arm Relative Position", masterMotor.getPosition());
-//		SmartDashboard.putNumber("Target Arm Position", targetPosition);
-//		SmartDashboard.putBoolean("Holding Position", isHoldingPosition);
+		SmartDashboard.putNumber("Arm Relative Position", masterMotor.getPosition());
+		SmartDashboard.putNumber("Target Arm Position", targetPosition);
+		SmartDashboard.putBoolean("Holding Position", isHoldingPosition);
 		
 		//Handle manual operation of the arm
 		if (speed >= Constants.ARM_CONTROLLER_UPPER_DEADZONE){

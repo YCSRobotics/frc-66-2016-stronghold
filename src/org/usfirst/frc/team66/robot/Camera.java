@@ -22,8 +22,8 @@ public class Camera {
 	}
 	
 	public void updateCamera() {
-		SmartDashboard.putString("Bounding Coordinates", boundingToString());
-		SmartDashboard.putString("Distance", distanceToTarget()+"");
+		//SmartDashboard.putString("Bounding Coordinates", boundingToString());
+		//SmartDashboard.putString("Distance", distanceToTarget()+"");
 	}
 	
 	// {p1x, p1y, p2x, p2y, p3x, p3y, p4x, p4y}

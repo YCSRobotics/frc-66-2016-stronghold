@@ -81,20 +81,10 @@
   <fill_shape>FALSE</fill_shape>
   <order_array_on_x>FALSE</order_array_on_x>
   <order_array_on_y>FALSE</order_array_on_y>
+  <overlay_image>Source</overlay_image>
   <shape_index>12</shape_index>
-  <thickness>1</thickness>
+  <thickness>2</thickness>
 </Blob_Replace>
-<NetworkTables>
-  <delay>100</delay>
-  <filter_type_index>0</filter_type_index>
-  <hostname>roboRIO-470-frc.local</hostname>
-  <port>1735</port>
-  <prefix>/SmartDashboard/</prefix>
-  <variables_to_send>BOUNDING_COORDINATES
-IMAGE_HEIGHT
-IMAGE_WIDTH</variables_to_send>
-  <variable_type_index>0</variable_type_index>
-</NetworkTables>
 <Math>
   <all_channels>TRUE</all_channels>
   <bias>0</bias>
@@ -103,7 +93,7 @@ IMAGE_WIDTH</variables_to_send>
   <image1>Source</image1>
   <image2>Current</image2>
 </Math>
-<Display_Variables>
+<Display_Variables disabled>
   <border_color>red</border_color>
   <dim_background>TRUE</dim_background>
   <display_as_annotation>FALSE</display_as_annotation>
@@ -113,6 +103,81 @@ IMAGE_WIDTH</variables_to_send>
   <northeast>BOUNDING_COORDINATES
 </northeast>
 </Display_Variables>
+<Display_Rectangle disabled>
+  <clear_image>0</clear_image>
+  <color_index>red</color_index>
+  <display_as_annotation>0</display_as_annotation>
+  <display_mode_index>0</display_mode_index>
+  <fill_shape>0</fill_shape>
+  <thickness>3</thickness>
+  <xy_list_map/>
+  <x_1>394</x_1>
+  <x_1_map/>
+  <x_2>246</x_2>
+  <x_2_map/>
+  <x_3>238</x_3>
+  <x_3_map/>
+  <x_4>403</x_4>
+  <x_4_map/>
+  <y_1>415</y_1>
+  <y_1_map/>
+  <y_2>413</y_2>
+  <y_2_map/>
+  <y_3>356</y_3>
+  <y_3_map/>
+  <y_4>358</y_4>
+  <y_4_map/>
+</Display_Rectangle>
+<Display_Rectangle disabled>
+  <clear_image>0</clear_image>
+  <color_index>red</color_index>
+  <display_as_annotation>0</display_as_annotation>
+  <display_mode_index>0</display_mode_index>
+  <fill_shape>0</fill_shape>
+  <thickness>3</thickness>
+  <xy_list_map/>
+  <x_1>376</x_1>
+  <x_1_map/>
+  <x_2>264</x_2>
+  <x_2_map/>
+  <x_3>260</x_3>
+  <x_3_map/>
+  <x_4>380</x_4>
+  <x_4_map/>
+  <y_1>221</y_1>
+  <y_1_map/>
+  <y_2>221</y_2>
+  <y_2_map/>
+  <y_3>158</y_3>
+  <y_3_map/>
+  <y_4>158</y_4>
+  <y_4_map/>
+</Display_Rectangle>
+<Display_Rectangle>
+  <clear_image>0</clear_image>
+  <color_index>red</color_index>
+  <display_as_annotation>1</display_as_annotation>
+  <display_mode_index>0</display_mode_index>
+  <fill_shape>0</fill_shape>
+  <thickness>3</thickness>
+  <xy_list_map/>
+  <x_1>394</x_1>
+  <x_1_map/>
+  <x_2>246</x_2>
+  <x_2_map/>
+  <x_3>260</x_3>
+  <x_3_map/>
+  <x_4>380</x_4>
+  <x_4_map/>
+  <y_1>415</y_1>
+  <y_1_map/>
+  <y_2>413</y_2>
+  <y_2_map/>
+  <y_3>158</y_3>
+  <y_3_map/>
+  <y_4>158</y_4>
+  <y_4_map/>
+</Display_Rectangle>
 <Display_Arrow>
   <clear_image>0</clear_image>
   <color>green</color>
@@ -130,3 +195,14 @@ IMAGE_WIDTH</variables_to_send>
   <y_start>[image_height/2]</y_start>
   <y_start_map/>
 </Display_Arrow>
+<NetworkTables>
+  <delay>100</delay>
+  <filter_type_index>0</filter_type_index>
+  <hostname>roboRIO-470-frc.local</hostname>
+  <port>1735</port>
+  <prefix>/SmartDashboard/</prefix>
+  <variables_to_send>BOUNDING_COORDINATES
+IMAGE_HEIGHT
+IMAGE_WIDTH</variables_to_send>
+  <variable_type_index>0</variable_type_index>
+</NetworkTables>

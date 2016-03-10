@@ -40,9 +40,9 @@ public class Shooter {
 			shootMotor.set(0.0);
 		}
 		
-//		SmartDashboard.putNumber("Shooter Encoder Velocity: ", shootMotor.getEncVelocity());
-//		SmartDashboard.putNumber("Shooter Encoder Velocity: ", shootMotor.getSpeed());
-//		SmartDashboard.putNumber("Shooter Motor Output", shootMotor.getOutputVoltage()/shootMotor.getBusVoltage());
-//		SmartDashboard.putNumber("Shooter Error", shootMotor.getError());
+		SmartDashboard.putNumber("Shooter Encoder Velocity: ", shootMotor.getEncVelocity());
+		SmartDashboard.putNumber("Shooter Encoder Velocity: ", shootMotor.getSpeed());
+		SmartDashboard.putNumber("Shooter Motor Output", shootMotor.getOutputVoltage()/shootMotor.getBusVoltage());
+		SmartDashboard.putNumber("Shooter Error", shootMotor.getError());
 	}
 }
