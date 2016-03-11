@@ -16,34 +16,38 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * directory.
  */
 public class Robot extends IterativeRobot {
-    final String defaultAuto = "Default";
-    final String customAuto = "My Auto";
-    String autoSelected;
-    //SendableChooser chooser;
+    int autoSelected;
 	
     public static Autonomous AUTONOMOUS;
     public static Drivetrain DRIVETRAIN;
     public static Shooter SHOOTER;
     public static Intake INTAKE;
 	public static Arm ARM;
+	private static Camera CAMERA;
     
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
     public void robotInit() {
-        //chooser = new SendableChooser();
-        //chooser.addDefault("Default Auto", defaultAuto);
-        //chooser.addObject("My Auto", customAuto);
-        //SmartDashboard.putData("Auto choices", chooser);
         SHOOTER = new Shooter();
         INTAKE = new Intake();
         ARM = new Arm();
         DRIVETRAIN = new Drivetrain();
         AUTONOMOUS = new Autonomous();
+        CAMERA = new Camera();
         
         //TODO: Need to tie this to the limit switches, for now zero sensor on init
         ARM.zeroSensor();
+
+        SmartDashboard.putNumber("Auto Mode", AUTONOMOUS.AUTON_MODE_DO_NOTHING);
+    }
+    public void disabledInit() {
+        SmartDashboard.putNumber("Auto Mode", AUTONOMOUS.AUTON_MODE_DO_NOTHING);
+    }
+    
+    public void disabledPeriodic() {
+		autoSelected = (int) SmartDashboard.getNumber("Auto Mode", AUTONOMOUS.AUTON_MODE_DO_NOTHING);
     }
     
 	/**
@@ -56,27 +60,15 @@ public class Robot extends IterativeRobot {
 	 * If using the SendableChooser make sure to add them to the chooser code above as well.
 	 */
     public void autonomousInit() {
-    	//autoSelected = (String) chooser.getSelected();
-//		autoSelected = SmartDashboard.getString("Auto Selector", defaultAuto);
-		//System.out.println("Auto selected: " + autoSelected);
-    	
     	//AUTONOMOUS.setAutonomousMode(AUTONOMOUS.AUTON_MODE_LOW_BAR);
-    	AUTONOMOUS.setAutonomousMode(AUTONOMOUS.AUTON_MODE_DO_NOTHING);
+    	autoSelected = (int) SmartDashboard.getNumber("Auto Mode", AUTONOMOUS.AUTON_MODE_DO_NOTHING);
+    	AUTONOMOUS.setAutonomousMode(autoSelected);
     }
 
     /**
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
-    	/*switch(autoSelected) {
-    	case customAuto:
-        //Put custom auto code here   
-            break;
-    	case defaultAuto:
-    	default:
-    	//Put default auto code here
-            break;
-    	}*/
     	AUTONOMOUS.updateAutonomous();
     	DRIVETRAIN.updateDrivetrainAuton();
     	ARM.updateArmAuton();
@@ -90,8 +82,8 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-        
     	DRIVETRAIN.updateDrivetrainTeleop();
+    	CAMERA.updateCamera();
         SHOOTER.updateShooter();
         INTAKE.updateIntake();
         ARM.updateArmTeleop();

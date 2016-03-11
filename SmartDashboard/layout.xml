@@ -1,0 +1,130 @@
+<xml version="1.0">
+<dashboard>
+	<widget field="Current Auto Action" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="386"/>
+	</widget>
+	<widget field="Holding Position" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="359"/>
+	</widget>
+	<widget field="Target Arm Position" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="332"/>
+	</widget>
+	<widget field="Arm Relative Position" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="305"/>
+	</widget>
+	<widget field="Shooter Error" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="278"/>
+	</widget>
+	<widget field="Shooter Motor Output" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="251"/>
+	</widget>
+	<widget field="Shooter Encoder Velocity: " type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="224"/>
+	</widget>
+	<widget field="Auto choices" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
+		<location x="0" y="145"/>
+	</widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.VideoStreamViewerExtension">
+		<location x="338" y="0"/>
+		<width>556</width>
+		<height>418</height>
+		<property name="Camera IP Address or mDNS name" value="127.0.0.1"/>
+	</static-widget>
+	<widget field="Right Motor Output" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="7" y="118"/>
+	</widget>
+	<widget field="Right Encoder" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="2" y="91"/>
+	</widget>
+	<widget field="Left Encoder" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="4" y="60"/>
+	</widget>
+	<widget field="Left Motor Output" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="4" y="28"/>
+	</widget>
+	<widget field="Gyro Angle" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="0"/>
+	</widget>
+</dashboard>
+<live-window>
+	<widget field="Ungrouped" type="LW Subsystem" class="edu.wpi.first.smartdashboard.livewindow.elements.LWSubsystem">
+		<widget field="AnalogInput[0]" type="Analog Input" class="edu.wpi.first.smartdashboard.livewindow.elements.SingleNumberDisplay">
+			<location x="6" y="22"/>
+			<height>26</height>
+			<width>327</width>
+		</widget>
+		<widget field="CANTalon[2]" type="CANSpeedController" class="edu.wpi.first.smartdashboard.livewindow.elements.CANSpeedController">
+			<location x="6" y="48"/>
+			<height>185</height>
+			<width>327</width>
+		</widget>
+		<widget field="Encoder[0]" type="Quadrature Encoder" class="edu.wpi.first.smartdashboard.livewindow.elements.EncoderDisplay">
+			<location x="6" y="233"/>
+			<height>122</height>
+			<width>327</width>
+		</widget>
+		<widget field="Talon[3]" type="Speed Controller" class="edu.wpi.first.smartdashboard.livewindow.elements.SpeedController">
+			<location x="6" y="355"/>
+			<height>56</height>
+			<width>327</width>
+		</widget>
+		<widget field="Victor[1]" type="Speed Controller" class="edu.wpi.first.smartdashboard.livewindow.elements.SpeedController">
+			<location x="6" y="411"/>
+			<height>56</height>
+			<width>327</width>
+		</widget>
+		<widget field="DigitalInput[0]" type="Digital Input" class="edu.wpi.first.smartdashboard.livewindow.elements.DigitalInputDisplay">
+			<location x="6" y="467"/>
+			<height>26</height>
+			<width>327</width>
+		</widget>
+		<widget field="DigitalInput[1]" type="Digital Input" class="edu.wpi.first.smartdashboard.livewindow.elements.DigitalInputDisplay">
+			<location x="6" y="493"/>
+			<height>26</height>
+			<width>327</width>
+		</widget>
+		<widget field="Encoder[2]" type="Quadrature Encoder" class="edu.wpi.first.smartdashboard.livewindow.elements.EncoderDisplay">
+			<location x="6" y="519"/>
+			<height>122</height>
+			<width>327</width>
+		</widget>
+		<widget field="DigitalInput[2]" type="Digital Input" class="edu.wpi.first.smartdashboard.livewindow.elements.DigitalInputDisplay">
+			<location x="6" y="641"/>
+			<height>26</height>
+			<width>327</width>
+		</widget>
+		<widget field="CANTalon[1]" type="CANSpeedController" class="edu.wpi.first.smartdashboard.livewindow.elements.CANSpeedController">
+			<location x="6" y="667"/>
+			<height>185</height>
+			<width>327</width>
+		</widget>
+		<widget field="CANTalon[0]" type="CANSpeedController" class="edu.wpi.first.smartdashboard.livewindow.elements.CANSpeedController">
+			<location x="6" y="852"/>
+			<height>185</height>
+			<width>327</width>
+		</widget>
+		<widget field="AnalogGyro[0]" type="Gyro" class="edu.wpi.first.smartdashboard.gui.elements.Compass">
+			<location x="6" y="1037"/>
+			<height>150</height>
+			<width>327</width>
+		</widget>
+		<widget field="Victor[0]" type="Speed Controller" class="edu.wpi.first.smartdashboard.livewindow.elements.SpeedController">
+			<location x="6" y="1187"/>
+			<height>56</height>
+			<width>327</width>
+		</widget>
+		<widget field="DigitalInput[3]" type="Digital Input" class="edu.wpi.first.smartdashboard.livewindow.elements.DigitalInputDisplay">
+			<location x="6" y="1243"/>
+			<height>26</height>
+			<width>327</width>
+		</widget>
+		<location x="0" y="0"/>
+		<width>339</width>
+		<height>1276</height>
+	</widget>
+</live-window>
+	<hidden field="IMAGE_HEIGHT"/>
+	<hidden field="IMAGE_WIDTH"/>
+	<hidden field="Bounding Coordinates"/>
+	<hidden field="Distance"/>
+</xml>

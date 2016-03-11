@@ -16,14 +16,18 @@ public class Shooter {
 		
 		shootMotor.enableBrakeMode(false);
 		shootMotor.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
-    	shootMotor.configEncoderCodesPerRev(Constants.SHOOT_ENCODER_COUNTS_PER_REV);
-    	shootMotor.configNominalOutputVoltage(Constants.SHOOT_NOMINAL_VOLTAGE, -Constants.SHOOT_NOMINAL_VOLTAGE);
-    	shootMotor.configPeakOutputVoltage(Constants.SHOOT_PEAK_VOLTAGE, -Constants.SHOOT_PEAK_VOLTAGE);
-    	shootMotor.setP(Constants.SHOOT_PID_P);
-    	shootMotor.setI(Constants.SHOOT_PID_I);
-    	shootMotor.setD(Constants.SHOOT_PID_D);
-    	shootMotor.setF(Constants.SHOOT_PID_F);
-    	shootMotor.setProfile(Constants.SHOOT_PID_PROFILE);
+		try {
+			shootMotor.configEncoderCodesPerRev(Constants.SHOOT_ENCODER_COUNTS_PER_REV);
+			shootMotor.configNominalOutputVoltage(Constants.SHOOT_NOMINAL_VOLTAGE, -Constants.SHOOT_NOMINAL_VOLTAGE);
+			shootMotor.configPeakOutputVoltage(Constants.SHOOT_PEAK_VOLTAGE, -Constants.SHOOT_PEAK_VOLTAGE);
+			shootMotor.setP(Constants.SHOOT_PID_P);
+			shootMotor.setI(Constants.SHOOT_PID_I);
+			shootMotor.setD(Constants.SHOOT_PID_D);
+			shootMotor.setF(Constants.SHOOT_PID_F);
+			shootMotor.setProfile(Constants.SHOOT_PID_PROFILE);
+		} catch(Error e) {
+			
+		}
 	}
 	
 	public void updateShooter() {
@@ -49,7 +53,7 @@ public class Shooter {
 			}
 		}
 		
-		//SmartDashboard.putNumber("Shooter Encoder Velocity: ", shootMotor.getEncVelocity());
+		SmartDashboard.putNumber("Shooter Encoder Velocity: ", shootMotor.getEncVelocity());
 		SmartDashboard.putNumber("Shooter Encoder Velocity: ", shootMotor.getSpeed());
 		SmartDashboard.putNumber("Shooter Motor Output", shootMotor.getOutputVoltage()/shootMotor.getBusVoltage());
 		SmartDashboard.putNumber("Shooter Error", shootMotor.getError());
