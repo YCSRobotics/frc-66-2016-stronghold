@@ -5,8 +5,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Autonomous {
 	
 	//Auton Modes
-	public static final int AUTON_MODE_DO_NOTHING = 0;
-	public static final int AUTON_MODE_LOW_BAR    = 1;
+	public static final int AUTON_MODE_DO_NOTHING      = 0;
+	public static final int AUTON_MODE_LOW_BAR         = 1;
+	public static final int AUTON_MODE_PASSIVE_DEFENSE = 2;
 	
 	//Auton States
 	private static final int AUTON_STATE_START         = 0;
@@ -57,13 +58,22 @@ public class Autonomous {
 		Drivetrain.moveDistance(0, 0);
 	}
 	
-	private void stateActionStart(){
+	private void stateActionStart()
+	{
 		if(selectedAutoMode != AUTON_MODE_DO_NOTHING){
-			if(selectedAutoMode == AUTON_MODE_LOW_BAR){
+			if(selectedAutoMode == AUTON_MODE_LOW_BAR)
+			{
 				Arm.enableClosedLoop(Constants.ARM_LOAD_POSITION);
 				currentAutoState = AUTON_STATE_LOWER_ARM;
 			}
-		} else {
+			else if(selectedAutoMode == AUTON_MODE_PASSIVE_DEFENSE)
+			{
+				Drivetrain.moveDistance(-150.0, 0.8);
+				currentAutoState = AUTON_STATE_MOVE_DISTANCE;
+			}
+		} 
+		else 
+		{
 			currentAutoState = AUTON_STATE_STOP;
 		}
 			
@@ -73,7 +83,7 @@ public class Autonomous {
 		
 		if(Arm.isArmInPosition()){
 			Arm.disableClosedLoop();
-			Drivetrain.moveDistance(150.0, 0.6);
+			Drivetrain.moveDistance(-150.0, 0.6);
 			currentAutoState = AUTON_STATE_MOVE_DISTANCE;
 		} else {
 			//Wait for arm to be lowered
@@ -89,7 +99,6 @@ public class Autonomous {
 	}
 	
 	public void updateAutonDashboard(){
-		SmartDashboard.putNumber("Auton Mode", selectedAutoMode);
 		SmartDashboard.putNumber("Auton State", currentAutoState);
 	}
 	

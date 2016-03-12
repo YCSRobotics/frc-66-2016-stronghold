@@ -1,68 +1,66 @@
 <xml version="1.0">
 <dashboard>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.VideoStreamViewerExtension">
-		<location x="792" y="3"/>
-		<width>556</width>
-		<height>426</height>
+		<location x="542" y="43"/>
+		<width>532</width>
+		<height>468</height>
 		<property name="Camera IP Address or mDNS name" value="127.0.0.1"/>
 	</static-widget>
 	<widget field="Auton State" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="542" y="21"/>
 	</widget>
 	<widget field="Auton Mode" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="575" y="390"/>
-		<width>143</width>
+		<location x="313" y="554"/>
 	</widget>
 	<widget field="Auto Mode" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="548" y="1"/>
+		<location x="543" y="1"/>
 	</widget>
 	<widget field="Is Arm In Position" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="560" y="191"/>
+		<location x="315" y="534"/>
 	</widget>
 	<widget field="Arm Motor Output" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="557" y="147"/>
+		<location x="315" y="513"/>
 	</widget>
 	<widget field="Arm Error" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="599" y="124"/>
+		<location x="315" y="492"/>
 	</widget>
 	<widget field="Target Distance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="565" y="254"/>
+		<location x="0" y="471"/>
 	</widget>
 	<widget field="Is Moving Distance" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="551" y="276"/>
+		<location x="0" y="450"/>
 	</widget>
 	<widget field="Gyro Rate" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="550" y="56"/>
+		<location x="21" y="429"/>
 	</widget>
 	<widget field="Gyro Angle" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="546" y="77"/>
+		<location x="315" y="471"/>
 	</widget>
 	<widget field="Left Motor Output" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="547" y="333"/>
+		<location x="315" y="450"/>
 	</widget>
 	<widget field="Right Motor Output" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="541" y="311"/>
+		<location x="315" y="429"/>
 	</widget>
 	<widget field="Holding Position" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="569" y="215"/>
+		<location x="0" y="538"/>
 	</widget>
 	<widget field="Target Arm Position" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="550" y="169"/>
+		<location x="0" y="517"/>
 	</widget>
 	<widget field="Arm Relative Position" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="545" y="102"/>
+		<location x="0" y="496"/>
 	</widget>
 	<widget field="Auto choices" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
 		<location x="0" y="429"/>
 	</widget>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.ConnectionIndicator">
-		<location x="1" y="432"/>
-		<width>1343</width>
+		<location x="-3" y="577"/>
+		<width>1596</width>
 	</static-widget>
 	<widget field="Shooter Encoder Velocity: " type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
 		<location x="16" y="128"/>
 		<width>523</width>
-		<height>270</height>
 	</widget>
 	<widget field="Shooter Error" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="333" y="34"/>

@@ -71,8 +71,7 @@ public class Arm {
 			 * Check to see if already holding position. If not, throttle was just 
 			 * released so enable closed loop control on current position
 			 **************************************************************************/
-			if((!isHoldingPosition)&&
-			   (allowClosedLoop)){
+			if(!isHoldingPosition){
 				targetPosition = masterMotor.getPosition();
 				enableClosedLoop(targetPosition);
 			}
@@ -92,6 +91,11 @@ public class Arm {
 	
 	public void updateArmTeleop() {
 		double speed = shootController.getRawAxis(5);
+		
+		/*if(masterMotor.isFwdLimitSwitchClosed())
+		{
+			zeroSensor();
+		}*/
 		
 		if(driveController.getRawAxis(3)>= 0.9){
 			//Set load position of the arm
