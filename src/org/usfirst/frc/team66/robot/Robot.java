@@ -63,6 +63,7 @@ public class Robot extends IterativeRobot {
     	//AUTONOMOUS.setAutonomousMode(AUTONOMOUS.AUTON_MODE_LOW_BAR);
     	autoSelected = (int) SmartDashboard.getNumber("Auto Mode", AUTONOMOUS.AUTON_MODE_DO_NOTHING);
     	AUTONOMOUS.setAutonomousMode(autoSelected);
+    	DRIVETRAIN.GYRO.reset();
     }
 
     /**

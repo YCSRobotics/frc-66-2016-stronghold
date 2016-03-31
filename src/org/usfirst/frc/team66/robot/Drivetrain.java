@@ -19,7 +19,7 @@ public class Drivetrain {
 	private static Encoder LEFT_ENCODER;
 	private static Encoder RIGHT_ENCODER;
 	
-	private static AnalogGyro GYRO;
+	public static AnalogGyro GYRO;
 	
 	static DrivetrainSide leftSide;
 	static DrivetrainSide rightSide;
@@ -55,6 +55,11 @@ public class Drivetrain {
 		Drivetrain.rightSide = new DrivetrainSide(RIGHT_MOTOR, RIGHT_MOTOR_SCALER);
 		
 		Drivetrain.GYRO = Constants.GYRO;
+	}
+	
+	public void zeroGyro(){
+		GYRO.reset();
+		isGyroZeroed = true;
 	}
 	
 	public void updateDrivetrainAuton(){
@@ -207,6 +212,7 @@ public class Drivetrain {
 	}
 	
 	public static void moveDistance(double distance, double speed){
+		
 		
 		LEFT_ENCODER.reset();
 		RIGHT_ENCODER.reset();

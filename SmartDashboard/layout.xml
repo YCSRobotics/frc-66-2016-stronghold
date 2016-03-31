@@ -1,5 +1,15 @@
 <xml version="1.0">
 <dashboard>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.Label">
+		<location x="543" y="407"/>
+		<property name="Text" value="1 - Move Forward"/>
+	</static-widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.Label">
+		<location x="544" y="389"/>
+		<width>126</width>
+		<property name="Text" value="0 - Do Nothing"/>
+		<property name="Horizontal Alignment" value="Left"/>
+	</static-widget>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.VideoStreamViewerExtension">
 		<location x="792" y="3"/>
 		<width>556</width>
@@ -9,12 +19,8 @@
 	<widget field="Auton State" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="542" y="21"/>
 	</widget>
-	<widget field="Auton Mode" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="575" y="390"/>
-		<width>143</width>
-	</widget>
 	<widget field="Auto Mode" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="548" y="1"/>
+		<location x="546" y="366"/>
 	</widget>
 	<widget field="Is Arm In Position" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="560" y="191"/>
@@ -52,9 +58,6 @@
 	<widget field="Arm Relative Position" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="545" y="102"/>
 	</widget>
-	<widget field="Auto choices" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
-		<location x="0" y="429"/>
-	</widget>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.ConnectionIndicator">
 		<location x="1" y="432"/>
 		<width>1343</width>
@@ -84,10 +87,6 @@
 	<widget field="Left Encoder" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="16" y="5"/>
 		<width>256</width>
-	</widget>
-	<widget field="Motor Output" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="339" y="95"/>
-		<width>199</width>
 	</widget>
 </dashboard>
 <live-window>

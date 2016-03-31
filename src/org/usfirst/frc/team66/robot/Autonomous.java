@@ -6,8 +6,9 @@ public class Autonomous {
 	
 	//Auton Modes
 	public static final int AUTON_MODE_DO_NOTHING      = 0;
-	public static final int AUTON_MODE_LOW_BAR         = 1;
-	public static final int AUTON_MODE_PASSIVE_DEFENSE = 2;
+	public static final int AUTON_MODE_PASSIVE_DEFENSE_SLOW = 1;
+	public static final int AUTON_MODE_PASSIVE_DEFENSE_FAST = 2;
+	public static final int AUTON_MODE_LOW_BAR              = 3;
 	
 	//Auton States
 	private static final int AUTON_STATE_START         = 0;
@@ -65,10 +66,16 @@ public class Autonomous {
 			{
 				Arm.enableClosedLoop(Constants.ARM_LOAD_POSITION);
 				currentAutoState = AUTON_STATE_LOWER_ARM;
+				//currentAutoState = AUTON_STATE_STOP;
 			}
-			else if(selectedAutoMode == AUTON_MODE_PASSIVE_DEFENSE)
+			else if(selectedAutoMode == AUTON_MODE_PASSIVE_DEFENSE_SLOW)
 			{
 				Drivetrain.moveDistance(-150.0, 0.8);
+				currentAutoState = AUTON_STATE_MOVE_DISTANCE;
+			}
+			else if(selectedAutoMode == AUTON_MODE_PASSIVE_DEFENSE_FAST)
+			{
+				Drivetrain.moveDistance(-150.0, 1.0);
 				currentAutoState = AUTON_STATE_MOVE_DISTANCE;
 			}
 		} 
@@ -82,7 +89,7 @@ public class Autonomous {
 	private void stateActionLowerArm(){
 		
 		if(Arm.isArmInPosition()){
-			Arm.disableClosedLoop();
+			//Arm.disableClosedLoop();
 			Drivetrain.moveDistance(-150.0, 0.6);
 			currentAutoState = AUTON_STATE_MOVE_DISTANCE;
 		} else {
