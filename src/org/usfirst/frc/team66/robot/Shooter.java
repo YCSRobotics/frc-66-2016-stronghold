@@ -1,22 +1,36 @@
 package org.usfirst.frc.team66.robot;
 
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Joystick;
 
 public class Shooter {
 	static Joystick controller;
-	static CANTalon shootMotor;
+	static CANTalon shootMotorMaster;
+	static CANTalon shootMotorSlave;
+	static Solenoid shootPlunger;
 	static double speed;
 	static boolean isShooting = false, isReleased = true;
 	
 	public Shooter() {
-		Shooter.shootMotor = Constants.SHOOT_MOTOR;
+		Shooter.shootMotorMaster = Constants.SHOOT_MOTOR_MASTER;
+		Shooter.shootMotorSlave = Constants.SHOOT_MOTOR_SLAVE;
 		Shooter.controller = Constants.SHOOT_CONTROLLER;
+		Shooter.shootPlunger = Constants.SHOOT_PLUNGER;
 		
-		shootMotor.enableBrakeMode(false);
-		shootMotor.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
-		try {
+		//Configure master motor (left)
+		shootMotorMaster.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
+		shootMotorMaster.enableBrakeMode(false);
+		
+		//Configure slave motor (right) to mirror master motor
+		shootMotorSlave.changeControlMode(CANTalon.TalonControlMode.Follower);
+		shootMotorSlave.set(shootMotorMaster.getDeviceID());
+		shootMotorSlave.enableBrakeMode(false);
+		shootMotorSlave.reverseOutput(true);
+		
+		
+		/*try {
 			shootMotor.configEncoderCodesPerRev(Constants.SHOOT_ENCODER_COUNTS_PER_REV);
 			shootMotor.configNominalOutputVoltage(Constants.SHOOT_NOMINAL_VOLTAGE, -Constants.SHOOT_NOMINAL_VOLTAGE);
 			shootMotor.configPeakOutputVoltage(Constants.SHOOT_PEAK_VOLTAGE, -Constants.SHOOT_PEAK_VOLTAGE);
@@ -27,46 +41,53 @@ public class Shooter {
 			shootMotor.setProfile(Constants.SHOOT_PID_PROFILE);
 		} catch(Error e) {
 			
-		}
+		}*/
 	}
 	
 	public void updateShooter() {
-		speed = Constants.DASHBOARD_VALUES.getDouble("Shoot Motor RPM", 5340);
+		speed = Constants.DASHBOARD_VALUES.getDouble("Shoot Motor RPM", -1.0);
 		
-		if (controller.getRawAxis(2) >= 0.9) {
+		if (controller.getRawButton(5)) {
 			toggleShooter();
 			isReleased = false;
 		} else {
 			isReleased = true;
 		}
 		
+		//Eject ball
 		if (controller.getRawButton(1)) {
-			shootMotor.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
-			shootMotor.set(-1.0);
-		} else {
+			shootMotorMaster.set(-0.5);
+		} 
+		//Intake ball
+		else if (controller.getRawAxis(3) >= 0.9)
+		{
+			shootMotorMaster.set(0.75);
+		}
+		else 
+		{
 			if (!isShooting) {
-				shootMotor.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
-				shootMotor.set(0.0);
+				shootMotorMaster.set(0.0);
 			} else {
-				shootMotor.changeControlMode(CANTalon.TalonControlMode.Speed);
-				shootMotor.set(speed);
+				shootMotorMaster.set(speed);
 			}
 		}
 		
-		SmartDashboard.putNumber("Shooter Encoder Velocity: ", shootMotor.getEncVelocity());
-		SmartDashboard.putNumber("Shooter Encoder Velocity: ", shootMotor.getSpeed());
-		SmartDashboard.putNumber("Shooter Motor Output", shootMotor.getOutputVoltage()/shootMotor.getBusVoltage());
-		SmartDashboard.putNumber("Shooter Error", shootMotor.getError());
+		if(controller.getRawAxis(2) >= 0.9){
+			shootPlunger.set(true);
+		}
+		else{
+			shootPlunger.set(false);
+		}
+		
+		SmartDashboard.putNumber("Shooter Motor Output", shootMotorMaster.getOutputVoltage()/shootMotorMaster.getBusVoltage());
 	}
 	
 	public void toggleShooter() {
 		if (isReleased) {
 			if (isShooting) {
-				shootMotor.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
-				shootMotor.set(0.0);
+				shootMotorMaster.set(0.0);
 			} else {
-				shootMotor.changeControlMode(CANTalon.TalonControlMode.Speed);
-				shootMotor.set(speed);
+				shootMotorMaster.set(speed);
 			}
 			isShooting = !isShooting;
 		}

@@ -115,7 +115,8 @@ public class Arm {
 				isHoldingPosition = false;
 				//speed = (speed * speed) * Constants.ARM_MOTOR_SCALER_DOWN;
 				masterMotor.set((speed*speed) * Constants.ARM_MOTOR_SCALER_DOWN);
-			} else if(shootController.getRawButton(2)){
+			}
+			else if(shootController.getRawButton(2)){
 				//Set load position of the arm
 				targetPosition = Constants.ARM_LOAD_POSITION;
 				enableClosedLoop(targetPosition);
@@ -131,7 +132,8 @@ public class Arm {
 				// Combo Button, also runs Intake Motor. Intended to FIRE
 				targetPosition = Constants.ARM_LOAD_POSITION;
 				enableClosedLoop(targetPosition);
-			} else {
+			}
+			else {
 				//No throttle input, and no button pressed
 				if(isSensorZeroed){
 					/**************************************************************************

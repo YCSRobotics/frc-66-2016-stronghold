@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Victor;
 
@@ -42,7 +43,11 @@ public class Constants {
 	
 	// Shooter Motor
 	
-	public static final CANTalon SHOOT_MOTOR = new CANTalon(0);
+	public static final CANTalon SHOOT_MOTOR_MASTER = new CANTalon(1);
+	public static final CANTalon SHOOT_MOTOR_SLAVE = new CANTalon(2);
+	
+	public static final Solenoid SHOOT_PLUNGER = new Solenoid(0);
+	
 	public static final int SHOOT_ENCODER_COUNTS_PER_REV = 1024; // Need to change
 	
 	/******************************************************************************
@@ -72,12 +77,12 @@ public class Constants {
 	// Arm Motor
 
 	//public static final Talon ARM_MOTOR = new Talon(2);
-	public static final CANTalon ARM_MOTOR_MASTER = new CANTalon(1);
-	public static final CANTalon ARM_MOTOR_SLAVE = new CANTalon(2);
+	public static final CANTalon ARM_MOTOR_MASTER = new CANTalon(3);
+	public static final CANTalon ARM_MOTOR_SLAVE = new CANTalon(0);
 	
 	public static final double ARM_CONTROLLER_UPPER_DEADZONE = 0.15;
 	public static final double ARM_CONTROLLER_LOWER_DEADZONE =-0.15;
-	public static final double ARM_MOTOR_SCALER_UP = 0.3;
+	public static final double ARM_MOTOR_SCALER_UP = 0.2;
 	public static final double ARM_MOTOR_SCALER_DOWN = 0.2;
 	
 	public static final int    ARM_PID_PROFILE = 1;
