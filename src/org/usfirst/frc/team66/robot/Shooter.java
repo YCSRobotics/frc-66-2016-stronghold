@@ -7,68 +7,92 @@ import edu.wpi.first.wpilibj.Joystick;
 public class Shooter {
 	static Joystick controller;
 	static CANTalon shootMotor;
-	static double speed;
-	static boolean isShooting = false, isReleased = true;
+	static CANTalon shootMotorSlave;
+	static double intakeSpeed = Constants.INTAKE_SPEED,
+			shootSpeed = Constants.SHOOT_SPEED,
+			slowEjectSpeed = Constants.SLOW_EJECT_SPEED;
+	static int shootControlCount = 0;
+	static boolean isShootingAuton = false, isIntakingAuton = false,
+			isShooting = false;
 	
 	public Shooter() {
 		Shooter.shootMotor = Constants.SHOOT_MOTOR;
+		Shooter.shootMotorSlave = Constants.SHOOT_MOTOR_SLAVE;
 		Shooter.controller = Constants.SHOOT_CONTROLLER;
 		
+		shootMotor.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
+		
+		shootMotorSlave.changeControlMode(CANTalon.TalonControlMode.Follower);
+		shootMotorSlave.set(shootMotor.getDeviceID());
+		shootMotorSlave.reverseOutput(true);	
+		
 		shootMotor.enableBrakeMode(false);
-		shootMotor.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
-		try {
-			shootMotor.configEncoderCodesPerRev(Constants.SHOOT_ENCODER_COUNTS_PER_REV);
-			shootMotor.configNominalOutputVoltage(Constants.SHOOT_NOMINAL_VOLTAGE, -Constants.SHOOT_NOMINAL_VOLTAGE);
-			shootMotor.configPeakOutputVoltage(Constants.SHOOT_PEAK_VOLTAGE, -Constants.SHOOT_PEAK_VOLTAGE);
-			shootMotor.setP(Constants.SHOOT_PID_P);
-			shootMotor.setI(Constants.SHOOT_PID_I);
-			shootMotor.setD(Constants.SHOOT_PID_D);
-			shootMotor.setF(Constants.SHOOT_PID_F);
-			shootMotor.setProfile(Constants.SHOOT_PID_PROFILE);
-		} catch(Error e) {
-			
-		}
+		shootMotorSlave.enableBrakeMode(false);
 	}
 	
+	// Tele-OP method
 	public void updateShooter() {
-		speed = Constants.DASHBOARD_VALUES.getDouble("Shoot Motor RPM", 5340);
+		// disable auton shooting at beginning of teleop
+		if(isShootingAuton) isShootingAuton = false;
 		
+		// Start shooting with right trigger
 		if (controller.getRawAxis(2) >= 0.9) {
-			toggleShooter();
-			isReleased = false;
-		} else {
-			isReleased = true;
+			isShooting = true;
 		}
 		
-		if (controller.getRawButton(1)) {
-			shootMotor.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
-			shootMotor.set(-1.0);
-		} else {
-			if (!isShooting) {
-				shootMotor.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
-				shootMotor.set(0.0);
+		// Shooting Timing Process
+		if (isShooting) {
+			if (shootControlCount < 200) {
+				shootControlCount = shootControlCount++;
 			} else {
-				shootMotor.changeControlMode(CANTalon.TalonControlMode.Speed);
-				shootMotor.set(speed);
+	/* ******* // ADD BALL ACTUATION HERE!!!!! ********* */
+				isShooting = false;
+			}
+		} else {
+			shootControlCount = 0;
+		}
+		
+		// Eject
+		if (controller.getRawButton(1)) {
+			shootMotor.set(slowEjectSpeed);
+		} else {
+			if (isShooting) { // spin up shooter
+				shootMotor.set(shootSpeed);
+			} else if (controller.getRawAxis(3) >= 0.9) { // intake
+				// ********** ADD ROLLER **********
+				shootMotor.set(intakeSpeed);
+			} else { // stop
+				shootMotor.set(0);
 			}
 		}
-		
-		SmartDashboard.putNumber("Shooter Encoder Velocity: ", shootMotor.getEncVelocity());
-		SmartDashboard.putNumber("Shooter Encoder Velocity: ", shootMotor.getSpeed());
-		SmartDashboard.putNumber("Shooter Motor Output", shootMotor.getOutputVoltage()/shootMotor.getBusVoltage());
-		SmartDashboard.putNumber("Shooter Error", shootMotor.getError());
 	}
 	
+	// Sets the shooter to full on, or turns it off. Toggle switch
 	public void toggleShooter() {
-		if (isReleased) {
-			if (isShooting) {
-				shootMotor.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
-				shootMotor.set(0.0);
-			} else {
-				shootMotor.changeControlMode(CANTalon.TalonControlMode.Speed);
-				shootMotor.set(speed);
-			}
-			isShooting = !isShooting;
+		if (isShootingAuton) {
+			shootMotor.set(0.0);
+		} else {
+			shootMotor.set(shootSpeed);
 		}
+		isShootingAuton = !isShootingAuton;
+	}
+	
+	public void toggleIntake() {
+		if (isIntakingAuton) {
+			shootMotor.set(0.0);
+			// ADD ROLLER
+		} else {
+			shootMotor.set(intakeSpeed);
+			// ADD ROLLER
+		}
+		isIntakingAuton = !isIntakingAuton;
+	}
+	
+	public void rollerUp() {
+		// MAKE ROLLER MOVE UP
+	}
+	
+	public void rollerDown() {
+		// MAKE ROLLER MOVE DOWN
 	}
 }

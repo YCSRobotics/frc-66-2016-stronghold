@@ -17,7 +17,7 @@ public class Constants {
 	public static final Joystick DRIVE_CONTROLLER = new Joystick(0);
 	public static final Joystick SHOOT_CONTROLLER = new Joystick(1);
 
-	// Drivetrain Motors
+	// Drivetrain
 	
 	public static final Victor LEFT_MOTOR = new Victor(0);
 	public static final double LEFT_MOTOR_SCALER = -1.0;
@@ -40,10 +40,13 @@ public class Constants {
     public static final double TARGET_DISTANCE_THRESHOLD = 4.0;
     public static final double TARGET_ANGLE_THRESHOLD = 5.0;
 	
-	// Shooter Motor
+	// Shooter
 	
 	public static final CANTalon SHOOT_MOTOR = new CANTalon(0);
+	public static final CANTalon SHOOT_MOTOR_SLAVE = new CANTalon(1);
 	public static final int SHOOT_ENCODER_COUNTS_PER_REV = 1024; // Need to change
+	
+	public static final double SHOOT_SPEED = 1.0;
 	
 	/******************************************************************************
 	 * Calculate F term (from CTRE user manual)
@@ -64,16 +67,16 @@ public class Constants {
 	public static final double SHOOT_PEAK_VOLTAGE = 12; // Need to change
 	public static final double SHOOT_NOMINAL_VOLTAGE = 0; // Need to change	
 	
-	// Intake Motor
+	// Intake
 	
-	public static final Talon FEED_MOTOR = new Talon(3);
-	public static final double FEED_MOTOR_SCALER = 1.00;
+	public static final double INTAKE_SPEED = -0.5;
+	public static final double SLOW_EJECT_SPEED = 0.25;
 	
-	// Arm Motor
+	// Arm
 
 	//public static final Talon ARM_MOTOR = new Talon(2);
-	public static final CANTalon ARM_MOTOR_MASTER = new CANTalon(1);
-	public static final CANTalon ARM_MOTOR_SLAVE = new CANTalon(2);
+	public static final CANTalon ARM_MOTOR_MASTER = new CANTalon(2);
+	public static final CANTalon ARM_MOTOR_SLAVE = new CANTalon(3);
 	
 	public static final double ARM_CONTROLLER_UPPER_DEADZONE = 0.15;
 	public static final double ARM_CONTROLLER_LOWER_DEADZONE =-0.15;

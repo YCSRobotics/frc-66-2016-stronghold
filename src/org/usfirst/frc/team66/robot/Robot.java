@@ -21,7 +21,6 @@ public class Robot extends IterativeRobot {
     public static Autonomous AUTONOMOUS;
     public static Drivetrain DRIVETRAIN;
     public static Shooter SHOOTER;
-    public static Intake INTAKE;
 	public static Arm ARM;
 	private static Camera CAMERA;
     
@@ -31,7 +30,6 @@ public class Robot extends IterativeRobot {
      */
     public void robotInit() {
         SHOOTER = new Shooter();
-        INTAKE = new Intake();
         ARM = new Arm();
         DRIVETRAIN = new Drivetrain();
         AUTONOMOUS = new Autonomous();
@@ -85,7 +83,6 @@ public class Robot extends IterativeRobot {
     	DRIVETRAIN.updateDrivetrainTeleop();
     	CAMERA.updateCamera();
         SHOOTER.updateShooter();
-        INTAKE.updateIntake();
         ARM.updateArmTeleop();
     }
     
