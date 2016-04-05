@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Victor;
 
@@ -48,6 +49,38 @@ public class Constants {
 	
 	public static final double SHOOT_SPEED = 1.0;
 	
+	public static final Solenoid SHOOT_SOLENOID = new Solenoid(0);
+	
+	// Intake
+	
+	public static final Talon FEED_MOTOR = new Talon(3);
+	public static final double INTAKE_SPEED = -0.5;
+	public static final double SLOW_EJECT_SPEED = 0.25;
+	public static final double ROLLER_SPEED = 1.0;
+	
+	// Arm
+	
+	public static final CANTalon ARM_MOTOR_MASTER = new CANTalon(2);
+	public static final CANTalon ARM_MOTOR_SLAVE = new CANTalon(3);
+	
+	public static final double ARM_CONTROLLER_UPPER_DEADZONE = 0.15;
+	public static final double ARM_CONTROLLER_LOWER_DEADZONE =-0.15;
+	public static final double ARM_MOTOR_SCALER_UP = 0.3;
+	public static final double ARM_MOTOR_SCALER_DOWN = 0.2;
+	
+	public static final int    ARM_PID_PROFILE = 1;
+	public static final double ARM_PID_P = 0.175;
+	public static final double ARM_PID_I = 0;
+	public static final double ARM_PID_D = 0;
+	public static final double ARM_PID_F = 0;
+	
+	public static final double ARM_LOAD_POSITION = 0.55;
+	public static final double ARM_SHOOT_POSITION = 0.0;
+	public static final double ARM_UNLOAD_POSITION = 0.35;
+	
+	public static final double ARM_ERROR_THRESHOLD = 250;
+	
+	/* Not used */
 	/******************************************************************************
 	 * Calculate F term (from CTRE user manual)
 	 * 5080 RPM at 100% output (determined empirically)
@@ -66,33 +99,5 @@ public class Constants {
 	public static final int SHOOT_PID_PROFILE = 0; // Uses in-code PID, not WebUI
 	public static final double SHOOT_PEAK_VOLTAGE = 12; // Need to change
 	public static final double SHOOT_NOMINAL_VOLTAGE = 0; // Need to change	
-	
-	// Intake
-	
-	public static final double INTAKE_SPEED = -0.5;
-	public static final double SLOW_EJECT_SPEED = 0.25;
-	
-	// Arm
-
-	//public static final Talon ARM_MOTOR = new Talon(2);
-	public static final CANTalon ARM_MOTOR_MASTER = new CANTalon(2);
-	public static final CANTalon ARM_MOTOR_SLAVE = new CANTalon(3);
-	
-	public static final double ARM_CONTROLLER_UPPER_DEADZONE = 0.15;
-	public static final double ARM_CONTROLLER_LOWER_DEADZONE =-0.15;
-	public static final double ARM_MOTOR_SCALER_UP = 0.3;
-	public static final double ARM_MOTOR_SCALER_DOWN = 0.2;
-	
-	public static final int    ARM_PID_PROFILE = 1;
-	public static final double ARM_PID_P = 0.125;
-	public static final double ARM_PID_I = 0;
-	public static final double ARM_PID_D = 0;
-	public static final double ARM_PID_F = 0;
-	
-	public static final double ARM_LOAD_POSITION = 0.65;
-	public static final double ARM_SHOOT_POSITION =0.5;
-	public static final double ARM_UNLOAD_POSITION = 0.2;
-	
-	public static final double ARM_ERROR_THRESHOLD = 250;
 	
 }
