@@ -15,7 +15,8 @@ public class Arm {
 	private static boolean allowClosedLoop   = true;
 	private static boolean isHoldingPosition = false;
 	
-	private double targetPosition;
+	private static double targetPosition;
+	private static double positionError;
 	
 	public Arm() {
 		Arm.masterMotor = Constants.ARM_MOTOR_MASTER;
@@ -36,11 +37,17 @@ public class Arm {
 		
 		//Configure Master Motor PID parameters.
 		masterMotor.configNominalOutputVoltage(0, 0);
-		masterMotor.configPeakOutputVoltage(3.0, -3.0);
-		masterMotor.setP(Constants.ARM_PID_P);
+		masterMotor.configPeakOutputVoltage(3.0, -6.0);
+		masterMotor.setP(Constants.ARM_PID_P_DEFAULT);
 		masterMotor.setI(Constants.ARM_PID_I);
 		masterMotor.setD(Constants.ARM_PID_D);
 		masterMotor.setF(Constants.ARM_PID_F);
+		
+	}
+	
+	public void initArm()
+	{
+		//TODO
 	}
 	
 	public void zeroSensor(){
@@ -51,6 +58,7 @@ public class Arm {
 	}
 	
 	public static void enableClosedLoop(double setValue){
+		targetPosition = setValue;
 		masterMotor.changeControlMode(CANTalon.TalonControlMode.Position);
 		masterMotor.set(setValue);
 		allowClosedLoop = true;
@@ -91,11 +99,15 @@ public class Arm {
 	
 	public void updateArmTeleop() {
 		double speed = shootController.getRawAxis(5);
+		double gain;
 		
-		/*if(masterMotor.isFwdLimitSwitchClosed())
+		if(masterMotor.isRevLimitSwitchClosed())
 		{
 			zeroSensor();
-		}*/
+		}
+		
+		gain = getMotorGain(speed);
+		
 		
 		if(driveController.getRawAxis(3)>= 0.9){
 			//Set load position of the arm
@@ -109,29 +121,28 @@ public class Arm {
 				masterMotor.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
 				isHoldingPosition = false;
 				//speed = - (speed * speed) * Constants.ARM_MOTOR_SCALER_UP;
-				masterMotor.set(-(speed*speed) * Constants.ARM_MOTOR_SCALER_UP);
+				masterMotor.set(-(speed*speed) * gain);
 			} else if (speed <= Constants.ARM_CONTROLLER_LOWER_DEADZONE){
 				masterMotor.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
-				isHoldingPosition = false;
-				//speed = (speed * speed) * Constants.ARM_MOTOR_SCALER_DOWN;
-				masterMotor.set((speed*speed) * Constants.ARM_MOTOR_SCALER_DOWN);
+				isHoldingPosition = false;				//speed = (speed * speed) * Constants.ARM_MOTOR_SCALER_DOWN;
+				masterMotor.set((speed*speed) * gain);
 			}
-			else if(shootController.getRawButton(2)){
+			else if(shootController.getRawButton(3)){
 				//Set load position of the arm
-				targetPosition = Constants.ARM_LOAD_POSITION;
-				enableClosedLoop(targetPosition);
-			} else if (shootController.getRawButton(3)){
-				//Set unload position of the arm
-				targetPosition = Constants.ARM_UNLOAD_POSITION;
-				enableClosedLoop(targetPosition);
+				//targetPosition = Constants.ARM_LOAD_POSITION;
+				enableClosedLoop(Constants.ARM_LOAD_POSITION);
 			} else if (shootController.getRawButton(4)){
+				//Set unload position of the arm
+				//targetPosition = Constants.ARM_LOW_POSITION;
+				enableClosedLoop(Constants.ARM_LOW_POSITION);
+			} else if (shootController.getRawButton(2)){
 				//Set shoot position of the arm
-				targetPosition = Constants.ARM_SHOOT_POSITION;
-				enableClosedLoop(targetPosition);
+				//targetPosition = Constants.ARM_HIGH_POSITION;
+				enableClosedLoop(Constants.ARM_HIGH_POSITION);
 			} else if (shootController.getRawButton(9)) {
 				// Combo Button, also runs Intake Motor. Intended to FIRE
-				targetPosition = Constants.ARM_LOAD_POSITION;
-				enableClosedLoop(targetPosition);
+				//targetPosition = Constants.ARM_LOAD_POSITION;
+				enableClosedLoop(Constants.ARM_LOAD_POSITION);
 			}
 			else {
 				//No throttle input, and no button pressed
@@ -163,7 +174,10 @@ public class Arm {
 	public static boolean isArmInPosition(){
 		boolean isInPosition;
 		
-		if(Math.abs(masterMotor.getError()) <= Constants.ARM_ERROR_THRESHOLD){
+		positionError = (masterMotor.getPosition() - targetPosition);
+		
+		if(Math.abs(positionError) <= Constants.ARM_ERROR_THRESHOLD)
+		{
 			isInPosition = true;
 		}
 		else
@@ -174,13 +188,49 @@ public class Arm {
 		return isInPosition;
 	}
 	
+	private double getMotorGain(double speedCommand)
+	{
+		double gain;
+		double position;
+		
+		position = masterMotor.getPosition();
+		
+		if((position >= Constants.ARM_LOW_KNEE_POSITION)&&
+		   (speedCommand >= Constants.ARM_CONTROLLER_UPPER_DEADZONE))
+		{
+			//Arm below knee point and being raised, use fast up gain
+			gain = Constants.ARM_MOTOR_SCALER_UP_FAST;
+		}
+		else if ((position < Constants.ARM_LOW_KNEE_POSITION)&&
+				 (speedCommand >= Constants.ARM_CONTROLLER_UPPER_DEADZONE))
+		{
+			//Arm raised above knee point and being raised, use slow up gain
+			gain = Constants.ARM_MOTOR_SCALER_UP_SLOW;
+		}
+		else if ((position <= Constants.ARM_HIGH_KNEE_POSITION)&&
+				 (speedCommand >= Constants.ARM_CONTROLLER_UPPER_DEADZONE))
+		{
+			//Arm raised above knee point and being lowered, use fast down gain
+			gain = Constants.ARM_MOTOR_SCALER_FAST_DOWN;
+		}
+		else
+		{
+		    gain = Constants.ARM_MOTOR_SCALER_SLOW_DOWN;
+		}
+		
+		return(gain);
+	}
+
+	
 	private void updateArmDashboard(){
 		SmartDashboard.putNumber("Arm Relative Position", masterMotor.getPosition());
 		SmartDashboard.putNumber("Target Arm Position", targetPosition);
-		SmartDashboard.putNumber("Arm Error", masterMotor.getError());
+		SmartDashboard.putNumber("Arm Error", positionError);
 		SmartDashboard.putNumber("Arm Motor Output", (masterMotor.getOutputVoltage()/masterMotor.getBusVoltage()));
 		SmartDashboard.putBoolean("Holding Position", isHoldingPosition);
 		SmartDashboard.putBoolean("Is Arm In Position", isArmInPosition());
+		SmartDashboard.putBoolean("Lower Limit Active", masterMotor.isFwdLimitSwitchClosed());
+		SmartDashboard.putBoolean("Upper Limit Active", masterMotor.isRevLimitSwitchClosed());
 	}
 	
 }

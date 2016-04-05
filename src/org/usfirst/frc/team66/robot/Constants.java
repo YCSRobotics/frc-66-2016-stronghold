@@ -1,5 +1,6 @@
 package org.usfirst.frc.team66.robot;
 
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Encoder;
@@ -28,7 +29,7 @@ public class Constants {
 	public static final Encoder LEFT_ENCODER = new Encoder(0, 1, false);
 	public static final Encoder RIGHT_ENCODER = new Encoder(2, 3, true);
 	public static final double  ENCODER_DISTANCE_PER_COUNT = 0.0698;//2*4in*pi = 25.133 in/360 =.0698in
-	public static final AnalogGyro GYRO = new AnalogGyro(0);
+	public static final ADXRS450_Gyro GYRO = new ADXRS450_Gyro();
 	
 	public static final double SKIM_GAIN  = 1.0;
     public static final double TURN_GAIN  = 0.5;
@@ -82,19 +83,33 @@ public class Constants {
 	
 	public static final double ARM_CONTROLLER_UPPER_DEADZONE = 0.15;
 	public static final double ARM_CONTROLLER_LOWER_DEADZONE =-0.15;
-	public static final double ARM_MOTOR_SCALER_UP = 0.2;
-	public static final double ARM_MOTOR_SCALER_DOWN = 0.2;
+	public static final double ARM_MOTOR_SCALER_UP_SLOW = 0.2;
+	public static final double ARM_MOTOR_SCALER_UP_FAST = 0.4;
+	public static final double ARM_MOTOR_SCALER_FAST_DOWN = 0.4;
+	public static final double ARM_MOTOR_SCALER_SLOW_DOWN = 0.2;
 	
 	public static final int    ARM_PID_PROFILE = 1;
-	public static final double ARM_PID_P = 0.125;
+	
+	//Selectable P-Gains
+	public static final double ARM_PID_P_DEFAULT = 0.75;
+	public static final double ARM_PID_P_UP_FAST = 0.75;
+	public static final double ARM_PID_P_UP_SLOW = 0.75;
 	public static final double ARM_PID_I = 0;
 	public static final double ARM_PID_D = 0;
 	public static final double ARM_PID_F = 0;
 	
-	public static final double ARM_LOAD_POSITION = 0.65;
-	public static final double ARM_SHOOT_POSITION =0.5;
-	public static final double ARM_UNLOAD_POSITION = 0.2;
+	public static final double ARM_LOAD_POSITION  = 0.45;
+	public static final double ARM_HIGH_POSITION  = 0.07; //.054
+	public static final double ARM_CROSS_POSITION = 0.3;
+	public static final double ARM_LOW_POSITION   = 0.25;
 	
-	public static final double ARM_ERROR_THRESHOLD = 250;
+	public static final double ARM_LOW_KNEE_POSITION = 0.2;
+	public static final double ARM_HIGH_KNEE_POSITION = 0.3;
+	
+	public static final double ARM_ERROR_THRESHOLD = .05;
+	
+	//Camera
+	
+	public static final String CAMERA_ARM_NAME = "cam1";
 	
 }

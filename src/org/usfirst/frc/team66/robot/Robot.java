@@ -1,5 +1,6 @@
 package org.usfirst.frc.team66.robot;
 
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Preferences;
@@ -24,6 +25,7 @@ public class Robot extends IterativeRobot {
     public static Intake INTAKE;
 	public static Arm ARM;
 	private static Camera CAMERA;
+	private static USBCamera USBCAMERA;
     
     /**
      * This function is run when the robot is first started up and should be
@@ -36,9 +38,16 @@ public class Robot extends IterativeRobot {
         DRIVETRAIN = new Drivetrain();
         AUTONOMOUS = new Autonomous();
         CAMERA = new Camera();
+        USBCAMERA = new USBCamera();
         
         //TODO: Need to tie this to the limit switches, for now zero sensor on init
         ARM.zeroSensor();
+        DRIVETRAIN.GYRO.calibrate();
+        
+        /*//Test code for USB camera
+        CameraServer server = CameraServer.getInstance();
+        server.setQuality(50);
+        server.startAutomaticCapture("cam1");*/
 
         SmartDashboard.putNumber("Auto Mode", AUTONOMOUS.AUTON_MODE_DO_NOTHING);
     }
@@ -48,6 +57,7 @@ public class Robot extends IterativeRobot {
     
     public void disabledPeriodic() {
 		autoSelected = (int) SmartDashboard.getNumber("Auto Mode", AUTONOMOUS.AUTON_MODE_DO_NOTHING);
+		USBCAMERA.updateUsbCamera();
     }
     
 	/**
@@ -63,7 +73,7 @@ public class Robot extends IterativeRobot {
     	//AUTONOMOUS.setAutonomousMode(AUTONOMOUS.AUTON_MODE_LOW_BAR);
     	autoSelected = (int) SmartDashboard.getNumber("Auto Mode", AUTONOMOUS.AUTON_MODE_DO_NOTHING);
     	AUTONOMOUS.setAutonomousMode(autoSelected);
-    	DRIVETRAIN.GYRO.reset();
+    	DRIVETRAIN.zeroGyro();
     }
 
     /**
@@ -73,11 +83,13 @@ public class Robot extends IterativeRobot {
     	AUTONOMOUS.updateAutonomous();
     	DRIVETRAIN.updateDrivetrainAuton();
     	ARM.updateArmAuton();
+    	USBCAMERA.updateUsbCamera();
     }
 
     public void teleopInit(){
     	//TODO: Need to tie this to the limit switches, for now zero sensor on init
         //ARM.zeroSensor();
+    	DRIVETRAIN.zeroGyro();
     }
     /**
      * This function is called periodically during operator control
@@ -88,6 +100,7 @@ public class Robot extends IterativeRobot {
         SHOOTER.updateShooter();
         INTAKE.updateIntake();
         ARM.updateArmTeleop();
+        USBCAMERA.updateUsbCamera();
     }
     
     /**

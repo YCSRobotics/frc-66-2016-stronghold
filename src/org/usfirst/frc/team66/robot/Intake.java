@@ -31,7 +31,7 @@ public class Intake {
 			(shootController.getRawAxis(3) >= 0.9) ||
 			shootController.getRawButton(9) ){
 			FEED_MOTOR.set(speed);
-		} else if (shootController.getRawButton(1)) {
+		} else if (shootController.getRawButton(6)) {
 			FEED_MOTOR.set(-speed);
 		} else {
 			FEED_MOTOR.set(0);

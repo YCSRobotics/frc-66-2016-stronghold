@@ -2,6 +2,7 @@ package org.usfirst.frc.team66.robot;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Victor;
@@ -19,7 +20,7 @@ public class Drivetrain {
 	private static Encoder LEFT_ENCODER;
 	private static Encoder RIGHT_ENCODER;
 	
-	public static AnalogGyro GYRO;
+	public static ADXRS450_Gyro GYRO;
 	
 	static DrivetrainSide leftSide;
 	static DrivetrainSide rightSide;
@@ -29,6 +30,8 @@ public class Drivetrain {
 	public static double targetLeftSpeed;
 	public static double targetRightSpeed;
 	
+	public static double invertGain = 1.0;
+	
 	public static double targetDistance;
 	public static double targetAngle;
 	
@@ -36,6 +39,9 @@ public class Drivetrain {
 	public static boolean isTurningDistance = false;
 	
 	public static boolean isGyroZeroed = false;
+	
+	public static boolean isInverted = false;
+	public static boolean invertReleased = true;
 	
 	public Drivetrain() {
 		Drivetrain.controller = Constants.DRIVE_CONTROLLER;
@@ -47,9 +53,11 @@ public class Drivetrain {
 		
 		Drivetrain.LEFT_ENCODER = Constants.LEFT_ENCODER;
 		LEFT_ENCODER.setDistancePerPulse(Constants.ENCODER_DISTANCE_PER_COUNT);
+		LEFT_ENCODER.setReverseDirection(false);
 		
 		Drivetrain.RIGHT_ENCODER = Constants.RIGHT_ENCODER;
 		RIGHT_ENCODER.setDistancePerPulse(Constants.ENCODER_DISTANCE_PER_COUNT);
+		RIGHT_ENCODER.setReverseDirection(false);
 		
 		Drivetrain.leftSide = new DrivetrainSide(LEFT_MOTOR, LEFT_MOTOR_SCALER);
 		Drivetrain.rightSide = new DrivetrainSide(RIGHT_MOTOR, RIGHT_MOTOR_SCALER);
@@ -66,6 +74,9 @@ public class Drivetrain {
 		double distanceError;
 		double turnError;
 		
+		double tempRightSpeed;
+		double tempLeftSpeed;
+		
 		if(isMovingDistance)
 		{
 			distanceError = targetDistance - getAverageDistance();
@@ -73,9 +84,12 @@ public class Drivetrain {
 			if(Math.abs(distanceError) <= Constants.TARGET_DISTANCE_THRESHOLD){
 				isMovingDistance = false;
 				fwdThrottle = 0.0;
+				targetTurnRate = 0.0;		
 			}
-			
-			targetTurnRate = -1*(GYRO.getAngle()/10);
+			else
+			{
+				targetTurnRate = -1*(GYRO.getAngle()/10);
+			}
 		}
 		else if (isTurningDistance){
 			turnError = targetAngle - GYRO.getAngle();
@@ -120,6 +134,25 @@ public class Drivetrain {
 			driveGain = Constants.FINESSE_SCALER;
 		}
 		
+		//Toggle invert control
+		if (controller.getRawButton(4))
+		{
+			//First press, toggle gain
+			if(invertReleased)
+			{	
+				isInverted = !isInverted;
+				invertReleased = false;
+			}
+			else
+			{
+				//Already pressed, Do nothing
+			}
+					
+		}
+		else
+		{
+			invertReleased = true;
+		}
 		
 		if (controller.getRawButton(6)) 
 		{
@@ -135,8 +168,17 @@ public class Drivetrain {
 		{
 			isGyroZeroed = false;
 				
-			leftSide.set(controller.getRawAxis(1) * driveGain);
-			rightSide.set(controller.getRawAxis(5) * driveGain);
+			if(isInverted)
+			{
+				rightSide.set(-1*controller.getRawAxis(1) * driveGain);
+				leftSide.set(-1*controller.getRawAxis(5) * driveGain);
+			}
+			else
+			{
+				leftSide.set(controller.getRawAxis(1) * driveGain);
+				rightSide.set(controller.getRawAxis(5) * driveGain);
+			}
+			
 		}
 		
 		updateDrivetrainDashboard();
@@ -187,8 +229,19 @@ public class Drivetrain {
 		
 		setTargetSpeeds(throttle, turn);
 		
-		leftSide.set(targetLeftSpeed);
-		rightSide.set(targetRightSpeed);
+		if(isInverted)
+		{
+			leftSide.set(-1*targetRightSpeed);
+			rightSide.set(-1*targetLeftSpeed);
+		}
+		else
+		{
+			leftSide.set(targetLeftSpeed);
+			rightSide.set(targetRightSpeed);
+		}
+		
+		//leftSide.set(targetLeftSpeed);
+		//rightSide.set(targetRightSpeed);
 	}
 	
 	private double skim(double v){

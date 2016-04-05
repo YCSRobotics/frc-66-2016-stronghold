@@ -5,16 +5,18 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Autonomous {
 	
 	//Auton Modes
-	public static final int AUTON_MODE_DO_NOTHING      = 0;
+	public static final int AUTON_MODE_DO_NOTHING           = 0;
 	public static final int AUTON_MODE_PASSIVE_DEFENSE_SLOW = 1;
 	public static final int AUTON_MODE_PASSIVE_DEFENSE_FAST = 2;
 	public static final int AUTON_MODE_LOW_BAR              = 3;
+	public static final int AUTON_MODE_SHORT				= 4;
 	
 	//Auton States
 	private static final int AUTON_STATE_START         = 0;
 	private static final int AUTON_STATE_LOWER_ARM     = 1;
 	private static final int AUTON_STATE_MOVE_DISTANCE = 2;
 	private static final int AUTON_STATE_STOP          = 3;
+	
 
 	private static int currentAutoState;
 	private static int selectedAutoMode;
@@ -55,7 +57,6 @@ public class Autonomous {
 	}
 	
 	private void stateActionStop(){
-		Arm.disableClosedLoop();
 		Drivetrain.moveDistance(0, 0);
 	}
 	
@@ -68,14 +69,17 @@ public class Autonomous {
 				currentAutoState = AUTON_STATE_LOWER_ARM;
 				//currentAutoState = AUTON_STATE_STOP;
 			}
-			else if(selectedAutoMode == AUTON_MODE_PASSIVE_DEFENSE_SLOW)
+			else if( (selectedAutoMode == AUTON_MODE_PASSIVE_DEFENSE_SLOW) ||
+					 (selectedAutoMode == AUTON_MODE_PASSIVE_DEFENSE_FAST))
 			{
-				Drivetrain.moveDistance(-150.0, 0.8);
-				currentAutoState = AUTON_STATE_MOVE_DISTANCE;
+				Arm.enableClosedLoop(Constants.ARM_LOW_POSITION);
+				currentAutoState = AUTON_STATE_LOWER_ARM;
+				//Drivetrain.moveDistance(150.0, 0.8);
+				//currentAutoState = AUTON_STATE_MOVE_DISTANCE;
 			}
-			else if(selectedAutoMode == AUTON_MODE_PASSIVE_DEFENSE_FAST)
+			else if(selectedAutoMode == AUTON_MODE_SHORT)
 			{
-				Drivetrain.moveDistance(-150.0, 1.0);
+				Drivetrain.moveDistance(60.0, 0.5);
 				currentAutoState = AUTON_STATE_MOVE_DISTANCE;
 			}
 		} 
@@ -88,11 +92,31 @@ public class Autonomous {
 	
 	private void stateActionLowerArm(){
 		
-		if(Arm.isArmInPosition()){
-			//Arm.disableClosedLoop();
-			Drivetrain.moveDistance(-150.0, 0.6);
-			currentAutoState = AUTON_STATE_MOVE_DISTANCE;
-		} else {
+		if(Arm.isArmInPosition())
+		{
+			if(selectedAutoMode == AUTON_MODE_LOW_BAR)
+			{
+				Drivetrain.moveDistance(150.0, 0.6);
+				currentAutoState = AUTON_STATE_MOVE_DISTANCE;
+			}
+			else if (selectedAutoMode == AUTON_MODE_PASSIVE_DEFENSE_SLOW)
+			{
+				Drivetrain.moveDistance(150.0, 0.6);
+				currentAutoState = AUTON_STATE_MOVE_DISTANCE;
+			}
+			else if (selectedAutoMode == AUTON_MODE_PASSIVE_DEFENSE_FAST)
+			{
+				Drivetrain.moveDistance(150.0, 1.0);
+				currentAutoState = AUTON_STATE_MOVE_DISTANCE;
+			}
+			else
+			{
+				//Should never get here, but protect if we do
+				currentAutoState = AUTON_STATE_STOP;
+			}
+		} 
+		else 
+		{
 			//Wait for arm to be lowered
 		}
 	}

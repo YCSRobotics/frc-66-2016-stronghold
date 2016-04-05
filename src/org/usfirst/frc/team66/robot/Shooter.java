@@ -45,17 +45,17 @@ public class Shooter {
 	}
 	
 	public void updateShooter() {
-		speed = Constants.DASHBOARD_VALUES.getDouble("Shoot Motor RPM", -1.0);
+		speed = Constants.DASHBOARD_VALUES.getDouble("Shoot Motor RPM", -0.75);
 		
-		if (controller.getRawButton(5)) {
+		/*if (controller.getRawAxis(2) >= 0.9) {
 			toggleShooter();
 			isReleased = false;
 		} else {
 			isReleased = true;
-		}
+		}*/
 		
 		//Eject ball
-		if (controller.getRawButton(1)) {
+		if (controller.getRawButton(6)) {
 			shootMotorMaster.set(-0.5);
 		} 
 		//Intake ball
@@ -63,16 +63,21 @@ public class Shooter {
 		{
 			shootMotorMaster.set(0.75);
 		}
-		else 
+		//Slow intake while raising arm
+		else if (controller.getRawAxis(3) >= Constants.ARM_CONTROLLER_UPPER_DEADZONE)
 		{
-			if (!isShooting) {
-				shootMotorMaster.set(0.0);
-			} else {
-				shootMotorMaster.set(speed);
-			}
+			shootMotorMaster.set(0.25);
+		}
+		else if(controller.getRawAxis(2) >= 0.9)
+		{
+			shootMotorMaster.set(speed);
+		}
+		else
+		{
+			shootMotorMaster.set(0.0);
 		}
 		
-		if(controller.getRawAxis(2) >= 0.9){
+		if(controller.getRawButton(5)){
 			shootPlunger.set(true);
 		}
 		else{
@@ -92,4 +97,5 @@ public class Shooter {
 			isShooting = !isShooting;
 		}
 	}
+	
 }

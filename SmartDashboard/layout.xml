@@ -1,5 +1,24 @@
 <xml version="1.0">
 <dashboard>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.WebcamViewerExtension">
+		<location x="779" y="13"/>
+		<width>542</width>
+		<height>399</height>
+		<property name="FPS" value="15"/>
+		<property name="Size" value="320x240"/>
+	</static-widget>
+	<widget field="Upper Limit Active" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="507"/>
+	</widget>
+	<widget field="Lower Limit Active" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="486"/>
+	</widget>
+	<widget field="IMAGE_WIDTH" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="465"/>
+	</widget>
+	<widget field="IMAGE_HEIGHT" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="399"/>
+	</widget>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.Label">
 		<location x="543" y="407"/>
 		<property name="Text" value="1 - Move Forward"/>
@@ -9,12 +28,6 @@
 		<width>126</width>
 		<property name="Text" value="0 - Do Nothing"/>
 		<property name="Horizontal Alignment" value="Left"/>
-	</static-widget>
-	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.VideoStreamViewerExtension">
-		<location x="792" y="3"/>
-		<width>556</width>
-		<height>426</height>
-		<property name="Camera IP Address or mDNS name" value="127.0.0.1"/>
 	</static-widget>
 	<widget field="Auton State" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="542" y="21"/>
@@ -62,11 +75,6 @@
 		<location x="1" y="432"/>
 		<width>1343</width>
 	</static-widget>
-	<widget field="Shooter Encoder Velocity: " type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
-		<location x="16" y="128"/>
-		<width>523</width>
-		<height>270</height>
-	</widget>
 	<widget field="Shooter Error" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="333" y="34"/>
 		<width>208</width>
@@ -76,10 +84,6 @@
 		<width>205</width>
 		<height>20</height>
 	</widget>
-	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.RobotPreferences">
-		<location x="14" y="33"/>
-		<height>84</height>
-	</static-widget>
 	<widget field="Right Encoder" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="281" y="5"/>
 		<width>259</width>
