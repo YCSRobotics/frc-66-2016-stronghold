@@ -41,6 +41,8 @@ public class Constants {
     
     public static final double TARGET_DISTANCE_THRESHOLD = 4.0;
     public static final double TARGET_ANGLE_THRESHOLD = 5.0;
+    
+    public static final int DRIVETRAIN_RAMPING_FACTOR = 10;
 	
 	// Shooter Motor
 	
