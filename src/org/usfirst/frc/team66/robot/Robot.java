@@ -37,8 +37,12 @@ public class Robot extends IterativeRobot {
         ARM = new Arm();
         DRIVETRAIN = new Drivetrain();
         AUTONOMOUS = new Autonomous();
-        CAMERA = new Camera();
-        USBCAMERA = new USBCamera();
+        //CAMERA = new Camera();
+        try {
+        	USBCAMERA = new USBCamera();
+        } catch(Error e) {
+        	
+        }
         
         //TODO: Need to tie this to the limit switches, for now zero sensor on init
         ARM.zeroSensor();
@@ -57,7 +61,11 @@ public class Robot extends IterativeRobot {
     
     public void disabledPeriodic() {
 		autoSelected = (int) SmartDashboard.getNumber("Auto Mode", AUTONOMOUS.AUTON_MODE_DO_NOTHING);
-		USBCAMERA.updateUsbCamera();
+		try {
+			USBCAMERA.updateUsbCamera();
+		} catch(Error e) {
+			
+		}
     }
     
 	/**
@@ -83,7 +91,11 @@ public class Robot extends IterativeRobot {
     	AUTONOMOUS.updateAutonomous();
     	DRIVETRAIN.updateDrivetrainAuton();
     	ARM.updateArmAuton();
-    	USBCAMERA.updateUsbCamera();
+    	try {
+			USBCAMERA.updateUsbCamera();
+		} catch(Error e) {
+			
+		}
     }
 
     public void teleopInit(){
@@ -96,11 +108,15 @@ public class Robot extends IterativeRobot {
      */
     public void teleopPeriodic() {
     	DRIVETRAIN.updateDrivetrainTeleop();
-    	CAMERA.updateCamera();
+    	//CAMERA.updateCamera();
         SHOOTER.updateShooter();
         INTAKE.updateIntake();
         ARM.updateArmTeleop();
-        USBCAMERA.updateUsbCamera();
+        try {
+			USBCAMERA.updateUsbCamera();
+		} catch(Error e) {
+			
+		}
     }
     
     /**

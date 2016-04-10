@@ -12,6 +12,9 @@ public class Shooter {
 	static Solenoid shootPlunger;
 	static double speed;
 	static boolean isShooting = false, isReleased = true;
+	static int plungerLoopCount;
+	static boolean plungerState = false;
+	static boolean isShootButtonReleased = false;
 	
 	public Shooter() {
 		Shooter.shootMotorMaster = Constants.SHOOT_MOTOR_MASTER;
@@ -45,7 +48,7 @@ public class Shooter {
 	}
 	
 	public void updateShooter() {
-		speed = Constants.DASHBOARD_VALUES.getDouble("Shoot Motor RPM", -0.75);
+		speed = Constants.DASHBOARD_VALUES.getDouble("Shoot Motor RPM", -0.52);
 		
 		/*if (controller.getRawAxis(2) >= 0.9) {
 			toggleShooter();
@@ -77,11 +80,29 @@ public class Shooter {
 			shootMotorMaster.set(0.0);
 		}
 		
-		if(controller.getRawButton(5)){
+		if(plungerLoopCount <= Constants.PLUNGER_DELAY_COUNT)
+		{
+			plungerLoopCount++;
+		}
+		else
+		{
+			plungerState = false;
+			shootPlunger.set(false);
+		}
+		
+		if((controller.getRawButton(5)) &&
+		   (isShootButtonReleased))
+		{
+			isShootButtonReleased = false;
+			plungerLoopCount = 0;
 			shootPlunger.set(true);
+			plungerState = true;
+			plungerLoopCount = 0;
 		}
 		else{
-			shootPlunger.set(false);
+			if(plungerLoopCount >= Constants.PLUNGER_DELAY_COUNT){
+				isShootButtonReleased = true;
+			}
 		}
 		
 		SmartDashboard.putNumber("Shooter Motor Output", shootMotorMaster.getOutputVoltage()/shootMotorMaster.getBusVoltage());

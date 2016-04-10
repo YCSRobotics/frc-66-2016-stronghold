@@ -18,6 +18,8 @@ public class Arm {
 	private static double targetPosition;
 	private static double positionError;
 	
+	private static boolean inhibitPID;
+	
 	public Arm() {
 		Arm.masterMotor = Constants.ARM_MOTOR_MASTER;
 		Arm.slaveMotor = Constants.ARM_MOTOR_SLAVE;
@@ -58,11 +60,17 @@ public class Arm {
 	}
 	
 	public static void enableClosedLoop(double setValue){
-		targetPosition = setValue;
-		masterMotor.changeControlMode(CANTalon.TalonControlMode.Position);
-		masterMotor.set(setValue);
-		allowClosedLoop = true;
-		isHoldingPosition = true;
+		if(allowClosedLoop){
+			targetPosition = setValue;
+			masterMotor.changeControlMode(CANTalon.TalonControlMode.Position);
+			masterMotor.set(setValue);
+			isHoldingPosition = true;
+		}
+		else
+		{
+			//Do Nothing
+		}
+		
 	}
 	
 	public static void disableClosedLoop(){
@@ -104,6 +112,17 @@ public class Arm {
 		if(masterMotor.isRevLimitSwitchClosed())
 		{
 			zeroSensor();
+		}
+		
+		if(masterMotor.isFwdLimitSwitchClosed()){
+			allowClosedLoop = false;
+		}
+		else
+		{
+			if(masterMotor.getPosition() >= Constants.ARM_HIGH_KNEE_POSITION)
+			{
+				allowClosedLoop = true;
+			}
 		}
 		
 		gain = getMotorGain(speed);
@@ -231,6 +250,7 @@ public class Arm {
 		SmartDashboard.putBoolean("Is Arm In Position", isArmInPosition());
 		SmartDashboard.putBoolean("Lower Limit Active", masterMotor.isFwdLimitSwitchClosed());
 		SmartDashboard.putBoolean("Upper Limit Active", masterMotor.isRevLimitSwitchClosed());
+		SmartDashboard.putBoolean("PID Control Allowed", allowClosedLoop);
 	}
 	
 }

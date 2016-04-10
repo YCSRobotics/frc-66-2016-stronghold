@@ -71,7 +71,7 @@ public class Constants {
 	public static final int SHOOT_PID_PROFILE = 0; // Uses in-code PID, not WebUI
 	public static final double SHOOT_PEAK_VOLTAGE = 12; // Need to change
 	public static final double SHOOT_NOMINAL_VOLTAGE = 0; // Need to change	
-	
+	public static final int PLUNGER_DELAY_COUNT = 25;
 	// Intake Motor
 	
 	public static final Talon FEED_MOTOR = new Talon(3);
@@ -112,6 +112,6 @@ public class Constants {
 	
 	//Camera
 	
-	public static final String CAMERA_ARM_NAME = "cam1";
+	public static final String CAMERA_ARM_NAME = "cam0";
 	
 }
