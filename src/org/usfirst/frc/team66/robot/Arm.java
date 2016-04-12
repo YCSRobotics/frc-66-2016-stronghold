@@ -18,8 +18,6 @@ public class Arm {
 	private static double targetPosition;
 	private static double positionError;
 	
-	private static boolean inhibitPID;
-	
 	public Arm() {
 		Arm.masterMotor = Constants.ARM_MOTOR_MASTER;
 		Arm.slaveMotor = Constants.ARM_MOTOR_SLAVE;
@@ -240,6 +238,9 @@ public class Arm {
 		return(gain);
 	}
 
+	public static double getArmPosition(){
+		return masterMotor.getPosition();
+	}
 	
 	private void updateArmDashboard(){
 		SmartDashboard.putNumber("Arm Relative Position", masterMotor.getPosition());

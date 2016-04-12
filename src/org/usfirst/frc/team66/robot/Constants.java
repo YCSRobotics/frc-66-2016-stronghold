@@ -114,4 +114,14 @@ public class Constants {
 	
 	public static final String CAMERA_ARM_NAME = "cam0";
 	
+	//Hanger
+	public static final Talon WINCH_MOTOR = new Talon(2);
+	public static final Encoder WINCH_ENCODER = new Encoder(4,5);
+	
+	public static final double[] ARM_POSITION_LOOKUP_TABLE = 
+		{0.0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5};
+	
+	public static final double HANGER_RELEASE_THRESHOLD = 0.25;
+	public static final double WINCH_DISTANCE_PER_PULSE = 3.14159;
+	public static final boolean INVERT_WINCH_DIRECTION = false;
 }
