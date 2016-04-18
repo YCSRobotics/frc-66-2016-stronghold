@@ -8,14 +8,29 @@ public class DrivetrainSide {
 	private double motorScaler;
 	
 	private double speed = 0.0;
-	private int rampingFactor = Constants.DRIVETRAIN_RAMPING_FACTOR;
+	//private int rampingFactor = Constants.DRIVETRAIN_RAMPING_FACTOR;
 	
 	public DrivetrainSide(Victor motor, double motorScaler) {
 		this.motor = motor;
 		this.motorScaler = motorScaler;
 	}
-
-	public void set(double input) {
+	
+	public void set(double speed) {
+		if (Math.abs(speed) < 0.25) {
+			speed = 0;
+		}
+		if (speed > 0) {
+			speed = speed * speed;
+		} else if (speed < 0) {
+			speed = -(speed * speed);
+		} else {
+			speed = 0;
+		}
+		motor.set(speed * motorScaler);
+	}
+	
+	//Alex's ramping code
+	/*public void set(double input) {
 		if (Math.abs(input) < 0.25) {
 			input = 0;
 		}
@@ -35,5 +50,6 @@ public class DrivetrainSide {
 			tempSpeed = 0;
 		}
 		speed = tempSpeed;
-	}
+	}*/
+	
 }

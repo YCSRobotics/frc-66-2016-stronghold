@@ -18,6 +18,7 @@ public class Hanger {
 		Hanger.winchMotor = Constants.WINCH_MOTOR;
 		
 		Hanger.winchEncoder = Constants.WINCH_ENCODER;
+		winchEncoder.reset();
 		winchEncoder.setDistancePerPulse(Constants.WINCH_DISTANCE_PER_PULSE);
 		winchEncoder.setReverseDirection(Constants.INVERT_WINCH_DIRECTION);
 		
@@ -27,7 +28,7 @@ public class Hanger {
 		double winchPosition = winchEncoder.getDistance(); 
 		
 		//Release hanger hooks if arm raised high enough and release button pressed
-		if((shootController.getRawButton(button)) &&
+		if((shootController.getRawButton(1)) &&
 		   (Arm.getArmPosition() < Constants.HANGER_RELEASE_THRESHOLD)){
 			hangerRelease.set(true);
 			isHangerReleased = true;
@@ -36,7 +37,7 @@ public class Hanger {
 			hangerRelease.set(false);
 		}
 		
-		if((shootController.getRawButton(button)) &&
+		if((shootController.getRawButton(4)) &&
 		   (isHangerReleased))
 		{
 			Hanger.winchMotor.set(1.0);

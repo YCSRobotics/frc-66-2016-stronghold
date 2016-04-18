@@ -29,6 +29,8 @@ public class Drivetrain {
 	public static double targetTurnRate;
 	public static double targetLeftSpeed;
 	public static double targetRightSpeed;
+	public static double currentLeftCommand;
+	public static double currentRightCommand;
 	
 	public static double invertGain = 1.0;
 	
@@ -42,6 +44,8 @@ public class Drivetrain {
 	
 	public static boolean isInverted = false;
 	public static boolean invertReleased = true;
+	
+	public static boolean autoMoveStarted = true;
 	
 	public Drivetrain() {
 		Drivetrain.controller = Constants.DRIVE_CONTROLLER;
@@ -123,7 +127,9 @@ public class Drivetrain {
 	
 	public void updateDrivetrainTeleop() {
 		double driveGain;
+		double distanceError;
 		
+		//Look to see what gain to use based on turbo button state
 		if(controller.getRawButton(5)){
 			//Turbo Mode
 			driveGain = Constants.TURBO_SCALER;
@@ -154,8 +160,27 @@ public class Drivetrain {
 			invertReleased = true;
 		}
 		
-		if (controller.getRawButton(6)) 
+		//Operator control of the drivetrain
+		if ((controller.getRawButton(9)) &&
+		    (controller.getRawButton(10)))
 		{
+			//Start semi-autonomous movement
+			if (!autoMoveStarted)
+			{
+				if(!isGyroZeroed){
+					GYRO.reset();
+					isGyroZeroed = true;
+				}
+				 
+				moveDistance(Constants.AUTO_MOVE_DISTANCE,Constants.AUTO_MOVE_SCALER);
+				autoMoveStarted = true;
+			} 
+		}
+		else if (controller.getRawButton(6)) 
+		{
+			//Go straight pressed
+			autoMoveStarted = false;
+			isMovingDistance = false;
 			//Drive Straight Mode is active
 			if(!isGyroZeroed){
 				GYRO.reset();
@@ -163,23 +188,56 @@ public class Drivetrain {
 			}
 			
 			goStraight(driveGain);
-		} 
+		}
 		else 
 		{
+			//Pure manual control
+			autoMoveStarted = false;
+			isMovingDistance = false;
 			isGyroZeroed = false;
-				
-			if(isInverted)
+			
+			//CDL - Move inversion to a single place during ramping	
+			/*if(isInverted)
 			{
-				rightSide.set(-1*controller.getRawAxis(1) * driveGain);
-				leftSide.set(-1*controller.getRawAxis(5) * driveGain);
+				//rightSide.set(-1*controller.getRawAxis(1) * driveGain);
+				//leftSide.set(-1*controller.getRawAxis(5) * driveGain);
+				targetLeftSpeed = -controller.getRawAxis(1) * driveGain;
+				targetRightSpeed = -controller.getRawAxis(5) * driveGain;
 			}
 			else
 			{
-				leftSide.set(controller.getRawAxis(1) * driveGain);
-				rightSide.set(controller.getRawAxis(5) * driveGain);
+				//leftSide.set(controller.getRawAxis(1) * driveGain);
+				//rightSide.set(controller.getRawAxis(5) * driveGain);
+				targetLeftSpeed = controller.getRawAxis(1) * driveGain;
+				targetRightSpeed = controller.getRawAxis(5) * driveGain;
+			}*/	
+			
+			targetLeftSpeed = controller.getRawAxis(1) * driveGain;
+			targetRightSpeed = controller.getRawAxis(5) * driveGain;
+		}
+		
+		//Update motor outputs if moving semi-autonomously
+		if(isMovingDistance)
+		{
+			distanceError = targetDistance - getAverageDistance();
+			
+			if(Math.abs(distanceError) <= Constants.TARGET_DISTANCE_THRESHOLD){
+				isMovingDistance = false;
+				fwdThrottle = 0.0;
+				targetTurnRate = 0.0;		
+			}
+			else
+			{
+				targetTurnRate = -1*(GYRO.getAngle()/10);
 			}
 			
+			setTargetSpeeds(fwdThrottle, targetTurnRate);
+			
+			//leftSide.set(targetLeftSpeed);
+			//rightSide.set(targetRightSpeed);
 		}
+		
+		updateRamping();
 		
 		updateDrivetrainDashboard();
 		
@@ -203,18 +261,55 @@ public class Drivetrain {
     	targetRightSpeed = t_right + skim(t_left);
     }
    
+	private void updateRamping(){
+		double maxDriveDelta = Constants.DRIVETRAIN_RAMPING_FACTOR;
+		
+		if(isInverted)
+		{
+			currentLeftCommand = clamp((currentLeftCommand - maxDriveDelta),
+								   	   (currentLeftCommand + maxDriveDelta),
+								       (-targetRightSpeed));
+		
+			currentRightCommand = clamp((currentRightCommand - maxDriveDelta),
+				                        (currentLeftCommand + maxDriveDelta),
+				                        (-targetLeftSpeed));
+		}
+		else
+		{
+			currentLeftCommand = clamp((currentLeftCommand - maxDriveDelta),
+				   	                   (currentLeftCommand + maxDriveDelta),
+				                       (targetLeftSpeed));
+
+			currentRightCommand = clamp((currentRightCommand - maxDriveDelta),
+                                        (currentLeftCommand + maxDriveDelta),
+                                        (targetRightSpeed));
+		}
+		
+		leftSide.set(currentLeftCommand);
+		rightSide.set(currentRightCommand);
+		
+	}
 	
 	private void goStraight(double SCALER) {
+		/* This method will calculate the necessary left and right outputs
+		 * based on the greater of the two joystick inputs and the turn rate 
+		 * reported by the gyro in order to bring the robot back to a 0 degree
+		 * heading.
+		 */
 		double throttle;
 		double turn;
     	
-		if (Math.abs(controller.getRawAxis(1)) >= Math.abs(controller.getRawAxis(5))) {
+		//Pick the greater of the two joystick inputs
+		if (Math.abs(controller.getRawAxis(1)) >= Math.abs(controller.getRawAxis(5))) 
+		{
 			//leftSide.set(controller.getRawAxis(1) * SCALER);
 			//rightSide.set(controller.getRawAxis(1) * SCALER);
 			
 			throttle = controller.getRawAxis(1) * SCALER;
 			
-		} else {
+		} 
+		else 
+		{
 			//leftSide.set(controller.getRawAxis(5) * SCALER);
 			//rightSide.set(controller.getRawAxis(5) * SCALER);
 			
@@ -229,7 +324,8 @@ public class Drivetrain {
 		
 		setTargetSpeeds(throttle, turn);
 		
-		if(isInverted)
+		//CDL - Move inversion to a single place during ramping
+		/*if(isInverted)
 		{
 			leftSide.set(-1*targetRightSpeed);
 			rightSide.set(-1*targetLeftSpeed);
@@ -238,7 +334,7 @@ public class Drivetrain {
 		{
 			leftSide.set(targetLeftSpeed);
 			rightSide.set(targetRightSpeed);
-		}
+		}*/
 		
 		//leftSide.set(targetLeftSpeed);
 		//rightSide.set(targetRightSpeed);
@@ -310,6 +406,12 @@ public class Drivetrain {
 		SmartDashboard.putNumber("Gyro Rate", GYRO.getRate());
 		SmartDashboard.putBoolean("Is Moving Distance", isMovingDistance);
 		SmartDashboard.putNumber("Target Distance", targetDistance);
+		SmartDashboard.putNumber("Target Turn Rate", targetTurnRate);
+		SmartDashboard.putNumber("Target Angle", targetAngle);
+		SmartDashboard.putBoolean("Is Turning Distance", isTurningDistance);
+		SmartDashboard.putNumber("Left Target Speed", targetLeftSpeed);
+		SmartDashboard.putNumber("Right Target Speed", targetRightSpeed);
+		
 	}
 	
 	public void initDrivetrain(){
@@ -319,4 +421,13 @@ public class Drivetrain {
 	public static boolean isMoveComplete(){
 		return(!isMovingDistance);
 	}
+	
+	public static boolean isTurnComplete(){
+		return(!isTurningDistance);
+	}
+	
+    private double clamp(double min, double max, double v) {
+        return Math.min(max, Math.max(min, v));
+    }
+
 }

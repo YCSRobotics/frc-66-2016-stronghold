@@ -80,6 +80,16 @@ public class Arm {
 	
 	public void updateArmAuton(){
 		
+		if(masterMotor.isFwdLimitSwitchClosed()){
+			allowClosedLoop = false;
+			masterMotor.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
+			masterMotor.set(0.0);
+		}
+		else
+		{
+			//Wait for user input to reenable PID
+		}
+		
 		if(isSensorZeroed){
 			/**************************************************************************
 			 * Check to see if already holding position. If not, throttle was just 
@@ -104,7 +114,7 @@ public class Arm {
 	}
 	
 	public void updateArmTeleop() {
-		double speed = shootController.getRawAxis(5);
+		 double speed = shootController.getRawAxis(5);
 		double gain;
 		
 		if(masterMotor.isRevLimitSwitchClosed())
@@ -114,13 +124,12 @@ public class Arm {
 		
 		if(masterMotor.isFwdLimitSwitchClosed()){
 			allowClosedLoop = false;
+			masterMotor.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
+			masterMotor.set(0.0);
 		}
 		else
 		{
-			if(masterMotor.getPosition() >= Constants.ARM_HIGH_KNEE_POSITION)
-			{
-				allowClosedLoop = true;
-			}
+			//Wait for user input to reenable PID
 		}
 		
 		gain = getMotorGain(speed);
@@ -133,35 +142,38 @@ public class Arm {
 		}
 		else{
 			//Handle manual operation of the arm
-			if (speed >= Constants.ARM_CONTROLLER_UPPER_DEADZONE){
+			if (speed >= Constants.ARM_CONTROLLER_UPPER_DEADZONE)
+			{
 				//Operator requesting manual movement of the arm, disable closed-loop control
 				masterMotor.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
 				isHoldingPosition = false;
 				//speed = - (speed * speed) * Constants.ARM_MOTOR_SCALER_UP;
 				masterMotor.set(-(speed*speed) * gain);
-			} else if (speed <= Constants.ARM_CONTROLLER_LOWER_DEADZONE){
+				allowClosedLoop = true;
+			} 
+			else if (speed <= Constants.ARM_CONTROLLER_LOWER_DEADZONE)
+			{
 				masterMotor.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
 				isHoldingPosition = false;				//speed = (speed * speed) * Constants.ARM_MOTOR_SCALER_DOWN;
 				masterMotor.set((speed*speed) * gain);
+				allowClosedLoop = true;
 			}
-			else if(shootController.getRawButton(3)){
+			else if(shootController.getRawButton(3))
+			{
 				//Set load position of the arm
 				//targetPosition = Constants.ARM_LOAD_POSITION;
-				enableClosedLoop(Constants.ARM_LOAD_POSITION);
-			} else if (shootController.getRawButton(4)){
-				//Set unload position of the arm
-				//targetPosition = Constants.ARM_LOW_POSITION;
+				allowClosedLoop = true;
 				enableClosedLoop(Constants.ARM_LOW_POSITION);
-			} else if (shootController.getRawButton(2)){
+			}
+			else if (shootController.getRawButton(2))
+			{
 				//Set shoot position of the arm
 				//targetPosition = Constants.ARM_HIGH_POSITION;
+				allowClosedLoop = true;
 				enableClosedLoop(Constants.ARM_HIGH_POSITION);
-			} else if (shootController.getRawButton(9)) {
-				// Combo Button, also runs Intake Motor. Intended to FIRE
-				//targetPosition = Constants.ARM_LOAD_POSITION;
-				enableClosedLoop(Constants.ARM_LOAD_POSITION);
-			}
-			else {
+			} 
+			else 
+			{
 				//No throttle input, and no button pressed
 				if(isSensorZeroed){
 					/**************************************************************************
@@ -240,6 +252,10 @@ public class Arm {
 
 	public static double getArmPosition(){
 		return masterMotor.getPosition();
+	}
+	
+	public static boolean isArmFwdLimitActive(){
+		return(masterMotor.isFwdLimitSwitchClosed());
 	}
 	
 	private void updateArmDashboard(){

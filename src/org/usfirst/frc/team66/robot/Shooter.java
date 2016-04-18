@@ -48,7 +48,7 @@ public class Shooter {
 	}
 	
 	public void updateShooter() {
-		speed = Constants.DASHBOARD_VALUES.getDouble("Shoot Motor RPM", -0.52);
+		speed = Constants.DASHBOARD_VALUES.getDouble("Shoot Motor RPM", -1.0);
 		
 		/*if (controller.getRawAxis(2) >= 0.9) {
 			toggleShooter();
@@ -67,7 +67,7 @@ public class Shooter {
 			shootMotorMaster.set(0.75);
 		}
 		//Slow intake while raising arm
-		else if (controller.getRawAxis(3) >= Constants.ARM_CONTROLLER_UPPER_DEADZONE)
+		else if (controller.getRawAxis(5) >= Constants.ARM_CONTROLLER_UPPER_DEADZONE)
 		{
 			shootMotorMaster.set(0.25);
 		}

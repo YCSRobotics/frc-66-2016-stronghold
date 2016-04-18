@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.Victor;
 public class Constants {
 	
 	public static final Preferences DASHBOARD_VALUES = Preferences.getInstance();
-	
+	public static final double LOOP_TIME = 0.02; //~20ms loop
 	// Controllers
 	
 	public static final Joystick DRIVE_CONTROLLER = new Joystick(0);
@@ -32,17 +32,20 @@ public class Constants {
 	public static final ADXRS450_Gyro GYRO = new ADXRS450_Gyro();
 	
 	public static final double SKIM_GAIN  = 1.0;
-    public static final double TURN_GAIN  = 0.5;
+    public static final double TURN_GAIN  = 1.0;
     public static final double AUTON_TURN_GAIN = .01;
     public static final double AUTON_MIN_TURN_RATE = 0.7;
     
     public static final double TURBO_SCALER = 1.0;
     public static final double FINESSE_SCALER = 0.65;
     
+    public static final double AUTO_MOVE_SCALER = -0.5;
+    public static final double AUTO_MOVE_DISTANCE = -48;
+    
     public static final double TARGET_DISTANCE_THRESHOLD = 4.0;
     public static final double TARGET_ANGLE_THRESHOLD = 5.0;
     
-    public static final int DRIVETRAIN_RAMPING_FACTOR = 10;
+    public static final double DRIVETRAIN_RAMPING_FACTOR = 7.0 * LOOP_TIME;
 	
 	// Shooter Motor
 	
@@ -100,10 +103,10 @@ public class Constants {
 	public static final double ARM_PID_D = 0;
 	public static final double ARM_PID_F = 0;
 	
-	public static final double ARM_LOAD_POSITION  = 0.45;
-	public static final double ARM_HIGH_POSITION  = 0.07; //.054
+	public static final double ARM_LOAD_POSITION  = 0.55;
+	public static final double ARM_HIGH_POSITION  = 0.185; //.054
 	public static final double ARM_CROSS_POSITION = 0.3;
-	public static final double ARM_LOW_POSITION   = 0.25;
+	public static final double ARM_LOW_POSITION   = 0.235;
 	
 	public static final double ARM_LOW_KNEE_POSITION = 0.2;
 	public static final double ARM_HIGH_KNEE_POSITION = 0.3;
