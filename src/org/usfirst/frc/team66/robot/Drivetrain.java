@@ -271,7 +271,7 @@ public class Drivetrain {
 								       (-targetRightSpeed));
 		
 			currentRightCommand = clamp((currentRightCommand - maxDriveDelta),
-				                        (currentLeftCommand + maxDriveDelta),
+				                        (currentRightCommand + maxDriveDelta),
 				                        (-targetLeftSpeed));
 		}
 		else
@@ -281,7 +281,7 @@ public class Drivetrain {
 				                       (targetLeftSpeed));
 
 			currentRightCommand = clamp((currentRightCommand - maxDriveDelta),
-                                        (currentLeftCommand + maxDriveDelta),
+                                        (currentRightCommand + maxDriveDelta),
                                         (targetRightSpeed));
 		}
 		
