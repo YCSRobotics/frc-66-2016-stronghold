@@ -47,6 +47,12 @@ public class Drivetrain {
 	
 	public static boolean autoMoveStarted = true;
 	
+	public static boolean isAutoAlignActive = false;
+	public static boolean visionTargetDetected = false;
+	public static double  visionTargetAngle;
+	public static double  visionTargetDistance;
+	public static boolean isRobotAligned = false;
+	
 	public Drivetrain() {
 		Drivetrain.controller = Constants.DRIVE_CONTROLLER;
 		
@@ -128,6 +134,7 @@ public class Drivetrain {
 	public void updateDrivetrainTeleop() {
 		double driveGain;
 		double distanceError;
+		double turnError;
 		
 		//Look to see what gain to use based on turbo button state
 		if(controller.getRawButton(5)){
@@ -164,6 +171,7 @@ public class Drivetrain {
 		if ((controller.getRawButton(9)) &&
 		    (controller.getRawButton(10)))
 		{
+			/*
 			//Start semi-autonomous movement
 			if (!autoMoveStarted)
 			{
@@ -174,13 +182,59 @@ public class Drivetrain {
 				 
 				moveDistance(Constants.AUTO_MOVE_DISTANCE,Constants.AUTO_MOVE_SCALER);
 				autoMoveStarted = true;
-			} 
+			}*/
+			
+			/*Process vision image until target detected, compute angle and distance
+			 *once, then command robot to turn computed target angle
+			 */
+			isAutoAlignActive = true;
+			visionTargetDetected = Vision.processImage();
+			
+			if(visionTargetDetected)
+			{
+				visionTargetAngle = Vision.getAngleToVisionTarget();
+				visionTargetDistance = Vision.getDistanceToTarget();
+					
+				if(Math.abs(visionTargetAngle) <= Constants.TARGET_ANGLE_THRESHOLD)
+				{
+					isRobotAligned = true;
+				}
+				else
+				{
+					isRobotAligned = false;
+				}
+				
+				/*Only command turn distance once per auto-align cycle 
+				 * if robot is not already aligned
+				 */
+				if((!isRobotAligned) &&
+				   (!autoMoveStarted))
+				{
+					if(!isGyroZeroed){
+						GYRO.reset();
+						isGyroZeroed = true;
+					}
+					
+					turnDistance(visionTargetAngle);
+					autoMoveStarted = true;
+				}
+			}
+			else
+			{
+				//Keep looking for image
+			}
 		}
 		else if (controller.getRawButton(6)) 
 		{
 			//Go straight pressed
+			/*isAutoAlignActive = false;
 			autoMoveStarted = false;
 			isMovingDistance = false;
+			visionTargetDetected = false;
+			isRobotAligned = false;*/
+			
+			clearAutoAlignFlags();
+			
 			//Drive Straight Mode is active
 			if(!isGyroZeroed){
 				GYRO.reset();
@@ -192,9 +246,12 @@ public class Drivetrain {
 		else 
 		{
 			//Pure manual control
-			autoMoveStarted = false;
+			/*autoMoveStarted = false;
 			isMovingDistance = false;
 			isGyroZeroed = false;
+			visionTargetDetected = false;*/
+			
+			clearAutoAlignFlags();
 			
 			//CDL - Move inversion to a single place during ramping	
 			/*if(isInverted)
@@ -236,9 +293,38 @@ public class Drivetrain {
 			//leftSide.set(targetLeftSpeed);
 			//rightSide.set(targetRightSpeed);
 		}
+		else if (isTurningDistance)
+		{
+			turnError = targetAngle - GYRO.getAngle();
+			fwdThrottle = 0.0;
+			
+			if(Math.abs(turnError) <= Constants.TARGET_ANGLE_THRESHOLD)
+			{
+				//Inside turn threshold, so stop turning
+				isTurningDistance = false;
+    			targetTurnRate = 0.0;
+			}
+			else
+			{
+				//Not done turning, so turn rate is proportional to how far we are from target
+				targetTurnRate = Constants.AUTON_TURN_GAIN * turnError;
+				
+				if(targetAngle > 0){
+					targetTurnRate = Math.max(Constants.AUTON_MIN_TURN_RATE, targetTurnRate);
+				}
+				else{
+					targetTurnRate = Math.min(-Constants.AUTON_MIN_TURN_RATE, targetTurnRate);
+				}
+			}
+			
+			setTargetSpeeds(fwdThrottle, targetTurnRate);	
+		}
 		
 		updateRamping();
 		
+		SmartDashboard.putBoolean("Target Detected", visionTargetDetected);
+		SmartDashboard.putBoolean("Is Robot Aligned", isRobotAligned);
+		SmartDashboard.putNumber("Vision Target Angle",visionTargetAngle);
 		updateDrivetrainDashboard();
 		
 	}
@@ -411,11 +497,19 @@ public class Drivetrain {
 		SmartDashboard.putBoolean("Is Turning Distance", isTurningDistance);
 		SmartDashboard.putNumber("Left Target Speed", targetLeftSpeed);
 		SmartDashboard.putNumber("Right Target Speed", targetRightSpeed);
-		
 	}
 	
 	public void initDrivetrain(){
 		
+	}
+	
+	private void clearAutoAlignFlags(){
+		isAutoAlignActive = false;
+		autoMoveStarted = false;
+		isMovingDistance = false;
+		isTurningDistance = false;
+		visionTargetDetected = false;
+		isRobotAligned = false;
 	}
 	
 	public static boolean isMoveComplete(){

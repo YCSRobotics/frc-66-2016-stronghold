@@ -43,7 +43,7 @@ public class Constants {
     public static final double AUTO_MOVE_DISTANCE = -48;
     
     public static final double TARGET_DISTANCE_THRESHOLD = 4.0;
-    public static final double TARGET_ANGLE_THRESHOLD = 5.0;
+    public static final double TARGET_ANGLE_THRESHOLD = 2.0;
     
     public static final double DRIVETRAIN_RAMPING_FACTOR = 7.0 * LOOP_TIME;
 	

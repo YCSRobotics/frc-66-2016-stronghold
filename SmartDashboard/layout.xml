@@ -1,5 +1,80 @@
 <xml version="1.0">
 <dashboard>
+	<widget field="Vision Target Angle" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="634" y="554"/>
+	</widget>
+	<widget field="Is Robot Aligned" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="635" y="527"/>
+	</widget>
+	<widget field="Bounding Area" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="570"/>
+	</widget>
+	<widget field="Target Angle" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="549"/>
+	</widget>
+	<widget field="Target Detected" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="635" y="500"/>
+	</widget>
+	<widget field="Distance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="465"/>
+	</widget>
+	<widget field="Target Width" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="404"/>
+	</widget>
+	<widget field="Image Width" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="383"/>
+	</widget>
+	<widget field="TargetArea" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="362"/>
+	</widget>
+	<widget field="TargetXCenter" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="341"/>
+	</widget>
+	<widget field="Distance To Target" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="320"/>
+	</widget>
+	<widget field="Masked particles" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="299"/>
+	</widget>
+	<widget field="CenterOfVisionTarget" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="278"/>
+	</widget>
+	<widget field="IsTote" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="257"/>
+	</widget>
+	<widget field="Filtered particles" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="236"/>
+	</widget>
+	<widget field="Area Score" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="215"/>
+	</widget>
+	<widget field="Angle To Target" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="194"/>
+	</widget>
+	<widget field="Is Target Detected" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="173"/>
+	</widget>
+	<widget field="Target Height" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="152"/>
+	</widget>
+	<widget field="Aspect Score" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="26"/>
+	</widget>
+	<widget field="Target Turn Rate" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="47"/>
+	</widget>
+	<widget field="PID Control Allowed" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="131"/>
+	</widget>
+	<widget field="Right Target Speed" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="110"/>
+	</widget>
+	<widget field="Left Target Speed" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="89"/>
+	</widget>
+	<widget field="Is Turning Distance" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="68"/>
+	</widget>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.WebcamViewerExtension">
 		<location x="779" y="13"/>
 		<width>542</width>
@@ -13,12 +88,6 @@
 	<widget field="Lower Limit Active" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="0" y="486"/>
 	</widget>
-	<widget field="IMAGE_WIDTH" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="465"/>
-	</widget>
-	<widget field="IMAGE_HEIGHT" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="399"/>
-	</widget>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.Label">
 		<location x="543" y="407"/>
 		<property name="Text" value="1 - Move Forward"/>
@@ -29,9 +98,6 @@
 		<property name="Text" value="0 - Do Nothing"/>
 		<property name="Horizontal Alignment" value="Left"/>
 	</static-widget>
-	<widget field="Auton State" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="542" y="21"/>
-	</widget>
 	<widget field="Auto Mode" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="546" y="366"/>
 	</widget>
@@ -75,10 +141,6 @@
 		<location x="1" y="432"/>
 		<width>1343</width>
 	</static-widget>
-	<widget field="Shooter Error" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="333" y="34"/>
-		<width>208</width>
-	</widget>
 	<widget field="Shooter Motor Output" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="336" y="64"/>
 		<width>205</width>

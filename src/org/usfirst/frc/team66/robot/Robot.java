@@ -25,7 +25,8 @@ public class Robot extends IterativeRobot {
     public static Intake INTAKE;
 	public static Arm ARM;
 	private static Camera CAMERA;
-	private static USBCamera USBCAMERA;
+	//private static USBCamera USBCAMERA;
+	private static Vision VISION;
     
     /**
      * This function is run when the robot is first started up and should be
@@ -38,11 +39,13 @@ public class Robot extends IterativeRobot {
         DRIVETRAIN = new Drivetrain();
         AUTONOMOUS = new Autonomous();
         //CAMERA = new Camera();
-        try {
+       /* try {
         	USBCAMERA = new USBCamera();
         } catch(Error e) {
         	
-        }
+        }*/
+
+        VISION = new Vision();
         
         //TODO: Need to tie this to the limit switches, for now zero sensor on init
         ARM.zeroSensor();
@@ -57,15 +60,26 @@ public class Robot extends IterativeRobot {
     }
     public void disabledInit() {
         SmartDashboard.putNumber("Auto Mode", AUTONOMOUS.AUTON_MODE_DO_NOTHING);
+        Vision.initCamera();
     }
     
     public void disabledPeriodic() {
 		autoSelected = (int) SmartDashboard.getNumber("Auto Mode", AUTONOMOUS.AUTON_MODE_DO_NOTHING);
-		try {
+		
+		/*try {		
+			boolean targetDetected;
+			targetDetected = Vision.processImage();
+			SmartDashboard.putBoolean("Is Target Detected",targetDetected);
+			SmartDashboard.putNumber("Distance To Target", Vision.getDistanceToTarget());
+			SmartDashboard.putNumber("Angle To Target", Vision.getAngleToVisionTarget());
+		} catch(Error e) {
+			
+		}*/
+		/*try {
 			USBCAMERA.updateUsbCamera();
 		} catch(Error e) {
 			
-		}
+		}*/
     }
     
 	/**
@@ -91,11 +105,18 @@ public class Robot extends IterativeRobot {
     	AUTONOMOUS.updateAutonomous();
     	DRIVETRAIN.updateDrivetrainAuton();
     	ARM.updateArmAuton();
-    	try {
+    	
+    	/*try {
+			Vision.processImage();
+		} catch(Error e) {
+			
+		}*/
+    	
+    	/*try {
 			USBCAMERA.updateUsbCamera();
 		} catch(Error e) {
 			
-		}
+		}*/
     }
 
     public void teleopInit(){
@@ -112,11 +133,18 @@ public class Robot extends IterativeRobot {
         SHOOTER.updateShooter();
         INTAKE.updateIntake();
         ARM.updateArmTeleop();
-        try {
+        
+        /*try {
+			Vision.processImage();
+		} catch(Error e) {
+			
+		}*/
+        
+        /*try {
 			USBCAMERA.updateUsbCamera();
 		} catch(Error e) {
 			
-		}
+		}*/
     }
     
     /**
