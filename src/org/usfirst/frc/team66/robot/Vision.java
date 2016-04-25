@@ -7,10 +7,13 @@ import com.ni.vision.NIVision;
 import com.ni.vision.NIVision.Image;
 
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.vision.AxisCamera;
 
 public class Vision {
+	
+	private static Joystick controller;
 	
 	int session;
 	static Image rawFrame;
@@ -53,11 +56,11 @@ public class Vision {
 	};
 		
 	static double AREA_MINIMUM = 0.05; //Default Area minimum for particle as a percentage of total image area
-	static double ASPECT_SCORE_MIN = 20.0;  //Minimum aspect score to be considered a target
+	static double ASPECT_SCORE_MIN = 15.0;  //Minimum aspect score to be considered a target
 	static double ASPECT_SCORE_MAX = 75.0;  //Minimum aspect score to be considered a target
-	static double AREA_SCORE_MIN = 20.0;  //Minimum aspect score to be considered a target
-	static double AREA_SCORE_MAX = 35.0;  //Minimum aspect score to be considered a target
-	static double VIEW_ANGLE = 51.7; //View angle fo camera, set to Axis m1011 by default, 64 for m1013, 51.7 for 206, 52 for HD3000 square, 60 for HD3000 640x480
+	static double AREA_SCORE_MIN = 15.0;  //Minimum aspect score to be considered a target
+	static double AREA_SCORE_MAX = 40.0;  //Minimum aspect score to be considered a target
+	static double VIEW_ANGLE = 64; //View angle fo camera, set to Axis m1011 by default, 64 for m1013, 51.7 for 206, 52 for HD3000 square, 60 for HD3000 640x480
 	static double IMAGE_WIDTH = 320;
 	
 	static NIVision.ParticleFilterCriteria2 criteria[] = new NIVision.ParticleFilterCriteria2[1];
@@ -66,22 +69,42 @@ public class Vision {
 	
 	//Constants
 	static NIVision.Range TARGET_HUE_RANGE = new NIVision.Range(85, 135);	//Default hue range for yellow tote
-	static NIVision.Range TARGET_SAT_RANGE = new NIVision.Range(150, 255);	//Default saturation range for yellow tote
-	static NIVision.Range TARGET_VAL_RANGE = new NIVision.Range(0, 255);	//Default value range for yellow tote
+	static NIVision.Range TARGET_SAT_RANGE = new NIVision.Range(125, 255);	//Default saturation range for yellow tote
+	static NIVision.Range TARGET_VAL_RANGE = new NIVision.Range(60, 255);	//Default value range for yellow tote
 	
 	Vision(){
+		Vision.controller = Constants.DRIVE_CONTROLLER;
 		
+		//Create images
 		rawFrame = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);
 		binaryFrame = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_U8, 0);
+		
 		axisCamera = new AxisCamera("axis-camera.local");//Need camera IP
+		
 		criteria[0] = new NIVision.ParticleFilterCriteria2(NIVision.MeasurementType.MT_AREA_BY_IMAGE_AREA, AREA_MINIMUM, 100.0, 0, 0);
+		
+		SmartDashboard.putNumber("HUE Range Min",TARGET_HUE_RANGE.minValue);
+		SmartDashboard.putNumber("HUE Range Max",TARGET_HUE_RANGE.maxValue);
+		SmartDashboard.putNumber("SAT Range Min",TARGET_SAT_RANGE.minValue);
+		SmartDashboard.putNumber("SAT Range Max",TARGET_SAT_RANGE.maxValue);
+		SmartDashboard.putNumber("VAL Value Min",TARGET_VAL_RANGE.minValue);
+		SmartDashboard.putNumber("VAL Value Max",TARGET_VAL_RANGE.maxValue);
 	}
 	
 	public static void initCamera(){
 		axisCamera.writeResolution(AxisCamera.Resolution.k320x240);
 		axisCamera.writeRotation(AxisCamera.Rotation.k180);
-		//axisCamera.writeWhiteBalance(AxisCamera.WhiteBalance.kHold);
-		//axisCamera.writeExposureControl(AxisCamera.ExposureControl.kHold);
+		axisCamera.writeWhiteBalance(AxisCamera.WhiteBalance.kHold);
+		axisCamera.writeExposureControl(AxisCamera.ExposureControl.kHold);
+	}
+	
+	public static void updateFilterValues(){
+		TARGET_HUE_RANGE.minValue = (int)SmartDashboard.getNumber("HUE Range Min",TARGET_HUE_RANGE.minValue);
+		TARGET_HUE_RANGE.maxValue = (int)SmartDashboard.getNumber("HUE Range Max",TARGET_HUE_RANGE.maxValue);
+		TARGET_SAT_RANGE.minValue = (int)SmartDashboard.getNumber("SAT Range Min",TARGET_SAT_RANGE.minValue);
+		TARGET_SAT_RANGE.maxValue = (int)SmartDashboard.getNumber("SAT Range Max",TARGET_SAT_RANGE.maxValue);
+		TARGET_VAL_RANGE.minValue = (int)SmartDashboard.getNumber("VAL Range Min",TARGET_VAL_RANGE.minValue);
+		TARGET_VAL_RANGE.maxValue = (int)SmartDashboard.getNumber("VAL Range Max",TARGET_VAL_RANGE.maxValue);
 	}
 	
 	public static boolean processImage(){
@@ -90,7 +113,6 @@ public class Vision {
 		
 		//Set "Target Detected" and "Image Processed" flags to false initially in case image capture fails
 		//boolean isTargetDetected = false;
-		
 		
 		try{
 			axisCamera.getImage(rawFrame);
@@ -137,10 +159,12 @@ public class Vision {
 				scores.Area = AreaScore(particles.elementAt(0));
 				SmartDashboard.putNumber("Area Score", scores.Area);
 				
-				if (((scores.Aspect > ASPECT_SCORE_MIN)&&
+				/*if (((scores.Aspect > ASPECT_SCORE_MIN)&&
 					 (scores.Aspect < ASPECT_SCORE_MAX))&&
 					((scores.Area > AREA_SCORE_MIN)&&
-					((scores.Area < AREA_SCORE_MAX))))
+					((scores.Area < AREA_SCORE_MAX))))*/
+				if ((scores.Aspect > ASPECT_SCORE_MIN)&&
+					(scores.Area > AREA_SCORE_MIN))
 				{
 					isTargetDetected = true;
 					distanceToVisionTarget = computeDistance(binaryFrame, particles.elementAt(0));
@@ -158,6 +182,7 @@ public class Vision {
 				//Image processed but no target candidates detected
 				isTargetDetected = false;
 			}
+			
 		}
 		catch(Exception e)
 		{
@@ -186,7 +211,7 @@ public class Vision {
 		double offset;
 		double degreesFromCenter;
 		
-		offset = (getVisionTargetXAxis() - (IMAGE_WIDTH/2));
+		offset = ((getVisionTargetXAxis()+10) - (IMAGE_WIDTH/2));
 		degreesFromCenter = offset * (VIEW_ANGLE/IMAGE_WIDTH);
 		
 		return(degreesFromCenter);

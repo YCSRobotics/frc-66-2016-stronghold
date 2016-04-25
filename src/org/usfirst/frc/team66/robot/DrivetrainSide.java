@@ -19,13 +19,17 @@ public class DrivetrainSide {
 		if (Math.abs(speed) < 0.25) {
 			speed = 0;
 		}
-		if (speed > 0) {
-			speed = speed * speed;
+		else
+		{
+			//Do nothing
+		}
+		/*if (speed > 0) {
+			//speed = speed * speed;
 		} else if (speed < 0) {
 			speed = -(speed * speed);
 		} else {
 			speed = 0;
-		}
+		}*/
 		motor.set(speed * motorScaler);
 	}
 	

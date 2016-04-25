@@ -25,7 +25,7 @@ public class Robot extends IterativeRobot {
     public static Intake INTAKE;
 	public static Arm ARM;
 	private static Camera CAMERA;
-	//private static USBCamera USBCAMERA;
+	private static USBCamera USBCAMERA;
 	private static Vision VISION;
     
     /**
@@ -39,17 +39,13 @@ public class Robot extends IterativeRobot {
         DRIVETRAIN = new Drivetrain();
         AUTONOMOUS = new Autonomous();
         //CAMERA = new Camera();
-       /* try {
-        	USBCAMERA = new USBCamera();
-        } catch(Error e) {
-        	
-        }*/
-
+        
+        USBCAMERA = new USBCamera();
         VISION = new Vision();
         
         //TODO: Need to tie this to the limit switches, for now zero sensor on init
         ARM.zeroSensor();
-        DRIVETRAIN.GYRO.calibrate();
+        //DRIVETRAIN.GYRO.calibrate();
         
         /*//Test code for USB camera
         CameraServer server = CameraServer.getInstance();
@@ -66,20 +62,11 @@ public class Robot extends IterativeRobot {
     public void disabledPeriodic() {
 		autoSelected = (int) SmartDashboard.getNumber("Auto Mode", AUTONOMOUS.AUTON_MODE_DO_NOTHING);
 		
-		/*try {		
-			boolean targetDetected;
-			targetDetected = Vision.processImage();
-			SmartDashboard.putBoolean("Is Target Detected",targetDetected);
-			SmartDashboard.putNumber("Distance To Target", Vision.getDistanceToTarget());
-			SmartDashboard.putNumber("Angle To Target", Vision.getAngleToVisionTarget());
-		} catch(Error e) {
-			
-		}*/
-		/*try {
-			USBCAMERA.updateUsbCamera();
-		} catch(Error e) {
-			
-		}*/
+		//Test code for vision calibration
+		Vision.updateFilterValues();
+		Vision.processImage();
+		
+		//USBCAMERA.updateUsbCamera();
     }
     
 	/**
@@ -112,11 +99,8 @@ public class Robot extends IterativeRobot {
 			
 		}*/
     	
-    	/*try {
-			USBCAMERA.updateUsbCamera();
-		} catch(Error e) {
-			
-		}*/
+		//USBCAMERA.updateUsbCamera();
+		
     }
 
     public void teleopInit(){
@@ -140,11 +124,8 @@ public class Robot extends IterativeRobot {
 			
 		}*/
         
-        /*try {
-			USBCAMERA.updateUsbCamera();
-		} catch(Error e) {
-			
-		}*/
+        //USBCAMERA.updateUsbCamera();
+		
     }
     
     /**

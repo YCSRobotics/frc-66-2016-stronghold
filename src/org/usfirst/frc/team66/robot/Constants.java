@@ -33,8 +33,8 @@ public class Constants {
 	
 	public static final double SKIM_GAIN  = 1.0;
     public static final double TURN_GAIN  = 1.0;
-    public static final double AUTON_TURN_GAIN = .01;
-    public static final double AUTON_MIN_TURN_RATE = 0.7;
+    public static final double AUTON_TURN_GAIN = 0.1;
+    public static final double AUTON_MIN_TURN_RATE = 0.5;
     
     public static final double TURBO_SCALER = 1.0;
     public static final double FINESSE_SCALER = 0.65;
@@ -115,7 +115,7 @@ public class Constants {
 	
 	//Camera
 	
-	public static final String CAMERA_ARM_NAME = "cam0";
+	public static final String CAMERA_ARM_NAME = "cam1";
 	
 	//Hanger
 	public static final Talon WINCH_MOTOR = new Talon(2);

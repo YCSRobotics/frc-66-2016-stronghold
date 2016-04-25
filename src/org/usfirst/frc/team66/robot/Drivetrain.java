@@ -73,6 +73,7 @@ public class Drivetrain {
 		Drivetrain.rightSide = new DrivetrainSide(RIGHT_MOTOR, RIGHT_MOTOR_SCALER);
 		
 		Drivetrain.GYRO = Constants.GYRO;
+		GYRO.calibrate();
 	}
 	
 	public void zeroGyro(){
@@ -170,19 +171,10 @@ public class Drivetrain {
 		//Operator control of the drivetrain
 		if ((controller.getRawButton(9)) &&
 		    (controller.getRawButton(10)))
-		{
-			/*
-			//Start semi-autonomous movement
-			if (!autoMoveStarted)
-			{
-				if(!isGyroZeroed){
-					GYRO.reset();
-					isGyroZeroed = true;
-				}
-				 
-				moveDistance(Constants.AUTO_MOVE_DISTANCE,Constants.AUTO_MOVE_SCALER);
-				autoMoveStarted = true;
-			}*/
+		{	
+			if(!isGyroZeroed){
+				zeroGyro();
+			}
 			
 			/*Process vision image until target detected, compute angle and distance
 			 *once, then command robot to turn computed target angle
@@ -191,7 +183,7 @@ public class Drivetrain {
 			visionTargetDetected = Vision.processImage();
 			
 			if(visionTargetDetected)
-			{
+			{	
 				visionTargetAngle = Vision.getAngleToVisionTarget();
 				visionTargetDistance = Vision.getDistanceToTarget();
 					
@@ -207,14 +199,10 @@ public class Drivetrain {
 				/*Only command turn distance once per auto-align cycle 
 				 * if robot is not already aligned
 				 */
-				if((!isRobotAligned) &&
+				if((GYRO.getAngle() <= 0.5) &&
+				   (!isRobotAligned) &&
 				   (!autoMoveStarted))
 				{
-					if(!isGyroZeroed){
-						GYRO.reset();
-						isGyroZeroed = true;
-					}
-					
 					turnDistance(visionTargetAngle);
 					autoMoveStarted = true;
 				}
@@ -240,17 +228,21 @@ public class Drivetrain {
 				GYRO.reset();
 				isGyroZeroed = true;
 			}
+			else
+			{
+				goStraight(driveGain);
+			}
 			
-			goStraight(driveGain);
+			
 		}
 		else 
 		{
 			//Pure manual control
 			/*autoMoveStarted = false;
 			isMovingDistance = false;
-			isGyroZeroed = false;
 			visionTargetDetected = false;*/
 			
+			isGyroZeroed = false;
 			clearAutoAlignFlags();
 			
 			//CDL - Move inversion to a single place during ramping	
@@ -325,6 +317,7 @@ public class Drivetrain {
 		SmartDashboard.putBoolean("Target Detected", visionTargetDetected);
 		SmartDashboard.putBoolean("Is Robot Aligned", isRobotAligned);
 		SmartDashboard.putNumber("Vision Target Angle",visionTargetAngle);
+		SmartDashboard.putNumber("Vision Target Distance", visionTargetDistance);
 		updateDrivetrainDashboard();
 		
 	}
@@ -350,29 +343,24 @@ public class Drivetrain {
 	private void updateRamping(){
 		double maxDriveDelta = Constants.DRIVETRAIN_RAMPING_FACTOR;
 		
-		if(isInverted)
-		{
-			currentLeftCommand = clamp((currentLeftCommand - maxDriveDelta),
-								   	   (currentLeftCommand + maxDriveDelta),
-								       (-targetRightSpeed));
 		
-			currentRightCommand = clamp((currentRightCommand - maxDriveDelta),
-				                        (currentRightCommand + maxDriveDelta),
-				                        (-targetLeftSpeed));
-		}
-		else
-		{
-			currentLeftCommand = clamp((currentLeftCommand - maxDriveDelta),
+		currentLeftCommand = clamp((currentLeftCommand - maxDriveDelta),
 				   	                   (currentLeftCommand + maxDriveDelta),
 				                       (targetLeftSpeed));
 
-			currentRightCommand = clamp((currentRightCommand - maxDriveDelta),
+		currentRightCommand = clamp((currentRightCommand - maxDriveDelta),
                                         (currentRightCommand + maxDriveDelta),
                                         (targetRightSpeed));
+		if(isInverted)
+		{
+			leftSide.set(-currentRightCommand);
+			rightSide.set(-currentLeftCommand);
 		}
-		
-		leftSide.set(currentLeftCommand);
-		rightSide.set(currentRightCommand);
+		else
+		{
+			leftSide.set(currentLeftCommand);
+			rightSide.set(currentRightCommand);
+		}
 		
 	}
 	
