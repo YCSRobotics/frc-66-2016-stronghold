@@ -62,11 +62,11 @@ public class Robot extends IterativeRobot {
     public void disabledPeriodic() {
 		autoSelected = (int) SmartDashboard.getNumber("Auto Mode", AUTONOMOUS.AUTON_MODE_DO_NOTHING);
 		
-		//Test code for vision calibration
+		/*//Test code for vision calibration
 		Vision.updateFilterValues();
-		Vision.processImage();
+		Vision.processImage();*/
 		
-		//USBCAMERA.updateUsbCamera();
+		USBCAMERA.updateUsbCamera();
     }
     
 	/**
@@ -93,13 +93,7 @@ public class Robot extends IterativeRobot {
     	DRIVETRAIN.updateDrivetrainAuton();
     	ARM.updateArmAuton();
     	
-    	/*try {
-			Vision.processImage();
-		} catch(Error e) {
-			
-		}*/
-    	
-		//USBCAMERA.updateUsbCamera();
+		USBCAMERA.updateUsbCamera();
 		
     }
 
@@ -118,13 +112,7 @@ public class Robot extends IterativeRobot {
         INTAKE.updateIntake();
         ARM.updateArmTeleop();
         
-        /*try {
-			Vision.processImage();
-		} catch(Error e) {
-			
-		}*/
-        
-        //USBCAMERA.updateUsbCamera();
+        USBCAMERA.updateUsbCamera();
 		
     }
     

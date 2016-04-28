@@ -93,6 +93,23 @@ public class Constants {
 	public static final double ARM_MOTOR_SCALER_FAST_DOWN = 0.4;
 	public static final double ARM_MOTOR_SCALER_SLOW_DOWN = 0.2;
 	
+	public static final int ARM_DISTANCE_LOWER_THRESHOLD = 5;
+	public static final int ARM_DISTANCE_UPPER_THRESHOLD = 15;
+	
+	public static final double[] ARM_DISTANCE_TO_ANGLE_LOOKUP = 
+		{.45, //5
+		 .425,//6
+		 .4,  //7
+		 .375,//8
+		 .35, //9
+		 .325,//10
+		 .275,//11
+		 .25, //12
+		 .225,//13
+		 .2,  //14
+		 .175 //15
+		 };
+	
 	public static final int    ARM_PID_PROFILE = 1;
 	
 	//Selectable P-Gains
@@ -115,7 +132,7 @@ public class Constants {
 	
 	//Camera
 	
-	public static final String CAMERA_ARM_NAME = "cam1";
+	public static final String CAMERA_ARM_NAME = "cam0";
 	
 	//Hanger
 	public static final Talon WINCH_MOTOR = new Talon(2);

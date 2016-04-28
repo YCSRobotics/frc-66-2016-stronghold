@@ -4,7 +4,9 @@ import java.util.Comparator;
 import java.util.Vector;
 
 import com.ni.vision.NIVision;
+import com.ni.vision.NIVision.DrawMode;
 import com.ni.vision.NIVision.Image;
+import com.ni.vision.NIVision.ShapeMode;
 
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.Joystick;
@@ -15,7 +17,10 @@ public class Vision {
 	
 	private static Joystick controller;
 	
-	int session;
+	static int currentSession;
+	static int usbSession;
+	static int axisSession;
+	
 	static Image rawFrame;
 	static Image binaryFrame;
 	static int imaqError;
@@ -26,6 +31,17 @@ public class Vision {
 	static double visionTargetXAxis;
 	static boolean isTargetDetected;
 	static int counter = 0;
+	
+	static int centerPointX = 320;
+	static int centerPointY = 240;
+	
+	static NIVision.Rect rect;
+	static NIVision.Point vertStartPoint;
+	static NIVision.Point vertEndPoint;
+	static NIVision.Point horzStartPoint;
+	static NIVision.Point horzEndPoint;
+	
+	static int frameCount = 6;
 	
 	//A structure to hold measurements of a particle
 	public static class ParticleReport implements Comparator<ParticleReport>, Comparable<ParticleReport>
@@ -79,7 +95,15 @@ public class Vision {
 		rawFrame = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);
 		binaryFrame = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_U8, 0);
 		
-		axisCamera = new AxisCamera("axis-camera.local");//Need camera IP
+		//Open cameras
+		usbSession = NIVision.IMAQdxOpenCamera("cam0",NIVision.IMAQdxCameraControlMode.CameraControlModeController);
+		axisSession = NIVision.IMAQdxOpenCamera("cam1",NIVision.IMAQdxCameraControlMode.CameraControlModeController);
+		
+		//Configure session
+		currentSession = usbSession;
+		NIVision.IMAQdxConfigureGrab(currentSession);
+		
+		//axisCamera = new AxisCamera("cam1");//Need camera IP
 		
 		criteria[0] = new NIVision.ParticleFilterCriteria2(NIVision.MeasurementType.MT_AREA_BY_IMAGE_AREA, AREA_MINIMUM, 100.0, 0, 0);
 		
@@ -107,6 +131,51 @@ public class Vision {
 		TARGET_VAL_RANGE.maxValue = (int)SmartDashboard.getNumber("VAL Range Max",TARGET_VAL_RANGE.maxValue);
 	}
 	
+	public static void selectCameraSource(int source){
+		if(source>=1)
+		{
+			//Switch to Axis camera, on "cam1"
+			NIVision.IMAQdxStopAcquisition(currentSession);
+			currentSession = axisSession;
+			NIVision.IMAQdxConfigureGrab(currentSession);
+		}
+		else
+		{
+			//Switch to Axis camera, on "cam1"
+			NIVision.IMAQdxStopAcquisition(currentSession);
+			currentSession = usbSession;
+			NIVision.IMAQdxConfigureGrab(currentSession);
+		}
+	}
+	
+	public void updateUsbCamera(){
+		
+		if(frameCount >= 6)
+		{
+			try {
+				NIVision.IMAQdxGrab(currentSession, rawFrame, 1);
+        
+				NIVision.imaqDrawShapeOnImage(rawFrame, rawFrame, rect,
+					DrawMode.DRAW_VALUE, ShapeMode.SHAPE_OVAL, 255.0f); 
+				NIVision.imaqDrawLineOnImage(rawFrame, rawFrame, DrawMode.DRAW_VALUE, 
+					vertStartPoint, vertEndPoint, 255.0f);
+				NIVision.imaqDrawLineOnImage(rawFrame, frame, DrawMode.DRAW_VALUE, 
+					horzStartPoint, horzEndPoint, 255.0f);
+        
+				CameraServer.getInstance().setImage(frame);
+			}
+			catch(Exception e) {
+				
+			}
+			
+			frameCount = 0;
+		}
+		else
+		{
+			frameCount++;
+		}
+	}
+	
 	public static boolean processImage(){
 		if(counter >= 5){
 		int numParticles = 0;
@@ -115,7 +184,9 @@ public class Vision {
 		//boolean isTargetDetected = false;
 		
 		try{
-			axisCamera.getImage(rawFrame);
+			//axisCamera.getImage(rawFrame);
+			
+			NIVision.IMAQdxGrab(currentSession, rawFrame, 1);
 		
 			//Threshold the frame looking for green (reflected LED color)
 			NIVision.imaqColorThreshold(binaryFrame, rawFrame, 255, NIVision.ColorMode.HSV, 

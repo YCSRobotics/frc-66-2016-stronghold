@@ -45,7 +45,8 @@ public class Drivetrain {
 	public static boolean isInverted = false;
 	public static boolean invertReleased = true;
 	
-	public static boolean autoMoveStarted = true;
+	public static boolean autoMoveStarted = false;
+	public static boolean moveArmStarted = false;
 	
 	public static boolean isAutoAlignActive = false;
 	public static boolean visionTargetDetected = false;
@@ -176,17 +177,51 @@ public class Drivetrain {
 				zeroGyro();
 			}
 			
+			if(!autoMoveStarted){
+				autoMoveStarted = true;
+				moveDistance(Constants.AUTO_MOVE_DISTANCE, Constants.AUTO_MOVE_SCALER);
+			}
+			else
+			{
+				//Automove started, don't allow another activation this cycle
+			}
+			
 			/*Process vision image until target detected, compute angle and distance
 			 *once, then command robot to turn computed target angle
 			 */
-			isAutoAlignActive = true;
+			/*isAutoAlignActive = true;
 			visionTargetDetected = Vision.processImage();
 			
 			if(visionTargetDetected)
 			{	
 				visionTargetAngle = Vision.getAngleToVisionTarget();
 				visionTargetDistance = Vision.getDistanceToTarget();
+				
+				if(!moveArmStarted)
+				{
+					//Set arm angle for distance to goal
+					int tempDistance = (int)Math.round(visionTargetDistance);
 					
+					if(tempDistance >= Constants.ARM_DISTANCE_UPPER_THRESHOLD)
+					{
+						Arm.enableClosedLoop(Constants.ARM_DISTANCE_TO_ANGLE_LOOKUP[10]);
+					}
+					else if(tempDistance <= Constants.ARM_DISTANCE_LOWER_THRESHOLD)
+					{
+						Arm.enableClosedLoop(Constants.ARM_DISTANCE_TO_ANGLE_LOOKUP[0]);
+					}
+					else
+					{
+						Arm.enableClosedLoop(Constants.ARM_DISTANCE_TO_ANGLE_LOOKUP[(tempDistance - Constants.ARM_DISTANCE_LOWER_THRESHOLD)]);
+					}
+					
+					moveArmStarted = true;
+				}
+				else
+				{
+					//Do Nothing
+				}
+				
 				if(Math.abs(visionTargetAngle) <= Constants.TARGET_ANGLE_THRESHOLD)
 				{
 					isRobotAligned = true;
@@ -194,15 +229,15 @@ public class Drivetrain {
 				else
 				{
 					isRobotAligned = false;
-				}
+				}*/
 				
 				/*Only command turn distance once per auto-align cycle 
 				 * if robot is not already aligned
 				 */
-				if((GYRO.getAngle() <= 0.5) &&
+				/*if((Math.abs(GYRO.getAngle()) <= 0.5) &&
 				   (!isRobotAligned) &&
 				   (!autoMoveStarted))
-				{
+				{	
 					turnDistance(visionTargetAngle);
 					autoMoveStarted = true;
 				}
@@ -210,7 +245,16 @@ public class Drivetrain {
 			else
 			{
 				//Keep looking for image
+				clearAutoAlignFlags();
 			}
+			
+			/*if(!isTurningDistance)
+			{
+				fwdThrottle = 0.0;
+				targetTurnRate = 0.0;
+				
+				setTargetSpeeds(fwdThrottle, targetTurnRate);
+			}*/
 		}
 		else if (controller.getRawButton(6)) 
 		{
@@ -290,16 +334,25 @@ public class Drivetrain {
 			turnError = targetAngle - GYRO.getAngle();
 			fwdThrottle = 0.0;
 			
-			if(Math.abs(turnError) <= Constants.TARGET_ANGLE_THRESHOLD)
+			//if(Math.abs(turnError) <= Constants.TARGET_ANGLE_THRESHOLD)
+			if((targetAngle > 0) &&
+			   (GYRO.getAngle() >= targetAngle))
 			{
 				//Inside turn threshold, so stop turning
 				isTurningDistance = false;
     			targetTurnRate = 0.0;
 			}
+			else if((targetAngle < 0) &&
+					(GYRO.getAngle() <= targetAngle))
+			{
+				//Inside turn threshold, so stop turning
+				isTurningDistance = false;
+			    targetTurnRate = 0.0;
+			} 
 			else
 			{
 				//Not done turning, so turn rate is proportional to how far we are from target
-				targetTurnRate = Constants.AUTON_TURN_GAIN * turnError;
+				targetTurnRate = Constants.AUTON_TURN_GAIN * (turnError);
 				
 				if(targetAngle > 0){
 					targetTurnRate = Math.max(Constants.AUTON_MIN_TURN_RATE, targetTurnRate);
@@ -493,7 +546,10 @@ public class Drivetrain {
 	
 	private void clearAutoAlignFlags(){
 		isAutoAlignActive = false;
+		
 		autoMoveStarted = false;
+		moveArmStarted = false;
+		
 		isMovingDistance = false;
 		isTurningDistance = false;
 		visionTargetDetected = false;
