@@ -1,0 +1,98 @@
+<xml version="1.0">
+<dashboard>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.WebcamViewerExtension">
+		<location x="779" y="13"/>
+		<width>542</width>
+		<height>399</height>
+		<property name="FPS" value="15"/>
+		<property name="Size" value="320x240"/>
+	</static-widget>
+	<widget field="Upper Limit Active" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="507"/>
+	</widget>
+	<widget field="Lower Limit Active" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="486"/>
+	</widget>
+	<widget field="IMAGE_WIDTH" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="465"/>
+	</widget>
+	<widget field="IMAGE_HEIGHT" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="399"/>
+	</widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.Label">
+		<location x="543" y="407"/>
+		<property name="Text" value="1 - Move Forward"/>
+	</static-widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.Label">
+		<location x="544" y="389"/>
+		<width>126</width>
+		<property name="Text" value="0 - Do Nothing"/>
+		<property name="Horizontal Alignment" value="Left"/>
+	</static-widget>
+	<widget field="Auton State" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="542" y="21"/>
+	</widget>
+	<widget field="Auto Mode" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="546" y="366"/>
+	</widget>
+	<widget field="Is Arm In Position" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="560" y="191"/>
+	</widget>
+	<widget field="Arm Motor Output" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="557" y="147"/>
+	</widget>
+	<widget field="Arm Error" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="599" y="124"/>
+	</widget>
+	<widget field="Target Distance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="565" y="254"/>
+	</widget>
+	<widget field="Is Moving Distance" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="551" y="276"/>
+	</widget>
+	<widget field="Gyro Rate" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="550" y="56"/>
+	</widget>
+	<widget field="Gyro Angle" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="546" y="77"/>
+	</widget>
+	<widget field="Left Motor Output" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="547" y="333"/>
+	</widget>
+	<widget field="Right Motor Output" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="541" y="311"/>
+	</widget>
+	<widget field="Holding Position" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="569" y="215"/>
+	</widget>
+	<widget field="Target Arm Position" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="550" y="169"/>
+	</widget>
+	<widget field="Arm Relative Position" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="545" y="102"/>
+	</widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.ConnectionIndicator">
+		<location x="1" y="432"/>
+		<width>1343</width>
+	</static-widget>
+	<widget field="Shooter Error" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="333" y="34"/>
+		<width>208</width>
+	</widget>
+	<widget field="Shooter Motor Output" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="336" y="64"/>
+		<width>205</width>
+		<height>20</height>
+	</widget>
+	<widget field="Right Encoder" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="281" y="5"/>
+		<width>259</width>
+	</widget>
+	<widget field="Left Encoder" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="16" y="5"/>
+		<width>256</width>
+	</widget>
+</dashboard>
+<live-window>
+</live-window>
+</xml>

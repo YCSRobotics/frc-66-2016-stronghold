@@ -1,8 +1,11 @@
-
 package org.usfirst.frc.team66.robot;
 
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -14,20 +17,55 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * directory.
  */
 public class Robot extends IterativeRobot {
-    final String defaultAuto = "Default";
-    final String customAuto = "My Auto";
-    String autoSelected;
-    SendableChooser chooser;
+    int autoSelected;
 	
+    public static Autonomous AUTONOMOUS;
+    public static Drivetrain DRIVETRAIN;
+    public static Shooter SHOOTER;
+    public static Intake INTAKE;
+	public static Arm ARM;
+	private static Camera CAMERA;
+	private static USBCamera USBCAMERA;
+    
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
     public void robotInit() {
-        chooser = new SendableChooser();
-        chooser.addDefault("Default Auto", defaultAuto);
-        chooser.addObject("My Auto", customAuto);
-        SmartDashboard.putData("Auto choices", chooser);
+        SHOOTER = new Shooter();
+        INTAKE = new Intake();
+        ARM = new Arm();
+        DRIVETRAIN = new Drivetrain();
+        AUTONOMOUS = new Autonomous();
+        //CAMERA = new Camera();
+        try {
+        	USBCAMERA = new USBCamera();
+        } catch(Error e) {
+        	
+        }
+        
+        //TODO: Need to tie this to the limit switches, for now zero sensor on init
+        ARM.zeroSensor();
+        DRIVETRAIN.GYRO.calibrate();
+        
+        /*//Test code for USB camera
+        CameraServer server = CameraServer.getInstance();
+        server.setQuality(50);
+        server.startAutomaticCapture("cam1");*/
+
+        SmartDashboard.putNumber("Auto Mode", AUTONOMOUS.AUTON_MODE_DO_NOTHING);
+    }
+    public void disabledInit() {
+        SmartDashboard.putNumber("Auto Mode", AUTONOMOUS.AUTON_MODE_DO_NOTHING);
+    }
+    
+    public void disabledPeriodic() {
+		autoSelected = (int) SmartDashboard.getNumber("Auto Mode", AUTONOMOUS.AUTON_MODE_DO_NOTHING);
+		try {
+			USBCAMERA.updateUsbCamera();
+		} catch(Error e) {
+			
+		}
     }
     
 	/**
@@ -40,31 +78,45 @@ public class Robot extends IterativeRobot {
 	 * If using the SendableChooser make sure to add them to the chooser code above as well.
 	 */
     public void autonomousInit() {
-    	autoSelected = (String) chooser.getSelected();
-//		autoSelected = SmartDashboard.getString("Auto Selector", defaultAuto);
-		System.out.println("Auto selected: " + autoSelected);
+    	//AUTONOMOUS.setAutonomousMode(AUTONOMOUS.AUTON_MODE_LOW_BAR);
+    	autoSelected = (int) SmartDashboard.getNumber("Auto Mode", AUTONOMOUS.AUTON_MODE_DO_NOTHING);
+    	AUTONOMOUS.setAutonomousMode(autoSelected);
+    	DRIVETRAIN.zeroGyro();
     }
 
     /**
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
-    	switch(autoSelected) {
-    	case customAuto:
-        //Put custom auto code here   
-            break;
-    	case defaultAuto:
-    	default:
-    	//Put default auto code here
-            break;
-    	}
+    	AUTONOMOUS.updateAutonomous();
+    	DRIVETRAIN.updateDrivetrainAuton();
+    	ARM.updateArmAuton();
+    	try {
+			USBCAMERA.updateUsbCamera();
+		} catch(Error e) {
+			
+		}
     }
 
+    public void teleopInit(){
+    	//TODO: Need to tie this to the limit switches, for now zero sensor on init
+        //ARM.zeroSensor();
+    	DRIVETRAIN.zeroGyro();
+    }
     /**
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-        
+    	DRIVETRAIN.updateDrivetrainTeleop();
+    	//CAMERA.updateCamera();
+        SHOOTER.updateShooter();
+        INTAKE.updateIntake();
+        ARM.updateArmTeleop();
+        try {
+			USBCAMERA.updateUsbCamera();
+		} catch(Error e) {
+			
+		}
     }
     
     /**
