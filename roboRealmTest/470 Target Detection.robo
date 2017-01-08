@@ -198,8 +198,8 @@
 <NetworkTables>
   <delay>100</delay>
   <filter_type_index>0</filter_type_index>
-  <hostname>roboRIO-66-frc.local</hostname>
-  <port>1736</port>
+  <hostname>roboRIO-470-frc.local</hostname>
+  <port>1735</port>
   <prefix>/SmartDashboard/</prefix>
   <variables_to_send>BOUNDING_COORDINATES
 IMAGE_HEIGHT
